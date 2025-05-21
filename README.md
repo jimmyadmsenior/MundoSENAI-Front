@@ -47,7 +47,7 @@ Página de detalhes de cada periférico
       <a href="#" title="defina o título do link">
         <img src="https://avatars.githubusercontent.com/u/173793677?v=4" width="100px;" alt="Foto de Augusto Sena no GitHub"/><br>
         <sub>
-          <b>Augusto<br>Sena</b>
+          <b>Augusto Sena</b>
         </sub>
       </a>
     </td>
