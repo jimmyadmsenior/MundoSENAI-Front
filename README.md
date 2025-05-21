@@ -64,7 +64,7 @@ Página de detalhes de cada periférico
       <a href="#" title="defina o título do link">
         <img src="https://avatars.githubusercontent.com/u/173831129?v=4" width="100px;" alt="Foto de Jimmy Castilho no GitHub"/><br>
         <sub>
-          <b>Jimmy Castilho</b>
+          <b>Marcela Miossi</b>
         </sub>
       </a>
     </td>
