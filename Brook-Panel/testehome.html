@@ -235,6 +235,9 @@
             border-radius: 20px;
             padding: 40px;
             border: 1px solid rgba(49, 213, 222, 0.3);
+            height: 400px;
+            display: flex;
+            flex-direction: column;
         }
 
         .chart-title {
@@ -242,6 +245,47 @@
             margin-bottom: 30px;
             color: #31d5de;
             text-align: center;
+            flex-shrink: 0;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+
+        .chart-wrapper canvas {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .dashboard-preview {
+            background: rgba(245, 243, 238, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(49, 213, 222, 0.3);
+            animation: pulse 4s infinite;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-chart-wrapper {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+
+        .hero-chart-wrapper canvas {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
         }
 
         /* Testimonials */
@@ -355,7 +399,9 @@
                 <div class="hero-visual">
                     <div class="dashboard-preview">
                         <div class="chart-title">Dashboard em Tempo Real</div>
-                        <canvas id="heroChart" width="300" height="200"></canvas>
+                        <div class="hero-chart-wrapper">
+                            <canvas id="heroChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -433,11 +479,15 @@
             <div class="chart-container">
                 <div class="chart-card animated">
                     <div class="chart-title">Crescimento Mensal</div>
-                    <canvas id="growthChart" width="400" height="300"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="growthChart"></canvas>
+                    </div>
                 </div>
                 <div class="chart-card animated">
                     <div class="chart-title">Eficiência por Categoria</div>
-                    <canvas id="efficiencyChart" width="400" height="300"></canvas>
+                    <div class="chart-wrapper">
+                        <canvas id="efficiencyChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -642,7 +692,11 @@
                 plugins: {
                     legend: {
                         position: 'bottom',
-                        labels: { color: '#f5f3ee', padding: 20 }
+                        labels: { 
+                            color: '#f5f3ee', 
+                            padding: 15,
+                            font: { size: 12 }
+                        }
                     }
                 }
             }
