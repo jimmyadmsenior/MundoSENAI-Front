@@ -540,12 +540,13 @@
         // Carrossel de Produtos Recentes
         let carouselIndex = 0;
         const carouselVisible = 3;
-        let carouselInterval = null;
+        let isAnimating = false;
 
-        function renderRecentProductsCarousel() {
+        function renderRecentProductsCarousel(slideDirection = 0) {
             const recentProductsContainer = document.getElementById('recent-products');
             recentProductsContainer.innerHTML = '';
-            const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 8); // Mostra até 8 produtos
+            const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 8);
+            // Render only the current group by default
             const start = carouselIndex;
             const end = Math.min(start + carouselVisible, recentProducts.length);
             for (let i = start; i < end; i++) {
@@ -553,38 +554,64 @@
             }
         }
 
-        function startCarouselAutoSlide() {
-            if (carouselInterval) clearInterval(carouselInterval);
-            carouselInterval = setInterval(() => {
-                const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 8);
-                if (carouselIndex + carouselVisible < recentProducts.length) {
-                    carouselIndex++;
-                } else {
-                    carouselIndex = 0;
-                }
+        function renderCarouselForSlide(direction) {
+            // direction: 1 (next), -1 (prev)
+            const recentProductsContainer = document.getElementById('recent-products');
+            const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 8);
+            const total = recentProducts.length;
+            const start = carouselIndex;
+            const end = Math.min(start + carouselVisible, total);
+            const nextStart = start + direction * carouselVisible;
+            const nextEnd = Math.min(nextStart + carouselVisible, total);
+
+            // Prepare cards: current + next
+            let cards = [];
+            for (let i = start; i < end; i++) {
+                cards.push(createProductCard(recentProducts[i]));
+            }
+            for (let i = nextStart; i < nextEnd; i++) {
+                cards.push(createProductCard(recentProducts[i]));
+            }
+            recentProductsContainer.innerHTML = '';
+            cards.forEach(card => recentProductsContainer.appendChild(card));
+
+            // Set initial position
+            recentProductsContainer.style.transition = 'none';
+            recentProductsContainer.style.transform = direction === 1 ? 'translateX(0)' : `translateX(-100%)`;
+            // Force reflow
+            void recentProductsContainer.offsetWidth;
+            // Animate
+            setTimeout(() => {
+                recentProductsContainer.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
+                recentProductsContainer.style.transform = direction === 1 ? 'translateX(-100%)' : 'translateX(0)';
+            }, 10);
+
+            // After animation, clean up
+            setTimeout(() => {
+                carouselIndex += direction * carouselVisible;
                 renderRecentProductsCarousel();
-            }, 3000); // 3 segundos por slide
+                isAnimating = false;
+            }, 700);
         }
 
         document.addEventListener('DOMContentLoaded', function() {
             if (document.getElementById('carousel-prev')) {
                 document.getElementById('carousel-prev').addEventListener('click', function() {
-                    carouselIndex = Math.max(0, carouselIndex - 1);
-                    renderRecentProductsCarousel();
-                    startCarouselAutoSlide();
+                    if (carouselIndex > 0 && !isAnimating) {
+                        isAnimating = true;
+                        renderCarouselForSlide(-1);
+                    }
                 });
             }
             if (document.getElementById('carousel-next')) {
                 document.getElementById('carousel-next').addEventListener('click', function() {
                     const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 8);
-                    if (carouselIndex + carouselVisible < recentProducts.length) {
-                        carouselIndex++;
-                        renderRecentProductsCarousel();
-                        startCarouselAutoSlide();
+                    if (carouselIndex + carouselVisible < recentProducts.length && !isAnimating) {
+                        isAnimating = true;
+                        renderCarouselForSlide(1);
                     }
                 });
             }
-            startCarouselAutoSlide();
         });
 
         // Carregar tabela de produtos
