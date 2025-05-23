@@ -1,0 +1,37 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+h1 {
+    color: #0b5345;
+    text-align: center;
+    margin-top: 32px;
+}
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin: 24px 0;
+}
+nav a {
+    color: #0b5345;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+nav a:hover {
+    background: #d4efdf;
+}
+section {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 32px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+/* Modais e botões de edição/exclusão podem ser estilizados aqui depois */
