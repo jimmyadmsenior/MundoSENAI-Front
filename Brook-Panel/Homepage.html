@@ -851,7 +851,15 @@
             </div>
         </section>
 
-        
+        <!-- Gráfico de Performance -->
+        <section class="charts">
+            <div class="chart-container" style="max-width:700px; margin: 0 auto;">
+                <div class="chart-title" style="color:#31d5de; text-align:center; margin-bottom:2rem; font-size:1.5rem; font-weight:bold;">
+                    Rendimento dos Últimos 12 Meses
+                </div>
+                <canvas id="performanceChart"></canvas>
+            </div>
+        </section>
 
         <!-- Testimonials -->
         <section class="testimonials">
@@ -941,6 +949,7 @@
         </section>
     </main>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
         // Mobile menu toggle
         const menuToggle = document.getElementById('menuToggle');
@@ -1259,6 +1268,89 @@
             document.body.classList.add('loaded');
             showNotification('Brooklyn Panel carregado com sucesso!', 'success');
         });
+
+        // Gráfico de Performance
+        (function(){
+            const canvas = document.getElementById('performanceChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            // Ajusta o tamanho do canvas para responsividade
+            function resizeChart() {
+                canvas.width = canvas.parentElement.offsetWidth;
+                canvas.height = 400;
+            }
+            resizeChart();
+            window.addEventListener('resize', resizeChart);
+
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(49, 213, 222, 0.8)');
+            gradient.addColorStop(1, 'rgba(28, 49, 165, 0.1)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    datasets: [{
+                        label: 'Eficiência do Estoque (%)',
+                        data: [65, 72, 78, 85, 92, 88, 95, 102, 108, 115, 125, 135],
+                        borderColor: '#31d5de',
+                        backgroundColor: gradient,
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#31d5de',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }, {
+                        label: 'Economia Gerada (R$ mil)',
+                        data: [45, 52, 48, 65, 78, 85, 92, 105, 118, 135, 152, 168],
+                        borderColor: '#1c31a5',
+                        backgroundColor: 'rgba(28, 49, 165, 0.1)',
+                        borderWidth: 3,
+                        fill: false,
+                        tension: 0.4,
+                        pointBackgroundColor: '#1c31a5',
+                        pointBorderColor: '#ffffff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#ffffff',
+                                padding: 20,
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: { color: '#b0b0b0' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        },
+                        y: {
+                            ticks: { color: '#b0b0b0' },
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index'
+                    }
+                }
+            });
+        })();
     </script>
 </body>
 </html>
