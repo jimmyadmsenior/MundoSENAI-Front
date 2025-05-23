@@ -1,5 +1,4 @@
-<style>
-        body {
+body {
             margin: 0;
             font-family: 'Segoe UI', Arial, sans-serif;
             background: #10182a;
@@ -450,4 +449,3 @@
                 grid-template-columns: 1fr;
             }
         }
-    </style>
