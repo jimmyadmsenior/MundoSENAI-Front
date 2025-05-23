@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brooklyn - Sistema de Estoque de Periféricos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+            color: #f5f3ee;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 5px #31d5de); }
+            to { filter: drop-shadow(0 0 20px #31d5de); }
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #f5f3ee;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #31d5de;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #f5f3ee;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(49, 213, 222, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .hero .highlight {
+            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #f5f3ee;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(49, 213, 222, 0.3);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            padding: 1rem 2.5rem;
+            border: 2px solid #31d5de;
+            border-radius: 50px;
+            text-decoration: none;
+            color: #31d5de;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #31d5de;
+            color: #1a1a2e;
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 5rem 0;
+            background: rgba(28, 49, 165, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 2rem;
+            background: rgba(245, 243, 238, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(49, 213, 222, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #31d5de;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: rgba(245, 243, 238, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(49, 213, 222, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #31d5de;
+            box-shadow: 0 10px 30px rgba(49, 213, 222, 0.2);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 5rem 0;
+            background: rgba(28, 49, 165, 0.1);
+        }
+
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-card {
+            background: rgba(245, 243, 238, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(49, 213, 222, 0.2);
+            position: relative;
+        }
+
+        .testimonial-content {
+            font-style: italic;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .author-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            padding: 5rem 0;
+        }
+
+        .chart-container {
+            background: rgba(245, 243, 238, 0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(49, 213, 222, 0.2);
+            margin-bottom: 2rem;
+        }
+
+        #performanceChart {
+            width: 100%;
+            height: 400px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #1c31a5, #31d5de);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .cta-section h2 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .pulse-button {
+            display: inline-block;
+            background: #f5f3ee;
+            color: #1c31a5;
+            padding: 1.2rem 3rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(245, 243, 238, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(245, 243, 238, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(245, 243, 238, 0); }
+        }
+
+        /* Footer */
+        footer {
+            background: #0a0a0a;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">Brooklyn</div>
+            <ul class="nav-links">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#features">Recursos</a></li>
+                <li><a href="#testimonials">Clientes</a></li>
+                <li><a href="#reports">Relatórios</a></li>
+            </ul>
+            <a href="#signup" class="cta-button">Começar Agora</a>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content fade-in">
+                    <h1>Gerencie seu <span class="highlight">Estoque</span> com <span class="highlight">Inteligência</span></h1>
+                    <p>O Brooklyn revoluciona o controle de periféricos com tecnologia avançada, relatórios em tempo real e uma interface intuitiva que acelera seus resultados.</p>
+                    <div class="hero-buttons">
+                        <a href="#signup" class="btn-primary">Teste Grátis por 30 Dias</a>
+                        <a href="#demo" class="btn-secondary">Ver Demonstração</a>
+                    </div>
+                </div>
+            </div>
+            <div class="floating-elements">
+                <div class="floating-element" style="width: 100px; height: 100px; top: 20%; left: 10%; animation-delay: 0s;"></div>
+                <div class="floating-element" style="width: 60px; height: 60px; top: 60%; right: 20%; animation-delay: 2s;"></div>
+                <div class="floating-element" style="width: 80px; height: 80px; bottom: 30%; left: 70%; animation-delay: 4s;"></div>
+            </div>
+        </section>
+
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-item fade-in">
+                        <div class="stat-number" data-target="5000">0</div>
+                        <p>Produtos Gerenciados</p>
+                    </div>
+                    <div class="stat-item fade-in">
+                        <div class="stat-number" data-target="98">0</div>
+                        <p>% Precisão em Estoque</p>
+                    </div>
+                    <div class="stat-item fade-in">
+                        <div class="stat-number" data-target="250">0</div>
+                        <p>Empresas Atendidas</p>
+                    </div>
+                    <div class="stat-item fade-in">
+                        <div class="stat-number" data-target="45">0</div>
+                        <p>% Redução de Custos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="features" class="features">
+            <div class="container">
+                <h2 class="section-title fade-in">Por que escolher o <span class="highlight">Brooklyn</span>?</h2>
+                <div class="features-grid">
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">📊</div>
+                        <h3>Controle Total</h3>
+                        <p>Monitore todos os periféricos em tempo real com alertas inteligentes de baixo estoque e movimentações suspeitas.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Automação Inteligente</h3>
+                        <p>Pedidos automáticos, códigos de barras integrados e sincronização com fornecedores para máxima eficiência.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">📈</div>
+                        <h3>Relatórios Avançados</h3>
+                        <p>Dashboards interativos com análises preditivas e insights que impulsionam suas decisões estratégicas.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Segurança Máxima</h3>
+                        <p>Criptografia de ponta, backups automáticos e controle de acesso multinível para proteger seus dados.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">📱</div>
+                        <h3>Acesso Mobile</h3>
+                        <p>Gerencie seu estoque de qualquer lugar com nosso app mobile intuitivo e sincronização em tempo real.</p>
+                    </div>
+                    <div class="feature-card fade-in">
+                        <div class="feature-icon">🤝</div>
+                        <h3>Suporte 24/7</h3>
+                        <p>Nossa equipe especializada está sempre disponível para garantir que você tenha o melhor desempenho.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <h2 class="section-title fade-in">O que nossos <span class="highlight">clientes</span> dizem</h2>
+                <div class="testimonial-grid">
+                    <div class="testimonial-card fade-in">
+                        <div class="testimonial-content">
+                            "O Brooklyn transformou completamente nossa operação. Reduzimos 60% do tempo gasto com controle de estoque e aumentamos nossa precisão para 99.5%."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">MR</div>
+                            <div>
+                                <strong>Maria Rodriguez</strong><br>
+                                <small>Diretora de Operações - TechFlow</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card fade-in">
+                        <div class="testimonial-content">
+                            "A interface é incrivelmente intuitiva e os relatórios nos dão insights valiosos sobre nosso negócio. ROI positivo em apenas 3 meses!"
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">JS</div>
+                            <div>
+                                <strong>João Silva</strong><br>
+                                <small>CEO - PerifericosBR</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card fade-in">
+                        <div class="testimonial-content">
+                            "Suporte excepcional e funcionalidades que realmente fazem a diferença. Não conseguimos mais imaginar nossa empresa sem o Brooklyn."
+                        </div>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">AC</div>
+                            <div>
+                                <strong>Ana Costa</strong><br>
+                                <small>Gerente de Estoque - MegaTech</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="reports" class="chart-section">
+            <div class="container">
+                <h2 class="section-title fade-in">Resultados que <span class="highlight">Impressionam</span></h2>
+                <div class="chart-container fade-in">
+                    <h3 style="margin-bottom: 1rem;">Performance de Vendas - Últimos 12 Meses</h3>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-item fade-in">
+                        <div class="stat-number">+127%</div>
+                        <p>Aumento em Eficiência</p>
+                    </div>
+                    <div class="stat-item fade-in">
+                        <div class="stat-number">-68%</div>
+                        <p>Redução em Perdas</p>
+                    </div>
+                    <div class="stat-item fade-in">
+                        <div class="stat-number">+95%</div>
+                        <p>Satisfação do Cliente</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="signup" class="cta-section">
+            <div class="container">
+                <div class="cta-content">
+                    <h2>Pronto para Revolucionar seu Estoque?</h2>
+                    <p>Junte-se a mais de 250 empresas que já transformaram sua gestão com o Brooklyn</p>
+                    <a href="#" class="pulse-button" onclick="showSignupForm()">COMEÇAR AGORA - GRÁTIS</a>
+                    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">30 dias grátis • Sem compromisso • Suporte incluído</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Brooklyn. Todos os direitos reservados. | Transformando a gestão de estoque com tecnologia de ponta.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Animated counters
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number[data-target]');
+            
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const increment = target / (duration / 16);
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                updateCounter();
+            });
+        }
+
+        // Chart creation
+        function createChart() {
+            const canvas = document.getElementById('performanceChart');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = canvas.offsetWidth;
+            canvas.height = 400;
+            
+            // Chart data
+            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+            const data = [65, 75, 85, 78, 92, 88, 95, 102, 98, 110, 118, 125];
+            
+            // Chart dimensions
+            const padding = 60;
+            const chartWidth = canvas.width - 2 * padding;
+            const chartHeight = canvas.height - 2 * padding;
+            
+            // Find max value for scaling
+            const maxValue = Math.max(...data);
+            const scale = chartHeight / maxValue;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Set styles
+            ctx.strokeStyle = '#31d5de';
+            ctx.lineWidth = 3;
+            ctx.fillStyle = '#f5f3ee';
+            ctx.font = '14px Inter';
+            
+            // Draw grid lines
+            ctx.strokeStyle = 'rgba(245, 243, 238, 0.1)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i <= 5; i++) {
+                const y = padding + (chartHeight / 5) * i;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(padding + chartWidth, y);
+                ctx.stroke();
+            }
+            
+            // Draw line chart
+            ctx.strokeStyle = '#31d5de';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            
+            data.forEach((value, index) => {
+                const x = padding + (chartWidth / (data.length - 1)) * index;
+                const y = padding + chartHeight - (value * scale);
+                
+                if (index === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            });
+            
+            ctx.stroke();
+            
+            // Draw gradient fill
+            const gradient = ctx.createLinearGradient(0, padding, 0, padding + chartHeight);
+            gradient.addColorStop(0, 'rgba(49, 213, 222, 0.3)');
+            gradient.addColorStop(1, 'rgba(49, 213, 222, 0.05)');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.moveTo(padding, padding + chartHeight);
+            
+            data.forEach((value, index) => {
+                const x = padding + (chartWidth / (data.length - 1)) * index;
+                const y = padding + chartHeight - (value * scale);
+                ctx.lineTo(x, y);
+            });
+            
+            ctx.lineTo(padding + chartWidth, padding + chartHeight);
+            ctx.closePath();
+            ctx.fill();
+            
+            // Draw data points
+            ctx.fillStyle = '#31d5de';
+            data.forEach((value, index) => {
+                const x = padding + (chartWidth / (data.length - 1)) * index;
+                const y = padding + chartHeight - (value * scale);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 5, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // Draw labels
+            ctx.fillStyle = '#f5f3ee';
+            ctx.textAlign = 'center';
+            months.forEach((month, index) => {
+                const x = padding + (chartWidth / (data.length - 1)) * index;
+                ctx.fillText(month, x, canvas.height - 20);
+            });
+            
+            // Draw values
+            ctx.textAlign = 'left';
+            for (let i = 0; i <= 5; i++) {
+                const value = Math.round((maxValue / 5) * (5 - i));
+                const y = padding + (chartHeight / 5) * i + 5;
+                ctx.fillText(value + '%', 10, y);
+            }
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 10, 10, 0.95)';
+            } else {
+                header.style.background = 'rgba(26, 26, 46, 0.95)';
+            }
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize counters when stats section becomes visible
+        const statsSection = document.querySelector('.stats');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statsObserver.observe(statsSection);
+
+        // Initialize chart when chart section becomes visible
+        const chartSection = document.querySelector('.chart-section');
+        const chartObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    createChart();
+                    chartObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        chartObserver.observe(chartSection);
+
+        // Signup form function
+        function showSignupForm() {
+            alert('Funcionalidade de cadastro seria integrada aqui com sua API de backend!\n\nRecursos incluídos:\n• 30 dias grátis\n• Suporte completo\n• Migração de dados\n• Treinamento da equipe');
+        }
+
+        // Resize chart on window resize
+        window.addEventListener('resize', () => {
+            setTimeout(createChart, 100);
+        });
+
+        // Add some interactive elements
+        document.querySelectorAll('.feature-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallax = document.querySelectorAll('.floating-element');
+            
+            parallax.forEach((element, index) => {
+                const speed = 0.5 + (index * 0.2);
+                element.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 0.5s ease-in-out';
+            
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Add hover effects to testimonial cards
+        document.querySelectorAll('.testimonial-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-5px) rotateX(5deg)';
+                card.style.boxShadow = '0 15px 35px rgba(49, 213, 222, 0.3)';
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) rotateX(0deg)';
+                card.style.boxShadow = 'none';
+            });
+        });
+
+        // Add dynamic text animation
+        function typeWriter(element, text, speed = 50) {
+            let i = 0;
+            element.innerHTML = '';
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize typing animation when hero section is visible
+        const heroTitle = document.querySelector('.hero h1');
+        const heroObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const originalText = heroTitle.innerHTML;
+                    setTimeout(() => {
+                        typeWriter(heroTitle, originalText.replace(/<[^>]*>/g, ''), 30);
+                    }, 500);
+                    heroObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        // Add click effects to buttons
+        document.querySelectorAll('.btn-primary, .btn-secondary, .cta-button, .pulse-button').forEach(button => {
+            button.addEventListener('click', function(e) {
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+                
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+                ripple.style.position = 'absolute';
+                ripple.style.borderRadius = '50%';
+                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+                ripple.style.transform = 'scale(0)';
+                ripple.style.animation = 'ripple 0.6s linear';
+                ripple.style.pointerEvents = 'none';
+                
+                this.style.position = 'relative';
+                this.style.overflow = 'hidden';
+                this.appendChild(ripple);
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+
+        // Add CSS for ripple animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Advanced chart interactions
+        function addChartInteractions() {
+            const canvas = document.getElementById('performanceChart');
+            let tooltip = null;
+            
+            canvas.addEventListener('mousemove', (e) => {
+                const rect = canvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Chart data for tooltip
+                const data = [65, 75, 85, 78, 92, 88, 95, 102, 98, 110, 118, 125];
+                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                const padding = 60;
+                const chartWidth = canvas.width - 2 * padding;
+                
+                // Find closest data point
+                let closestIndex = -1;
+                let minDistance = Infinity;
+                
+                data.forEach((value, index) => {
+                    const pointX = padding + (chartWidth / (data.length - 1)) * index;
+                    const distance = Math.abs(x - pointX);
+                    
+                    if (distance < minDistance && distance < 20) {
+                        minDistance = distance;
+                        closestIndex = index;
+                    }
+                });
+                
+                // Show/hide tooltip
+                if (closestIndex !== -1) {
+                    if (!tooltip) {
+                        tooltip = document.createElement('div');
+                        tooltip.style.position = 'absolute';
+                        tooltip.style.background = 'rgba(28, 49, 165, 0.9)';
+                        tooltip.style.color = '#f5f3ee';
+                        tooltip.style.padding = '8px 12px';
+                        tooltip.style.borderRadius = '8px';
+                        tooltip.style.fontSize = '14px';
+                        tooltip.style.pointerEvents = 'none';
+                        tooltip.style.zIndex = '1000';
+                        tooltip.style.backdropFilter = 'blur(10px)';
+                        tooltip.style.border = '1px solid rgba(49, 213, 222, 0.3)';
+                        document.body.appendChild(tooltip);
+                    }
+                    
+                    tooltip.innerHTML = `<strong>${months[closestIndex]}</strong><br>Eficiência: ${data[closestIndex]}%`;
+                    tooltip.style.left = (e.clientX + 10) + 'px';
+                    tooltip.style.top = (e.clientY - 50) + 'px';
+                    tooltip.style.display = 'block';
+                    canvas.style.cursor = 'pointer';
+                } else {
+                    if (tooltip) {
+                        tooltip.style.display = 'none';
+                    }
+                    canvas.style.cursor = 'default';
+                }
+            });
+            
+            canvas.addEventListener('mouseleave', () => {
+                if (tooltip) {
+                    tooltip.style.display = 'none';
+                }
+                canvas.style.cursor = 'default';
+            });
+        }
+
+        // Initialize chart interactions after chart is created
+        setTimeout(addChartInteractions, 1000);
+
+        // Add floating action button for quick signup
+        const fab = document.createElement('div');
+        fab.innerHTML = '📈';
+        fab.style.cssText = `
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(49, 213, 222, 0.4);
+            z-index: 1000;
+            animation: bounce 2s infinite;
+            transition: all 0.3s ease;
+        `;
+        
+        fab.addEventListener('click', () => {
+            document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
+        });
+        
+        fab.addEventListener('mouseenter', () => {
+            fab.style.transform = 'scale(1.1)';
+            fab.style.boxShadow = '0 6px 25px rgba(49, 213, 222, 0.6)';
+        });
+        
+        fab.addEventListener('mouseleave', () => {
+            fab.style.transform = 'scale(1)';
+            fab.style.boxShadow = '0 4px 20px rgba(49, 213, 222, 0.4)';
+        });
+        
+        document.body.appendChild(fab);
+
+        // Add bounce animation for FAB
+        const fabStyle = document.createElement('style');
+        fabStyle.textContent = `
+            @keyframes bounce {
+                0%, 20%, 50%, 80%, 100% {
+                    transform: translateY(0);
+                }
+                40% {
+                    transform: translateY(-10px);
+                }
+                60% {
+                    transform: translateY(-5px);
+                }
+            }
+        `;
+        document.head.appendChild(fabStyle);
+    </script>
+</body>
+</html>
