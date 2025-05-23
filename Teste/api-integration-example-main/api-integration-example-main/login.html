@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/login-brooklyn.css">
+    <link rel="stylesheet" href="css/floating-bubbles-login.css">
 </head>
 <body class="login-page">
+    <!-- Plano de fundo animado Floating Bubbles -->
+    <div class="floating-bubbles-bg">
+      <canvas id="bubble"></canvas>
+    </div>
+
     <div class="container">
         <div class="login-container">
             <div class="login-header">
                 <div class="logo-container">
-                    <img src="css/../Identidade Visual.png" alt="Logo Brooklyn" class="brooklyn-logo" style="max-width: 120px; display: block; margin: 0 auto 10px auto;">
+                    <img src="css/../Brooklyn.png" alt="Logo Brooklyn" class="brooklyn-logo" style="max-width: 170px; display: block; margin: 0 auto 18px auto;">
                 </div>
                 <p>SISTEMA DE GERENCIAMENTO</p>
             </div>
@@ -22,7 +28,6 @@
                 <button id="login-tab" class="auth-tab active">Login</button>
                 <button id="register-tab" class="auth-tab">Cadastro</button>
             </div>
-            
             <div id="login-form" class="form-container">
                 <h2>Login</h2>
                 <div class="form-group">
@@ -72,7 +77,18 @@
     </div>
 
     <!-- Scripts -->
+    <script>
+      // Garante que o canvas das bubbles seja redimensionado e renderizado imediatamente
+      document.addEventListener('DOMContentLoaded', function() {
+        var canvas = document.getElementById('bubble');
+        if (canvas) {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+      });
+    </script>
     <script src="js/api.js"></script>
     <script src="js/login.js"></script>
+    <script src="js/floating-bubbles-login.js"></script>
 </body>
 </html>

@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+}
+
+.wrap {
+  overflow: hidden;
+  position: relative;
+  height: 100vh;
+  background-image: linear-gradient(-206deg, #835EFF 0%, #FF008D 100%);
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+}
