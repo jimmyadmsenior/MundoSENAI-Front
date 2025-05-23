@@ -1,20 +1,143 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Brook Panel</title>
+    <!-- Adicione seus links de CSS aqui -->
     <link rel="stylesheet" href="../Media/CSS/Login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Adicione outros links de CSS conforme necessário -->
 </head>
-<body>
-    <h1>Login</h1>
-    <form>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br>
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" name="senha" required><br>
-        <button type="submit">Entrar</button>
-    </form>
-    <a href="register.html">Não tem conta? Cadastre-se</a>
+<body class="login">
+    <div id="particles-js"></div>
+    <div class="container"></div>
+        <div class="login-container-wrapper clearfix">
+            <div class="logo">
+                <i class="fa fa-sign-in"></i>
+            </div>
+            <div class="welcome"><strong>Welcome,</strong> please login</div>
+            <form class="form-horizontal login-form">
+                <div class="form-group relative"></div>
+                    <input id="login_username" class="form-control input-lg" type="email" placeholder="Username" required>
+                    <i class="fa fa-user"></i>
+                </div>
+                <div class="form-group relative password"></div>
+                    <input id="login_password" class="form-control input-lg" type="password" placeholder="Password" required>
+                    <i class="fa fa-lock"></i>
+                </div>
+                <div class="form-group"></div>
+                    <button type="submit" class="btn btn-success btn-lg btn-block">Login</button>
+                </div>
+                <div class="checkbox pull-left">
+                    <label><input type="checkbox"> Remember</label>
+                </div>
+                <div class="checkbox pull-right">
+                    <label> <a class="forget" href="" title="forget">Forgot your password</a> </label>
+                </div>
+            </form>
+        </div>
+        <h4 class="text-center">
+            <a target="_blank" href="https://codepen.io/Peeyush200/pen/mLwvJB">
+                Check out Social login form 
+            </a>
+        </h4>
+    </div>
+    <!-- Adicione seus scripts JS aqui -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stats.js@0.17.0/build/stats.min.js"></script>
+    <script>
+    /* ---- particles.js config ---- */
+    particlesJS("particles-js", {
+      "particles": {
+        "number": {
+          "value": 60,
+          "density": {
+            "enable": true,
+            "value_area": 1000
+          }
+        },
+        "color": {
+          "value":  ["#344455", "#ffffff"]
+        },
+        "shape": {
+          "type": "edge",
+          "stroke": {
+            "width": 0,
+            "color": "#000000"
+          },
+          "polygon": {
+            "nb_sides": 5
+          },
+          "image": {
+            "src": "img/github.svg",
+            "width": 100,
+            "height": 100
+          }
+        },
+        "opacity": {
+          "value": 0.5,
+          "random": false,
+          "anim": {
+            "enable": false,
+            "speed": 1,
+            "opacity_min": 0.1,
+            "sync": false
+          }
+        },
+        "size": {
+          "value": 4,
+          "random": true,
+          "anim": {
+            "enable": false,
+            "speed": 40,
+            "size_min": 0.1,
+            "sync": false
+          }
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 50,
+          "color": "#fff",
+          "opacity": 0.5,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 3,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "out_mode": "out",
+          "bounce": false,
+          "attract": {
+            "enable": false,
+            "rotateX": 600,
+            "rotateY": 1200
+          }
+        }
+      },
+      "retina_detect": true
+    });
+
+    /* ---- stats.js config ---- */
+    var count_particles, stats, update;
+    stats = new Stats;
+    stats.setMode(0);
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.left = '0px';
+    stats.domElement.style.top = '0px';
+    document.body.appendChild(stats.domElement);
+    count_particles = document.querySelector('.js-count-particles');
+    update = function() {
+      stats.begin();
+      stats.end();
+      if (window.pJSDom[0].pJS.particles && window.pJSDom[0].pJS.particles.array) {
+        count_particles.innerText = window.pJSDom[0].pJS.particles.array.length;
+      }
+      requestAnimationFrame(update);
+    };
+    requestAnimationFrame(update);
+    </script>
 </body>
 </html>
