@@ -1,0 +1,77 @@
+body.login-page {
+    background: #10182a !important;
+    color: #e3eafc !important;
+}
+
+.login-header {
+    background: #16213e !important;
+    color: #e3eafc !important;
+    border-bottom: none !important;
+}
+
+.login-footer {
+    background: transparent !important;
+    color: #b3c7e6 !important;
+    border-top: none !important;
+}
+
+.login-container {
+    background: #16213e !important;
+    color: #e3eafc !important;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18) !important;
+    border-radius: 14px !important;
+    border: none !important;
+}
+
+.auth-tabs {
+    background: transparent !important;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+}
+
+.auth-tab {
+    background: #10182a !important;
+    color: #60a5fa !important;
+    border: none !important;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 24px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.auth-tab.active, .auth-tab:hover {
+    background: #2463eb !important;
+    color: #fff !important;
+}
+
+.form-container {
+    background: transparent !important;
+    color: #e3eafc !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.form-footer a, .register-link, .forgot-link {
+    color: #60a5fa !important;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.form-footer a:hover, .register-link:hover, .forgot-link:hover {
+    color: #2463eb !important;
+}
+
+@media (max-width: 500px) {
+    .login-container {
+        padding: 24px 8px 18px 8px !important;
+        max-width: 98vw !important;
+    }
+    .login-header h1 {
+        font-size: 1.3rem !important;
+    }
+}
