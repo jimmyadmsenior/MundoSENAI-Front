@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brooklyn - Periféricos Premium</title>
+    <style>
+        :root {
+            --primary: #31d5de;
+            --secondary: #1c31a5;
+            --light: #f5f3ee;
+            --dark: #121212;
+            --dark-medium: #1e1e1e;
+            --dark-light: #2a2a2a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--dark-medium);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo-dot {
+            width: 12px;
+            height: 12px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 2px;
+        }
+
+        .menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .menu li a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .menu li a:hover {
+            color: var(--primary);
+        }
+
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            transition: width 0.3s ease;
+        }
+
+        .menu li a:hover::after {
+            width: 100%;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .cart-btn, .search-btn {
+            background: none;
+            border: none;
+            color: var(--light);
+            font-size: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .cart-btn:hover, .search-btn:hover {
+            color: var(--primary);
+        }
+
+        .cart-container {
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: var(--primary);
+            color: var(--dark);
+            font-size: 12px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+        }
+
+        .menu-toggle span {
+            width: 100%;
+            height: 3px;
+            background-color: var(--light);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(28, 49, 165, 0.2), transparent 50%),
+                        radial-gradient(circle at bottom left, rgba(49, 213, 222, 0.2), transparent 50%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            position: relative;
+            animation: fadeIn 1s ease;
+        }
+
+        .hero-content h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-content h2 span {
+            color: var(--primary);
+        }
+
+        .hero-content p {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(49, 213, 222, 0.3);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(49, 213, 222, 0.4);
+        }
+
+        .hero-image {
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 50%;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        /* Categorias */
+        .categories {
+            padding: 80px 0 40px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .category-card {
+            background-color: var(--dark-medium);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+        }
+
+        .category-card h3 {
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+            font-size: 1.5rem;
+        }
+
+        .category-card span {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            font-size: 1.2rem;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover span {
+            transform: rotate(45deg);
+        }
+
+        .mouse {
+            background: url('/api/placeholder/300/200') center/cover no-repeat;
+        }
+
+        .keyboard {
+            background: url('/api/placeholder/300/200') center/cover no-repeat;
+        }
+
+        .monitor {
+            background: url('/api/placeholder/300/200') center/cover no-repeat;
+        }
+
+        /* Produtos Destacados */
+        .featured {
+            padding: 80px 0;
+        }
+
+        .product-slider {
+            position: relative;
+            margin: 0 -15px;
+        }
+
+        .product-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            gap: 30px;
+            padding: 20px 15px;
+        }
+
+        .product-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-card {
+            min-width: 280px;
+            background-color: var(--dark-medium);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: var(--primary);
+            color: var(--dark);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .product-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+            background: var(--dark-light);
+            position: relative;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .product-card:hover .product-img img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .current-price {
+            color: var(--primary);
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .old-price {
+            color: #777;
+            font-size: 0.9rem;
+            text-decoration: line-through;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .stars {
+            color: gold;
+            font-size: 0.9rem;
+        }
+
+        .review-count {
+            color: #777;
+            font-size: 0.8rem;
+        }
+
+        .product-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .add-cart {
+            flex: 1;
+            padding: 10px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            border: none;
+            border-radius: 8px;
+            color: var(--light);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-cart:hover {
+            opacity: 0.9;
+        }
+
+        .wishlist-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: var(--dark-light);
+            border: none;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .wishlist-btn:hover {
+            color: var(--primary);
+        }
+
+        .slider-arrows {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .arrow-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--dark-light);
+            border: none;
+            color: var(--light);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .arrow-btn:hover {
+            background-color: var(--primary);
+            color: var(--dark);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            padding: 60px 0;
+            background-color: var(--dark-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+            opacity: 0.1;
+            top: -100px;
+            right: -50px;
+        }
+
+        .newsletter::after {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--secondary) 0%, transparent 70%);
+            opacity: 0.1;
+            bottom: -70px;
+            left: -50px;
+        }
+
+        .newsletter-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .newsletter-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .newsletter-content p {
+            color: #b0b0b0;
+            margin-bottom: 25px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background-color: var(--dark-medium);
+            color: var(--light);
+            border-radius: 8px 0 0 8px;
+            font-size: 1rem;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+        }
+
+        .newsletter-btn {
+            padding: 0 25px;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            border: none;
+            color: var(--light);
+            font-weight: 600;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-medium);
+            padding: 60px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-column p {
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+
+        .footer-links a {
+            color: #b0b0b0;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+            padding-left: 5px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--dark-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background-color: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsividade */
+        @media (max-width: 992px) {
+            .hero-image {
+                width: 40%;
+                opacity: 0.6;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background-color: var(--dark-medium);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 40px;
+                transition: all 0.5s ease;
+                z-index: 90;
+            }
+
+            .menu.active {
+                left: 0;
+            }
+
+            .menu-toggle {
+                display: flex;
+            }
+
+            .menu-toggle.active span:nth-child(1) {
+                transform: translateY(9px) rotate(45deg);
+            }
+
+            .menu-toggle.active span:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active span:nth-child(3) {
+                transform: translateY(-9px) rotate(-45deg);
+            }
+
+            .hero-content {
+                text-align: center;
+                max-width: 100%;
+                padding: 0 20px;
+            }
+
+            .hero-image {
+                display: none;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input {
+                border-radius: 8px;
+                margin-bottom: 10px;
+            }
+
+            .newsletter-btn {
+                width: 100%;
+                padding: 15px;
+                border-radius: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <h1>brooklyn<span class="logo-dot"></span></h1>
+                </div>
+                <ul class="menu">
+                    <li><a href="#" class="active">Home</a></li>
+                    <li><a href="#">Produtos</a></li>
+                    <li><a href="#">Ofertas</a></li>
+                    <li><a href="#">Suporte</a></li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+                <div class="nav-buttons">
+                    <button class="search-btn">
+                        <i>🔍</i>
+                    </button>
+                    <div class="cart-container">
+                        <button class="cart-btn">
+                            <i>🛒</i>
+                        </button>
+                        <span class="cart-count">0</span>
+                    </div>
+                    <div class="menu-toggle">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Eleve sua experiência <span>gamer</span> com os melhores periféricos</h2>
+                <p>A Brooklyn oferece os periféricos mais avançados e modernos para garantir o melhor desempenho nos seus jogos e melhorar sua produtividade.</p>
+                <a href="#" class="cta-btn">Explorar produtos</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categorias -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Categorias</h2>
+            <div class="category-grid">
+                <div class="category-card mouse">
+                    <span>🖱️</span>
+                    <h3>Mouse</h3>
+                </div>
+                <div class="category-card keyboard">
+                    <span>⌨️</span>
+                    <h3>Teclados</h3>
+                </div>
+                <div class="category-card monitor">
+                    <span>🖥️</span>
+                    <h3>Monitores</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos Destacados -->
+    <section class="featured">
+        <div class="container">
+            <h2 class="section-title">Produtos em Destaque</h2>
+            <div class="product-slider">
+                <div class="product-container" id="productSlider">
+                    <!-- Produto 1 -->
+                    <div class="product-card">
+                        <span class="product-badge">Novo</span>
+                        <div class="product-img">
+                            <img src="/api/placeholder/280/200" alt="Mouse Gamer">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Mouse Gamer Pro RGB</h3>
+                            <div class="product-price">
+                                <span class="current-price">R$ 199,90</span>
+                                <span class="old-price">R$ 249,90</span>
+                            </div>
+                            <div class="product-rating">
+                                <div class="stars">★★★★★</div>
+                                <span class="review-count">(124)</span>
+                            </div>
+                            <div class="product-btns">
+                                <button class="add-cart">Adicionar</button>
+                                <button class="wishlist-btn">❤️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produto 2 -->
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="/api/placeholder/280/200" alt="Teclado Mecânico">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Teclado Mecânico RGB</h3>
+                            <div class="product-price">
+                                <span class="current-price">R$ 349,90</span>
+                                <span class="old-price">R$ 399,90</span>
+                            </div>
+                            <div class="product-rating">
+                                <div class="stars">★★★★☆</div>
+                                <span class="review-count">(98)</span>
+                            </div>
+                            <div class="product-btns">
+                                <button class="add-cart">Adicionar</button>
+                                <button class="wishlist-btn">❤️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produto 3 -->
+                    <div class="product-card">
+                        <span class="product-badge">-15%</span>
+                        <div class="product-img">
+                            <img src="/api/placeholder/280/200" alt="Monitor Gamer">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Monitor Gamer 144Hz 27"</h3>
+                            <div class="product-price">
+                                <span class="current-price">R$ 1.699,90</span>
+                                <span class="old-price">R$ 1.999,90</span>
+                            </div>
+                            <div class="product-rating">
+                                <div class="stars">★★★★★</div>
+                                <span class="review-count">(45)</span>
+                            </div>
+                            <div class="product-btns">
+                                <button class="add-cart">Adicionar</button>
+                                <button class="wishlist-btn">❤️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produto 4 -->
+                    <div class="product-card">
+                        <div class="product-img">
+                            <img src="/api/placeholder/280/200" alt="Headset Gamer">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Headset Gamer 7.1</h3>
+                            <div class="product-price">
+                                <span class="current-price">R$ 299,90</span>
+                                <span class="old-price">R$ 329,90</span>
+                            </div>
+                            <div class="product-rating">
+                                <div class="stars">★★★★☆</div>
+                                <span class="review-count">(76)</span>
+                            </div>
+                            <div class="product-btns">
+                                <button class="add-cart">Adicionar</button>
+                                <button class="wishlist-btn">❤️</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Produto 5 -->
+                    <div class="product-card">
+                        <span class="product-badge">Promoção</span>
+                        <div class="product-img">
+                            <img src="/api/placeholder/280/200" alt="Mouse Pad">
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-title">Mouse Pad RGB XL</h3>
+                            <div class="product-price">
+                                <span class="current-price">R$ 129,90</span>
+                                <span class="old-price">R$ 159,90</span>
+                            </div>
+                            <div class="product-rating">
+                                <div class="stars">★★★★★</div>
+                                <span class="review-count">(34)</span>
+                            </div>
+                            <div class="product-btns">
+                                <button class="add-cart">Adicionar</button>
+                                <button class="wishlist-btn">❤️</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-arrows">
+                    <button class="arrow-btn prev-btn">◀</button>
+                    <button class="arrow-btn next-btn">▶</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h3>Receba nossas promoções</h3>
+                <p>Inscreva-se para receber as melhores ofertas em primeira mão e ficar por dentro das novidades.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Seu melhor e-mail" class="newsletter-input" required>
+                    <button type="submit" class="newsletter-btn">Inscrever-se</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h4>Brooklyn</h4>
+                    <p>A melhor loja de periféricos gamer com os produtos mais modernos do mercado para elevar sua experiência.</p>
+                    <div class="social-icons">
+                        <a href="#" class="social-icon">f</a>
+                        <a href="#" class="social-icon">t</a>
+                        <a href="#" class="social-icon">i</a>
+                        <a href="#" class="social-icon">y</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Links Rápidos</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos e Condições</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Trabalhe Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Categorias</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Mouse</a></li>
+                        <li><a href="#">Teclados</a></li>
+                        <li><a href="#">Monitores</a></li>
+                        <li><a href="#">Headsets</a></li>
+                        <li><a href="#">Acessórios</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contato</h4>
+                    <ul class="footer-links">
+                        <li>📱 (11) 9999-9999</li>
+                        <li>📧 contato@brooklyn.com.br</li>
+                        <li>📍 Av. Paulista, 1000 - São Paulo</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Brooklyn Tech. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Menu Mobile Toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const menu = document.querySelector('.menu');
+
+        menuToggle.addEventListener('click', () => {
+            menuToggle.classList.toggle('active');
+            menu.classList.toggle('active');
+        });
+
+        // Slider de Produtos
+        const productSlider = document.getElementById('productSlider');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+        
+        let scrollAmount = 0;
+        const slideWidth = 310; // largura do card + gap
+        
+        nextBtn.addEventListener('click', () => {
+            scrollAmount += slideWidth;
+            if (scrollAmount > productSlider.scrollWidth - productSlider.clientWidth) {
+                scrollAmount = productSlider.scrollWidth - productSlider.clientWidth;
+            }
+            productSlider.scrollTo({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+        
+        prevBtn.addEventListener('click', () => {
+            scrollAmount -= slideWidth;
+            if (scrollAmount < 0) {
+                scrollAmount = 0;
+            }
+            productSlider.scrollTo({
+                left: scrollAmount,
+                behavior: 'smooth'
+            });
+        });
+
+        // Sistema de carrinho
+        const cartBtns = document.querySelectorAll('.add-cart');
+        const cartCount = document.querySelector('.cart-count');
+        let cartItems = 0;
+
+        cartBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                cartItems++;
+                cartCount.textContent = cartItems;
+                
+                // Animação de adicionado ao carrinho
+                const productCard = btn.closest('.product-card');
+                productCard.style.transform = 'scale(1.05)';
+                btn.textContent = 'Adicionado ✓';
+                btn.style.background = '#31d5de';
+                
+                setTimeout(() => {
+                    productCard.style.transform = '';
+                    btn.textContent = 'Adicionar';
+                    btn.style.background = '';
+                }, 1000);
+
+                // Notificação
+                showNotification('Produto adicionado ao carrinho!');
+            });
+        });
+
+        // Sistema de Favoritos
+        const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+        
+        wishlistBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                btn.classList.toggle('active');
+                if (btn.classList.contains('active')) {
+                    btn.style.color = '#ff6b6b';
+                    showNotification('Produto adicionado aos favoritos!');
+                } else {
+                    btn.style.color = '';
+                    showNotification('Produto removido dos favoritos!');
+                }
+            });
+        });
+
+        // Sistema de notificações
+        function showNotification(message) {
+            // Criar elemento de notificação
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            
+            // Estilizar notificação
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '12px 20px';
+            notification.style.background = 'linear-gradient(45deg, #1c31a5, #31d5de)';
+            notification.style.color = '#f5f3ee';
+            notification.style.borderRadius = '8px';
+            notification.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.3)';
+            notification.style.zIndex = '1000';
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateY(20px)';
+            notification.style.transition = 'all 0.3s ease';
+            
+            // Adicionar ao body
+            document.body.appendChild(notification);
+            
+            // Animar entrada
+            setTimeout(() => {
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+            }, 10);
+            
+            // Remover após 3 segundos
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Efeito de digitação na hero
+        const heroTitle = document.querySelector('.hero-content h2');
+        const originalText = heroTitle.innerHTML;
+        
+        // Função para animação de digitação
+        function typeWriter() {
+            heroTitle.innerHTML = '';
+            let i = 0;
+            const speed = 50; // velocidade da digitação
+            
+            function type() {
+                if (i < originalText.length) {
+                    heroTitle.innerHTML += originalText.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            
+            type();
+        }
+        
+        // Ativar animação quando a página carregar
+        window.addEventListener('load', () => {
+            // Pequeno delay para garantir que tudo esteja carregado
+            setTimeout(typeWriter, 500);
+        });
+
+        // Revelação de elementos com scroll
+        function revealOnScroll() {
+            const reveals = document.querySelectorAll('.category-card, .product-card, .section-title');
+            
+            reveals.forEach(element => {
+                const windowHeight = window.innerHeight;
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < windowHeight - elementVisible) {
+                    element.classList.add('show');
+                    element.style.opacity = '1';
+                    element.style.transform = element.classList.contains('product-card') ? 'translateY(0)' : '';
+                } else {
+                    element.classList.remove('show');
+                    element.style.opacity = '0';
+                    element.style.transform = element.classList.contains('product-card') ? 'translateY(20px)' : '';
+                }
+            });
+        }
+        
+        // Inicializar elementos como invisíveis
+        document.querySelectorAll('.category-card, .product-card, .section-title').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transition = 'all 0.8s ease';
+            if (el.classList.contains('product-card')) {
+                el.style.transform = 'translateY(20px)';
+            }
+        });
+        
+        // Registrar eventos de scroll
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+        
+        // Tema escuro/claro toggle
+        const createThemeToggle = () => {
+            const themeToggle = document.createElement('button');
+            themeToggle.innerHTML = '🌙';
+            themeToggle.className = 'theme-toggle';
+            themeToggle.style.position = 'fixed';
+            themeToggle.style.bottom = '20px';
+            themeToggle.style.left = '20px';
+            themeToggle.style.width = '50px';
+            themeToggle.style.height = '50px';
+            themeToggle.style.borderRadius = '50%';
+            themeToggle.style.background = 'var(--dark-light)';
+            themeToggle.style.border = 'none';
+            themeToggle.style.color = 'var(--light)';
+            themeToggle.style.fontSize = '1.2rem';
+            themeToggle.style.cursor = 'pointer';
+            themeToggle.style.zIndex = '100';
+            themeToggle.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.3)';
+            themeToggle.style.transition = 'all 0.3s ease';
+            
+            document.body.appendChild(themeToggle);
+            
+            // Já estamos no tema escuro por padrão, então o toggle seria para o tema claro
+            let isDark = true;
+            
+            themeToggle.addEventListener('click', () => {
+                if (isDark) {
+                    // Mudar para tema claro
+                    document.documentElement.style.setProperty('--dark', '#f5f3ee');
+                    document.documentElement.style.setProperty('--dark-medium', '#e9e7e2');
+                    document.documentElement.style.setProperty('--dark-light', '#dedcd7');
+                    document.documentElement.style.setProperty('--light', '#121212');
+                    themeToggle.innerHTML = '☀️';
+                } else {
+                    // Voltar para tema escuro
+                    document.documentElement.style.setProperty('--dark', '#121212');
+                    document.documentElement.style.setProperty('--dark-medium', '#1e1e1e');
+                    document.documentElement.style.setProperty('--dark-light', '#2a2a2a');
+                    document.documentElement.style.setProperty('--light', '#f5f3ee');
+                    themeToggle.innerHTML = '🌙';
+                }
+                isDark = !isDark;
+            });
+        };
+        
+        createThemeToggle();
+
+        // Newsletter validation
+        const newsletterForm = document.querySelector('.newsletter-form');
+        const newsletterInput = document.querySelector('.newsletter-input');
+        
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = newsletterInput.value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            
+            if (emailRegex.test(email)) {
+                showNotification('Email cadastrado com sucesso!');
+                newsletterInput.value = '';
+                newsletterInput.style.border = '2px solid #31d5de';
+                
+                setTimeout(() => {
+                    newsletterInput.style.border = 'none';
+                }, 2000);
+            } else {
+                showNotification('Por favor, insira um email válido.');
+                newsletterInput.style.border = '2px solid #ff6b6b';
+            }
+        });
+    </script>
+</body>
+</html>
