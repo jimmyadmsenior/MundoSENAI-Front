@@ -2,44 +2,663 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1.0">
-    <title>Dashboard - Brook Panel</title>
-    <link rel="icon" href="../Brook-Panel/Media/icon-page.png" type="image/png">
-    <link rel="stylesheet" href="Media/CSS/dashboard.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brooklyn - Dashboard</title>
+    <!-- Sidebar Menu Component - Copie este bloco para outras páginas -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
-        .carousel-container {
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-cyan: #31d5de;
+            --primary-blue: #1c31a5;
+            --accent-white: #f5f3ee;
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f3ee;
+            --text-secondary: #b0b0b0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
             display: flex;
             align-items: center;
-            gap: 10px;
-            width: 100%;
-            margin-bottom: 10px;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .carousel-btn {
-            background: #16213e;
-            color: #60a5fa;
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
+            color: var(--accent-white);
+            transform: translateX(5px);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before, .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        /* Centraliza o botão de adicionar produto */
+        .add-product-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .add-product-btn {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
             border: none;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.2rem;
+            gap: 0.5rem;
+        }
+
+        .add-product-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 14, 103, 0.3);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-white);
+            font-size: 1.5rem;
             cursor: pointer;
-            transition: background 0.2s, color 0.2s;
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 1100;
         }
-        .carousel-btn:hover {
-            background: #2463eb;
-            color: #fff;
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
         }
-        .carousel-track-wrapper {
-            flex: 1;
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(49, 213, 222, 0.2);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar:focus-within {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 20px rgba(49, 213, 222, 0.3);
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            padding: 0.5rem;
+            outline: none;
+            width: 300px;
+        }
+
+        .search-bar i {
+            color: var(--text-secondary);
+            margin-right: 0.5rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #2a2a3e 100%);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border: 1px solid rgba(49, 213, 222, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
             overflow: hidden;
         }
-        .carousel-track {
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-blue));
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(49, 213, 222, 0.2);
+        }
+
+        .stat-card h3 {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .change {
+            font-size: 0.8rem;
             display: flex;
-            gap: 24px;
-            transition: transform 0.3s;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .change.positive {
+            color: #4ade80;
+        }
+
+        .change.negative {
+            color: #f87171;
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-select {
+            background: var(--bg-card);
+            border: 2px solid rgba(49, 213, 222, 0.2);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary-cyan);
+        }
+
+        /* Product Grid */
+        .products-section {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(49, 213, 222, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: var(--primary-cyan);
+        }
+
+        .view-toggle {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .view-btn {
+            background: none;
+            border: 2px solid rgba(49, 213, 222, 0.3);
+            color: var(--text-secondary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn.active, .view-btn:hover {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+            border-color: var(--primary-cyan);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .products-grid.list-view {
+            grid-template-columns: 1fr;
+        }
+
+        .product-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(49, 213, 222, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(49, 213, 222, 0.2);
+            border-color: var(--primary-cyan);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .product-icon {
+            font-size: 2rem;
+            color: var(--primary-cyan);
+            background: rgba(49, 213, 222, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-category {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .product-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            color: var(--primary-cyan);
+        }
+
+        .stock-status {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .stock-high {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+        }
+
+        .stock-medium {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+        }
+
+        .stock-low {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .edit-btn {
+            background: rgba(49, 213, 222, 0.2);
+            color: var(--primary-cyan);
+        }
+
+        .edit-btn:hover {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+        }
+
+        .delete-btn {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+        }
+
+        .delete-btn:hover {
+            background: #f87171;
+            color: var(--bg-dark);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid rgba(49, 213, 222, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-cyan);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: rgba(248, 113, 113, 0.2);
+            color: #f87171;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(49, 213, 222, 0.1);
+            border: 2px solid rgba(49, 213, 222, 0.2);
+            border-radius: 8px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 10px rgba(49, 213, 222, 0.2);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(176, 176, 176, 0.2);
+            color: var(--text-secondary);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(176, 176, 176, 0.3);
+        }
+
+        /* Animations */
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .product-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: stretch;
+            }
+
+            .search-bar input {
+                width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -48,995 +667,621 @@
     <button class="menu-toggle" id="menuToggle">
         <i class="fas fa-bars"></i>
     </button>
+
+    <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="logo">
-            <h1>Brooklyn Panel</h1>
+            <a>
+                <img src="../Brook-Panel/Media/Identidade Visual.png" alt="" class="logo-img">
+            </a>
             <p>Gestão Inteligente</p>
         </div>
+        
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="#" class="nav-link active" data-page="dashboard">
+                <a href="../Brook-Panel/Homepage.html" class="nav-link">
                     <i class="fas fa-home"></i>
                     Home
                 </a>
             </li>
+            
             <li class="nav-item">
-                <a href="#" class="nav-link" data-page="reports">
-                    <i class="fas fa-chart-line"></i>
-                    Relatórios
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link" data-page="dashboard">
+                <a href="../Brook-Panel/Dashboard.html" class="nav-link active">
                     <i class="fas fa-tachometer-alt"></i>
                     Dashboard
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link" data-page="profile">
+                <a href="../Brook-Panel/Usuários.html" class="nav-link">
                     <i class="fas fa-user"></i>
                     Perfil
                 </a>
             </li>
         </ul>
-        <button class="add-product-btn" id="add-product-btn-navbar">
-            <i class="fas fa-plus"></i>
-            Adicionar Produto
-        </button>
+        
+        <div class="add-product-container">
+            <button class="add-product-btn" id="addProductBtn">
+                <i class="fas fa-plus"></i>
+                Adicionar Produto
+            </button>
+        </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="main-content">
+    <main class="main-content">
+        <!-- Header -->
         <div class="header">
-            <h1>Dashboard</h1>
-            <div class="search-box">
+            <h1>Dashboard Brooklyn</h1>
+            <div class="search-bar">
                 <i class="fas fa-search"></i>
-                <input type="text" placeholder="Buscar produtos, pedidos...">
+                <input type="text" placeholder="Buscar produtos..." id="searchInput">
             </div>
         </div>
 
-        <!-- Dashboard Page -->
-        <div class="page active" id="dashboard-page">
-            <div class="dashboard-stats">
-                <div class="stat-card">
-                    <div class="stat-title">Vendas do Mês</div>
-                    <div class="stat-value">R$ 89.450</div>
-                    <div class="stat-info">
-                        <i class="fas fa-arrow-up stat-up" style="color: #22c55e;"></i>
-                        <span class="stat-up" style="color: #22c55e;">23% desde mês passado</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Total de Produtos</div>
-                    <div class="stat-value">156</div>
-                    <div class="stat-info">
-                        <i class="fas fa-arrow-up stat-up" style="color: #22c55e;"></i>
-                        <span class="stat-up" style="color: #22c55e;">12 novos produtos</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Produtos com Baixo Estoque</div>
-                    <div class="stat-value">8</div>
-                    <div class="stat-info">
-                        <i class="fas fa-arrow-down stat-down"></i>
-                        <span class="stat-down">Requer atenção</span>
-                    </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-title">Pedidos Pendentes</div>
-                    <div class="stat-value">24</div>
-                    <div class="stat-info">
-                        <i class="fas fa-arrow-up stat-up" style="color: #22c55e;"></i>
-                        <span class="stat-up" style="color: #22c55e;">5 novos hoje</span>
-                    </div>
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total de Produtos</h3>
+                <div class="number" id="totalProducts">0</div>
+                <div class="change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +12% este mês
                 </div>
             </div>
-
-            <div class="content-section">
-                <div class="section-header">
-                    <h2 class="section-title">Produtos Recentes</h2>
-                    <button class="btn btn-primary" id="add-product-btn">
-                        <i class="fas fa-plus"></i> Adicionar Produto
-                    </button>
+            <div class="stat-card">
+                <h3>Estoque Baixo</h3>
+                <div class="number" id="lowStock">0</div>
+                <div class="change negative">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Requer atenção
                 </div>
-                <div class="carousel-container">
-                    <button class="carousel-btn" id="carousel-prev"><i class="fas fa-chevron-left"></i></button>
-                    <div class="carousel-track-wrapper">
-                        <div class="carousel-track" id="recent-products">
-                            <!-- Products will be loaded dynamically -->
-                        </div>
-                    </div>
-                    <button class="carousel-btn" id="carousel-next"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="stat-card">
+                <h3>Valor Total</h3>
+                <div class="number" id="totalValue">R$ 0</div>
+                <div class="change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    +8% este mês
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Categorias</h3>
+                <div class="number" id="totalCategories">3</div>
+                <div class="change positive">
+                    <i class="fas fa-check"></i>
+                    Ativo
                 </div>
             </div>
         </div>
 
-        <!-- Products Page -->
-        <div class="page" id="products-page">
+        <!-- Filters -->
+        <div class="filters">
+            <div class="filter-group">
+                <label>Categoria:</label>
+                <select class="filter-select" id="categoryFilter">
+                    <option value="all">Todas</option>
+                    <option value="mouse">Mouse</option>
+                    <option value="teclado">Teclado</option>
+                    <option value="monitor">Monitor</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Estoque:</label>
+                <select class="filter-select" id="stockFilter">
+                    <option value="all">Todos</option>
+                    <option value="high">Alto (50+)</option>
+                    <option value="medium">Médio (10-49)</option>
+                    <option value="low">Baixo (0-9)</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Ordenar por:</label>
+                <select class="filter-select" id="sortFilter">
+                    <option value="name">Nome</option>
+                    <option value="stock">Estoque</option>
+                    <option value="price">Preço</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="products-section">
             <div class="section-header">
-                <h2 class="section-title">Gerenciamento de Produtos</h2>
-                <button class="btn btn-primary" id="add-product-btn-2">
-                    <i class="fas fa-plus"></i> Adicionar Produto
-                </button>
-            </div>
-
-            <div class="tabs">
-                <button class="tab-btn active" data-tab="all-products">Todos os Produtos</button>
-                <button class="tab-btn" data-tab="mouse">Mouse</button>
-                <button class="tab-btn" data-tab="keyboard">Teclado</button>
-                <button class="tab-btn" data-tab="monitor">Monitor</button>
-                <button class="tab-btn" data-tab="others">Outros</button>
-            </div>
-
-            <div class="tab-content active" id="all-products">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Categoria</th>
-                            <th>Preço</th>
-                            <th>Estoque</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="products-table">
-                        <!-- Products will be loaded dynamically -->
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="tab-content" id="mouse">
-                <div class="content-grid" id="mouse-products">
-                    <!-- Mouse products will be loaded dynamically -->
-                </div>
-            </div>
-
-            <div class="tab-content" id="keyboard">
-                <div class="content-grid" id="keyboard-products">
-                    <!-- Keyboard products will be loaded dynamically -->
-                </div>
-            </div>
-
-            <div class="tab-content" id="monitor">
-                <div class="content-grid" id="monitor-products">
-                    <!-- Monitor products will be loaded dynamically -->
-                </div>
-            </div>
-
-            <div class="tab-content" id="others">
-                <div class="content-grid" id="others-products">
-                    <!-- Other products will be loaded dynamically -->
-                </div>
-            </div>
-        </div>
-
-        <!-- Inventory Page -->
-        <div class="page" id="inventory-page">
-            <div class="section-header">
-                <h2 class="section-title">Gerenciamento de Estoque</h2>
-                <div>
-                    <button class="btn btn-outline">
-                        <i class="fas fa-file-export"></i> Exportar
+                <h2 class="section-title">Catálogo de Produtos</h2>
+                <div class="view-toggle">
+                    <button class="view-btn active" id="gridView">
+                        <i class="fas fa-th"></i>
                     </button>
-                    <button class="btn btn-primary" id="update-stock-btn">
-                        <i class="fas fa-sync"></i> Atualizar Estoque
+                    <button class="view-btn" id="listView">
+                        <i class="fas fa-list"></i>
                     </button>
                 </div>
             </div>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>Produto</th>
-                        <th>SKU</th>
-                        <th>Categoria</th>
-                        <th>Estoque Atual</th>
-                        <th>Estoque Mínimo</th>
-                        <th>Status</th>
-                        <th>Última Atualização</th>
-                    </tr>
-                </thead>
-                <tbody id="inventory-table">
-                    <!-- Inventory data will be loaded dynamically -->
-                </tbody>
-            </table>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be dynamically generated -->
+            </div>
         </div>
+    </main>
 
-        <!-- Other pages would be added here -->
-    </div>
-
-    <!-- Add Product Modal -->
-    <div class="modal" id="product-modal">
+    <!-- Modal -->
+    <div class="modal" id="productModal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title">Adicionar Novo Produto</h3>
-                <button class="close-modal">&times;</button>
+                <h2 class="modal-title" id="modalTitle">Adicionar Produto</h2>
+                <button class="close-btn" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
-            <form id="product-form">
+            <form id="productForm">
                 <div class="form-group">
                     <label class="form-label">Nome do Produto</label>
-                    <input type="text" class="form-control" id="product-name" required>
+                    <input type="text" class="form-input" id="productName" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Categoria</label>
-                    <select class="form-control" id="product-category" required>
+                    <select class="form-input" id="productCategory" required>
                         <option value="">Selecione uma categoria</option>
                         <option value="mouse">Mouse</option>
-                        <option value="keyboard">Teclado</option>
+                        <option value="teclado">Teclado</option>
                         <option value="monitor">Monitor</option>
-                        <option value="others">Outros</option>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Descrição</label>
-                    <textarea class="form-control" id="product-description" rows="3"></textarea>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Preço (R$)</label>
-                    <input type="number" class="form-control" id="product-price" min="0" step="0.01" required>
+                    <input type="number" class="form-input" id="productPrice" step="0.01" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">Quantidade em Estoque</label>
-                    <input type="number" class="form-control" id="product-stock" min="0" required>
+                    <input type="number" class="form-input" id="productStock" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">Estoque Mínimo</label>
-                    <input type="number" class="form-control" id="product-min-stock" min="0" required>
+                    <label class="form-label">Descrição</label>
+                    <input type="text" class="form-input" id="productDescription">
                 </div>
-                <div class="form-group">
-                    <label class="form-label">URL da Imagem</label>
-                    <input type="url" class="form-control" id="product-image">
-                </div>
-                <div class="form-footer">
-                    <button type="button" class="btn btn-outline cancel-modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar Produto</button>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Edit Stock Modal -->
-    <div class="modal" id="stock-modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Atualizar Estoque</h3>
-                <button class="close-modal">&times;</button>
-            </div>
-            <form id="stock-form">
-                <div class="form-group">
-                    <label class="form-label">Produto</label>
-                    <select class="form-control" id="stock-product" required>
-                        <!-- Products will be loaded dynamically -->
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Estoque Atual</label>
-                    <input type="number" class="form-control" id="current-stock" readonly>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Operação</label>
-                    <select class="form-control" id="stock-operation" required>
-                        <option value="add">Adicionar ao Estoque</option>
-                        <option value="remove">Remover do Estoque</option>
-                        <option value="set">Definir Quantidade Exata</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Quantidade</label>
-                    <input type="number" class="form-control" id="stock-quantity" min="1" required>
-                </div>
-                <div class="form-footer">
-                    <button type="button" class="btn btn-outline cancel-modal">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Atualizar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Font Awesome -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
-    
     <script>
-        // Dados de exemplo para o dashboard
-        const products = [
+        // Products data - In a real app, this would come from a database
+        let products = [
             {
                 id: 1,
-                name: "Mouse Gamer RGB Elite",
+                name: "Mouse Gamer RGB",
                 category: "mouse",
-                description: "Mouse gamer com iluminação RGB e 16000 DPI",
-                price: 349.90,
-                stock: 45,
-                minStock: 10,
-                image: "/api/placeholder/400/320",
-                sku: "MS-RGB-001",
-                lastUpdated: "2025-05-15"
+                price: 89.99,
+                stock: 25,
+                description: "Mouse gamer com iluminação RGB e 7 botões programáveis"
             },
             {
                 id: 2,
-                name: "Teclado Mecânico Pro",
-                category: "keyboard",
-                description: "Teclado mecânico com switches blue e iluminação RGB",
-                price: 599.90,
-                stock: 28,
-                minStock: 15,
-                image: "/api/placeholder/400/320",
-                sku: "KB-MEC-002",
-                lastUpdated: "2025-05-10"
+                name: "Teclado Mecânico",
+                category: "teclado",
+                price: 299.99,
+                stock: 8,
+                description: "Teclado mecânico com switches blue e retroiluminação"
             },
             {
                 id: 3,
-                name: "Monitor UltraWide 34\"",
+                name: "Monitor 24'' Full HD",
                 category: "monitor",
-                description: "Monitor ultrawide de 34 polegadas com resolução 3440x1440",
-                price: 2999.90,
-                stock: 8,
-                minStock: 5,
-                image: "/api/placeholder/400/320",
-                sku: "MN-UW-003",
-                lastUpdated: "2025-05-18"
+                price: 599.99,
+                stock: 12,
+                description: "Monitor LED 24 polegadas Full HD 144Hz"
             },
             {
                 id: 4,
-                name: "Mouse Sem Fio Ergonômico",
+                name: "Mouse Pad Extended",
                 category: "mouse",
-                description: "Mouse ergonômico sem fio com bateria de longa duração",
-                price: 189.90,
-                stock: 32,
-                minStock: 10,
-                image: "/api/placeholder/400/320",
-                sku: "MS-ERG-004",
-                lastUpdated: "2025-05-14"
+                price: 45.99,
+                stock: 50,
+                description: "Mouse pad estendido com base antiderrapante"
             },
             {
                 id: 5,
-                name: "Teclado Slim Wireless",
-                category: "keyboard",
-                description: "Teclado slim sem fio com teclas de perfil baixo",
-                price: 259.90,
-                stock: 18,
-                minStock: 8,
-                image: "/api/placeholder/400/320",
-                sku: "KB-SLM-005",
-                lastUpdated: "2025-05-12"
+                name: "Teclado Wireless",
+                category: "teclado",
+                price: 159.90,
+                stock: 3,
+                description: "Teclado sem fio com conexão Bluetooth"
             },
             {
                 id: 6,
-                name: "Monitor Curvo 27\" 240Hz",
+                name: "Monitor Ultrawide 29''",
                 category: "monitor",
-                description: "Monitor gamer curvo de 27 polegadas com 240Hz de taxa de atualização",
-                price: 1899.90,
-                stock: 4,
-                minStock: 6,
-                image: "/api/placeholder/400/320",
-                sku: "MN-CRV-006",
-                lastUpdated: "2025-05-19"
-            },
-            {
-                id: 7,
-                name: "Mouse Pad XL",
-                category: "others",
-                description: "Mouse pad extra grande com superfície de tecido e base antiderrapante",
-                price: 129.90,
-                stock: 52,
-                minStock: 15,
-                image: "/api/placeholder/400/320",
-                sku: "MP-XL-007",
-                lastUpdated: "2025-05-05"
-            },
-            {
-                id: 8,
-                name: "Headset Gamer 7.1",
-                category: "others",
-                description: "Headset gamer com som surround 7.1 e microfone retrátil",
-                price: 449.90,
-                stock: 12,
-                minStock: 10,
-                image: "/api/placeholder/400/320",
-                sku: "HS-71-008",
-                lastUpdated: "2025-05-08"
+                price: 899.99,
+                stock: 15,
+                description: "Monitor ultrawide 29 polegadas ideal para produtividade"
             }
         ];
 
-        // Estado da aplicação
-        let appState = {
-            currentPage: 'dashboard',
-            currentTab: 'all-products',
-            editingProduct: null,
-            nextProductId: 9
-        };
+        let editingProductId = null;
 
-        // DOM Ready
-        document.addEventListener('DOMContentLoaded', function() {
-            initApp();
+        // DOM Elements
+        const productsGrid = document.getElementById('productsGrid');
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const stockFilter = document.getElementById('stockFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const gridViewBtn = document.getElementById('gridView');
+        const listViewBtn = document.getElementById('listView');
+        const addProductBtn = document.getElementById('addProductBtn');
+        const productModal = document.getElementById('productModal');
+        const closeModal = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const productForm = document.getElementById('productForm');
+        const modalTitle = document.getElementById('modalTitle');
+
+        // Sidebar functionality (from original code)
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
         });
 
-        // Inicializar a aplicação
-        function initApp() {
-            loadRecentProducts();
-            loadProductsTable();
-            loadCategoryProducts();
-            loadInventoryTable();
-            setupEventListeners();
-        }
-
-        // Configurar ouvintes de eventos
-        function setupEventListeners() {
-            // Navegação entre páginas
-            document.querySelectorAll('.nav-item a').forEach(item => {
-                item.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const pageName = this.getAttribute('data-page');
-                    changePage(pageName);
-                });
+        // Smooth navigation active state and ripple effect
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Ripple effect
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(49, 213, 222, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
             });
+        });
 
-            // Navegação entre abas
-            document.querySelectorAll('.tab-btn').forEach(tab => {
-                tab.addEventListener('click', function() {
-                    const tabId = this.getAttribute('data-tab');
-                    changeTab(tabId);
-                });
-            });
-
-            // Botões para abrir modal de produtos
-            document.getElementById('add-product-btn').addEventListener('click', openAddProductModal);
-            document.getElementById('add-product-btn-2').addEventListener('click', openAddProductModal);
-
-            // Botão para abrir modal de estoque
-            document.getElementById('update-stock-btn').addEventListener('click', openUpdateStockModal);
-
-            // Fechar modais
-            document.querySelectorAll('.close-modal, .cancel-modal').forEach(btn => {
-                btn.addEventListener('click', closeAllModals);
-            });
-
-            // Formulário de produto
-            document.getElementById('product-form').addEventListener('submit', handleProductSubmit);
-
-            // Formulário de estoque
-            document.getElementById('stock-form').addEventListener('submit', handleStockSubmit);
-
-            // Atualizar informações de estoque no modal
-            document.getElementById('stock-product').addEventListener('change', updateStockInfo);
-
-            // Fechar modal ao clicar fora
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closeAllModals();
-                    }
-                });
-            });
-        }
-
-        // Carregar produtos recentes na página inicial
-        function loadRecentProducts() {
-            renderRecentProductsCarousel();
-        }
-
-        // Carrossel de Produtos Recentes
-        let carouselIndex = 0;
-        const carouselVisible = 3;
-        let isAnimating = false;
-
-        function renderRecentProductsCarousel(slideDirection = 0) {
-            const recentProductsContainer = document.getElementById('recent-products');
-            recentProductsContainer.innerHTML = '';
-            const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 8);
-            // Render only the current group by default
-            const start = carouselIndex;
-            const end = Math.min(start + carouselVisible, recentProducts.length);
-            for (let i = start; i < end; i++) {
-                recentProductsContainer.appendChild(createProductCard(recentProducts[i]));
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + M to toggle menu
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                sidebar.classList.toggle('open');
             }
-        }
-
-        function renderCarouselForSlide(direction) {
-            // direction: 1 (next), -1 (prev)
-            const recentProductsContainer = document.getElementById('recent-products');
-            const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 8);
-            const total = recentProducts.length;
-            const start = carouselIndex;
-            const end = Math.min(start + carouselVisible, total);
-            const nextStart = start + direction * carouselVisible;
-            const nextEnd = Math.min(nextStart + carouselVisible, total);
-
-            // Prepare cards: current + next
-            let cards = [];
-            for (let i = start; i < end; i++) {
-                cards.push(createProductCard(recentProducts[i]));
+            
+            // Alt + P to add product
+            if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                openAddProductModal();
             }
-            for (let i = nextStart; i < nextEnd; i++) {
-                cards.push(createProductCard(recentProducts[i]));
-            }
-            recentProductsContainer.innerHTML = '';
-            cards.forEach(card => recentProductsContainer.appendChild(card));
 
-            // Set initial position
-            recentProductsContainer.style.transition = 'none';
-            recentProductsContainer.style.transform = direction === 1 ? 'translateX(0)' : `translateX(-100%)`;
-            // Force reflow
-            void recentProductsContainer.offsetWidth;
-            // Animate
-            setTimeout(() => {
-                recentProductsContainer.style.transition = 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)';
-                recentProductsContainer.style.transform = direction === 1 ? 'translateX(-100%)' : 'translateX(0)';
-            }, 10);
-
-            // After animation, clean up
-            setTimeout(() => {
-                carouselIndex += direction * carouselVisible;
-                renderRecentProductsCarousel();
-                isAnimating = false;
-            }, 700);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            if (document.getElementById('carousel-prev')) {
-                document.getElementById('carousel-prev').addEventListener('click', function() {
-                    if (carouselIndex > 0 && !isAnimating) {
-                        isAnimating = true;
-                        renderCarouselForSlide(-1);
-                    }
-                });
-            }
-            if (document.getElementById('carousel-next')) {
-                document.getElementById('carousel-next').addEventListener('click', function() {
-                    const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 8);
-                    if (carouselIndex + carouselVisible < recentProducts.length && !isAnimating) {
-                        isAnimating = true;
-                        renderCarouselForSlide(1);
-                    }
-                });
+            // Escape to close modal
+            if (e.key === 'Escape' && productModal.style.display === 'block') {
+                closeProductModal();
             }
         });
 
-        // Carregar tabela de produtos
-        function loadProductsTable() {
-            const productsTable = document.getElementById('products-table');
-            productsTable.innerHTML = '';
+        // Product management functions
+        function getProductIcon(category) {
+            const icons = {
+                mouse: 'fas fa-mouse',
+                teclado: 'fas fa-keyboard',
+                monitor: 'fas fa-desktop'
+            };
+            return icons[category] || 'fas fa-box';
+        }
 
-            products.forEach(product => {
-                const row = document.createElement('tr');
-                
-                // Determinar o status baseado no estoque
-                let statusClass = 'status-in-stock';
-                let statusText = 'Em Estoque';
-                
-                if (product.stock === 0) {
-                    statusClass = 'status-out';
-                    statusText = 'Sem Estoque';
-                } else if (product.stock < product.minStock) {
-                    statusClass = 'status-low';
-                    statusText = 'Estoque Baixo';
-                }
-                
-                row.innerHTML = `
-                    <td>
-                        <div class="d-flex align-center">
-                            <div style="width: 40px; height: 40px; background-color: rgba(245, 243, 238, 0.05); border-radius: 6px; margin-right: 10px; display: flex; align-items: center; justify-content: center;">
-                                <img src="${product.image}" style="max-width: 30px; max-height: 30px;">
-                            </div>
-                            ${product.name}
+        function getStockStatus(stock) {
+            if (stock >= 50) return { class: 'stock-high', text: 'Alto' };
+            if (stock >= 10) return { class: 'stock-medium', text: 'Médio' };
+            return { class: 'stock-low', text: 'Baixo' };
+        }
+
+        function formatPrice(price) {
+            return new Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(price);
+        }
+
+        function renderProducts(productsToRender = products) {
+            productsGrid.innerHTML = '';
+            
+            productsToRender.forEach(product => {
+                const stockStatus = getStockStatus(product.stock);
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.innerHTML = `
+                    <div class="product-header">
+                        <div class="product-icon">
+                            <i class="${getProductIcon(product.category)}"></i>
                         </div>
-                    </td>
-                    <td>${capitalizeFirstLetter(product.category)}</td>
-                    <td>R$ ${product.price.toFixed(2)}</td>
-                    <td>${product.stock}</td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td class="action-cell">
-                        <button class="action-btn edit-product" data-id="${product.id}" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="action-btn delete-product" data-id="${product.id}" title="Excluir">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                
-                productsTable.appendChild(row);
-            });
-
-            // Adicionar eventos aos botões de ação
-            document.querySelectorAll('.edit-product').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const productId = parseInt(this.getAttribute('data-id'));
-                    openEditProductModal(productId);
-                });
-            });
-
-            document.querySelectorAll('.delete-product').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const productId = parseInt(this.getAttribute('data-id'));
-                    confirmDeleteProduct(productId);
-                });
-            });
-        }
-
-        // Carregar produtos por categoria
-        function loadCategoryProducts() {
-            const categories = ['mouse', 'keyboard', 'monitor', 'others'];
-            
-            categories.forEach(category => {
-                const container = document.getElementById(`${category}-products`);
-                container.innerHTML = '';
-                
-                const categoryProducts = products.filter(product => product.category === category);
-                
-                if (categoryProducts.length === 0) {
-                    container.innerHTML = '<p class="mt-20">Nenhum produto encontrado nesta categoria.</p>';
-                    return;
-                }
-                
-                categoryProducts.forEach(product => {
-                    container.appendChild(createProductCard(product));
-                });
-            });
-        }
-
-        // Carregar tabela de estoque
-        function loadInventoryTable() {
-            const inventoryTable = document.getElementById('inventory-table');
-            inventoryTable.innerHTML = '';
-
-            products.forEach(product => {
-                const row = document.createElement('tr');
-                
-                // Determinar o status baseado no estoque
-                let statusClass = 'status-in-stock';
-                let statusText = 'Em Estoque';
-                
-                if (product.stock === 0) {
-                    statusClass = 'status-out';
-                    statusText = 'Sem Estoque';
-                } else if (product.stock < product.minStock) {
-                    statusClass = 'status-low';
-                    statusText = 'Estoque Baixo';
-                }
-                
-                row.innerHTML = `
-                    <td>${product.name}</td>
-                    <td>${product.sku}</td>
-                    <td>${capitalizeFirstLetter(product.category)}</td>
-                    <td>${product.stock}</td>
-                    <td>${product.minStock}</td>
-                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
-                    <td>${formatDate(product.lastUpdated)}</td>
-                `;
-                
-                inventoryTable.appendChild(row);
-            });
-        }
-
-        // Criar card de produto
-        function createProductCard(product) {
-            const card = document.createElement('div');
-            card.className = 'product-card';
-            
-            // Determinar o status do estoque
-            let stockClass = '';
-            if (product.stock === 0) {
-                stockClass = 'low';
-            } else if (product.stock < product.minStock) {
-                stockClass = 'medium';
-            }
-            
-            card.innerHTML = `
-                <div class="product-image">
-                    <img src="${product.image}" alt="${product.name}">
-                </div>
-                <div class="product-details">
-                    <div class="product-category">${capitalizeFirstLetter(product.category)}</div>
+                    </div>
                     <h3 class="product-name">${product.name}</h3>
+                    <p class="product-category">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</p>
                     <div class="product-stats">
-                        <div class="product-price">R$ ${product.price.toFixed(2)}</div>
-                        <div class="product-stock ${stockClass}">Estoque: ${product.stock}</div>
+                        <div class="stat">
+                            <div class="stat-label">Preço</div>
+                            <div class="stat-value">${formatPrice(product.price)}</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-label">Estoque</div>
+                            <div class="stat-value">${product.stock}</div>
+                        </div>
+                    </div>
+                    <div class="stock-status ${stockStatus.class}">
+                        Estoque ${stockStatus.text}
                     </div>
                     <div class="product-actions">
-                        <button class="btn btn-outline edit-product" data-id="${product.id}">
+                        <button class="action-btn edit-btn" onclick="editProduct(${product.id})">
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="btn btn-primary">
-                            <i class="fas fa-eye"></i> Detalhes
+                        <button class="action-btn delete-btn" onclick="deleteProduct(${product.id})">
+                            <i class="fas fa-trash"></i> Excluir
                         </button>
                     </div>
-                </div>
-            `;
-            
-            // Adicionar evento ao botão de editar
-            card.querySelector('.edit-product').addEventListener('click', function() {
-                const productId = parseInt(this.getAttribute('data-id'));
-                openEditProductModal(productId);
+                `;
+                productsGrid.appendChild(productCard);
             });
             
-            return card;
+            updateStats();
         }
 
-        // Mudar página
-        function changePage(pageName) {
-            // Atualizar item de navegação ativo
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            
-            document.querySelector(`.nav-item a[data-page="${pageName}"]`).parentElement.classList.add('active');
-            
-            // Atualizar título da página
-            const pageTitle = document.querySelector('.header h1');
-            pageTitle.textContent = document.querySelector(`.nav-item a[data-page="${pageName}"]`).querySelector('span').textContent;
-            
-            // Mostrar página selecionada
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            
-            document.getElementById(`${pageName}-page`).classList.add('active');
-            
-            // Atualizar estado
-            appState.currentPage = pageName;
+        function updateStats() {
+            const totalProducts = products.length;
+            const lowStock = products.filter(p => p.stock < 10).length;
+            const totalValue = products.reduce((sum, p) => sum + (p.price * p.stock), 0);
+            const categories = [...new Set(products.map(p => p.category))].length;
+
+            document.getElementById('totalProducts').textContent = totalProducts;
+            document.getElementById('lowStock').textContent = lowStock;
+            document.getElementById('totalValue').textContent = formatPrice(totalValue);
+            document.getElementById('totalCategories').textContent = categories;
         }
 
-        // Mudar aba
-        function changeTab(tabId) {
-            // Atualizar botão de aba ativo
-            document.querySelectorAll('.tab-btn').forEach(tab => {
-                tab.classList.remove('active');
+        function filterProducts() {
+            let filteredProducts = [...products];
+            
+            // Search filter
+            const searchTerm = searchInput.value.toLowerCase();
+            if (searchTerm) {
+                filteredProducts = filteredProducts.filter(product =>
+                    product.name.toLowerCase().includes(searchTerm) ||
+                    product.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Category filter
+            const categoryValue = categoryFilter.value;
+            if (categoryValue !== 'all') {
+                filteredProducts = filteredProducts.filter(product =>
+                    product.category === categoryValue
+                );
+            }
+            
+            // Stock filter
+            const stockValue = stockFilter.value;
+            if (stockValue !== 'all') {
+                filteredProducts = filteredProducts.filter(product => {
+                    switch (stockValue) {
+                        case 'high': return product.stock >= 50;
+                        case 'medium': return product.stock >= 10 && product.stock < 50;
+                        case 'low': return product.stock < 10;
+                        default: return true;
+                    }
+                });
+            }
+            
+            // Sort filter
+            const sortValue = sortFilter.value;
+            filteredProducts.sort((a, b) => {
+                switch (sortValue) {
+                    case 'name': return a.name.localeCompare(b.name);
+                    case 'stock': return b.stock - a.stock;
+                    case 'price': return b.price - a.price;
+                    default: return 0;
+                }
             });
             
-            document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
-            
-            // Mostrar conteúdo da aba selecionada
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            document.getElementById(tabId).classList.add('active');
-            
-            // Atualizar estado
-            appState.currentTab = tabId;
+            renderProducts(filteredProducts);
         }
 
-        // Abrir modal para adicionar produto
         function openAddProductModal() {
-            // Limpar o formulário
-            document.getElementById('product-form').reset();
-            
-            // Atualizar título do modal
-            document.querySelector('#product-modal .modal-title').textContent = 'Adicionar Novo Produto';
-            
-            // Resetar estado de edição
-            appState.editingProduct = null;
-            
-            // Mostrar modal
-            document.getElementById('product-modal').style.display = 'flex';
+            editingProductId = null;
+            modalTitle.textContent = 'Adicionar Produto';
+            productForm.reset();
+            productModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        // Abrir modal para editar produto
-        function openEditProductModal(productId) {
-            // Encontrar o produto
-            const product = products.find(p => p.id === productId);
+        function openEditProductModal(product) {
+            editingProductId = product.id;
+            modalTitle.textContent = 'Editar Produto';
             
-            if (!product) return;
+            document.getElementById('productName').value = product.name;
+            document.getElementById('productCategory').value = product.category;
+            document.getElementById('productPrice').value = product.price;
+            document.getElementById('productStock').value = product.stock;
+            document.getElementById('productDescription').value = product.description;
             
-            // Preencher o formulário
-            document.getElementById('product-name').value = product.name;
-            document.getElementById('product-category').value = product.category;
-            document.getElementById('product-description').value = product.description;
-            document.getElementById('product-price').value = product.price;
-            document.getElementById('product-stock').value = product.stock;
-            document.getElementById('product-min-stock').value = product.minStock;
-            document.getElementById('product-image').value = product.image;
-            
-            // Atualizar título do modal
-            document.querySelector('#product-modal .modal-title').textContent = 'Editar Produto';
-            
-            // Atualizar estado de edição
-            appState.editingProduct = productId;
-            
-            // Mostrar modal
-            document.getElementById('product-modal').style.display = 'flex';
+            productModal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        // Abrir modal para atualizar estoque
-        function openUpdateStockModal() {
-            // Limpar o formulário
-            document.getElementById('stock-form').reset();
-            
-            // Preencher select de produtos
-            const stockProductSelect = document.getElementById('stock-product');
-            stockProductSelect.innerHTML = '<option value="">Selecione um produto</option>';
-            
-            products.forEach(product => {
-                const option = document.createElement('option');
-                option.value = product.id;
-                option.textContent = product.name;
-                stockProductSelect.appendChild(option);
-            });
-            
-            // Mostrar modal
-            document.getElementById('stock-modal').style.display = 'flex';
+        function closeProductModal() {
+            productModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+            editingProductId = null;
         }
 
-        // Atualizar informações de estoque no modal
-        function updateStockInfo() {
-            const productId = parseInt(this.value);
-            const product = products.find(p => p.id === productId);
-            
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
             if (product) {
-                document.getElementById('current-stock').value = product.stock;
-            } else {
-                document.getElementById('current-stock').value = '';
+                openEditProductModal(product);
             }
         }
 
-        // Fechar todos os modais
-        function closeAllModals() {
-            document.querySelectorAll('.modal').forEach(modal => {
-                modal.style.display = 'none';
-            });
-        }
-
-        // Tratar envio do formulário de produto
-        function handleProductSubmit(e) {
-            e.preventDefault();
-            
-            // Obter dados do formulário
-            const productData = {
-                name: document.getElementById('product-name').value,
-                category: document.getElementById('product-category').value,
-                description: document.getElementById('product-description').value,
-                price: parseFloat(document.getElementById('product-price').value),
-                stock: parseInt(document.getElementById('product-stock').value),
-                minStock: parseInt(document.getElementById('product-min-stock').value),
-                image: document.getElementById('product-image').value || "/api/placeholder/400/320",
-                sku: generateSku(document.getElementById('product-category').value, document.getElementById('product-name').value),
-                lastUpdated: getCurrentDate()
-            };
-            
-            // Validar campos obrigatórios
-            if (!productData.name || !productData.category || isNaN(productData.price) || isNaN(productData.stock)) {
-                alert('Por favor, preencha todos os campos obrigatórios.');
-                return;
-            }
-            
-            if (appState.editingProduct) {
-                // Atualizar produto existente
-                const index = products.findIndex(p => p.id === appState.editingProduct);
-                
-                if (index !== -1) {
-                    products[index] = {
-                        ...products[index],
-                        ...productData
-                    };
-                }
-            } else {
-                // Adicionar novo produto
-                const newProduct = {
-                    id: appState.nextProductId++,
-                    ...productData
-                };
-                
-                products.unshift(newProduct);
-            }
-            
-            // Atualizar interface
-            loadRecentProducts();
-            loadProductsTable();
-            loadCategoryProducts();
-            loadInventoryTable();
-            
-            // Fechar modal
-            closeAllModals();
-            
-            // Exibir notificação
-            alert(`Produto ${appState.editingProduct ? 'atualizado' : 'adicionado'} com sucesso!`);
-        }
-
-        // Tratar envio do formulário de estoque
-        function handleStockSubmit(e) {
-            e.preventDefault();
-            
-            // Obter dados do formulário
-            const productId = parseInt(document.getElementById('stock-product').value);
-            const operation = document.getElementById('stock-operation').value;
-            const quantity = parseInt(document.getElementById('stock-quantity').value);
-            
-            // Validar campos
-            if (!productId || isNaN(quantity) || quantity <= 0) {
-                alert('Por favor, preencha todos os campos corretamente.');
-                return;
-            }
-            
-            // Encontrar produto
-            const index = products.findIndex(p => p.id === productId);
-            
-            if (index === -1) return;
-            
-            // Atualizar estoque
-            let newStock = products[index].stock;
-            
-            switch (operation) {
-                case 'add':
-                    newStock += quantity;
-                    break;
-                case 'remove':
-                    newStock = Math.max(0, newStock - quantity);
-                    break;
-                case 'set':
-                    newStock = quantity;
-                    break;
-            }
-            
-            // Atualizar produto
-            products[index] = {
-                ...products[index],
-                stock: newStock,
-                lastUpdated: getCurrentDate()
-            };
-            
-            // Atualizar interface
-            loadRecentProducts();
-            loadProductsTable();
-            loadCategoryProducts();
-            loadInventoryTable();
-            
-            // Fechar modal
-            closeAllModals();
-            
-            // Exibir notificação
-            alert('Estoque atualizado com sucesso!');
-        }
-
-        // Confirmar exclusão de produto
-        function confirmDeleteProduct(productId) {
+        function deleteProduct(id) {
             if (confirm('Tem certeza que deseja excluir este produto?')) {
-                // Encontrar índice do produto
-                const index = products.findIndex(p => p.id === productId);
+                products = products.filter(p => p.id !== id);
+                filterProducts();
                 
-                if (index !== -1) {
-                    // Remover produto
-                    products.splice(index, 1);
-                    
-                    // Atualizar interface
-                    loadRecentProducts();
-                    loadProductsTable();
-                    loadCategoryProducts();
-                    loadInventoryTable();
-                    
-                    // Exibir notificação
-                    alert('Produto excluído com sucesso!');
-                }
+                // Show success message
+                showNotification('Produto excluído com sucesso!', 'success');
             }
         }
 
-        // Funções auxiliares
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('pt-BR');
-        }
-
-        function getCurrentDate() {
-            const now = new Date();
-            return now.toISOString().split('T')[0];
-        }
-
-        function generateSku(category, name) {
-            // Criar um SKU baseado na categoria e nome do produto
-            const categoryPrefix = category.substring(0, 2).toUpperCase();
-            const nameWords = name.split(' ');
-            const namePrefix = nameWords.length > 1 
-                ? nameWords[0].charAt(0).toUpperCase() + nameWords[1].charAt(0).toUpperCase()
-                : nameWords[0].substring(0, 2).toUpperCase();
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                background: ${type === 'success' ? '#4ade80' : '#f87171'};
+                color: white;
+                border-radius: 8px;
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
             
-            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            document.body.appendChild(notification);
             
-            return `${categoryPrefix}-${namePrefix}-${random}`;
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
         }
+
+        // Event listeners
+        searchInput.addEventListener('input', filterProducts);
+        categoryFilter.addEventListener('change', filterProducts);
+        stockFilter.addEventListener('change', filterProducts);
+        sortFilter.addEventListener('change', filterProducts);
+
+        gridViewBtn.addEventListener('click', () => {
+            productsGrid.classList.remove('list-view');
+            gridViewBtn.classList.add('active');
+            listViewBtn.classList.remove('active');
+        });
+
+        listViewBtn.addEventListener('click', () => {
+            productsGrid.classList.add('list-view');
+            listViewBtn.classList.add('active');
+            gridViewBtn.classList.remove('active');
+        });
+
+        addProductBtn.addEventListener('click', openAddProductModal);
+        closeModal.addEventListener('click', closeProductModal);
+        cancelBtn.addEventListener('click', closeProductModal);
+
+        // Close modal when clicking outside
+        productModal.addEventListener('click', (e) => {
+            if (e.target === productModal) {
+                closeProductModal();
+            }
+        });
+
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                stock: parseInt(document.getElementById('productStock').value),
+                description: document.getElementById('productDescription').value
+            };
+            
+            if (editingProductId) {
+                // Edit existing product
+                const productIndex = products.findIndex(p => p.id === editingProductId);
+                if (productIndex !== -1) {
+                    products[productIndex] = { ...products[productIndex], ...formData };
+                    showNotification('Produto atualizado com sucesso!', 'success');
+                }
+            } else {
+                // Add new product
+                const newProduct = {
+                    id: Date.now(), // Simple ID generation
+                    ...formData
+                };
+                products.push(newProduct);
+                showNotification('Produto adicionado com sucesso!', 'success');
+            }
+            
+            closeProductModal();
+            filterProducts();
+        });
+
+        // Add slide animations to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Initialize dashboard
+        renderProducts();
+        
+        // Auto-refresh stats every 30 seconds (simulating real-time updates)
+        setInterval(() => {
+            updateStats();
+        }, 30000);
+
+        // Add smooth scrolling for better UX
+        document.documentElement.style.scrollBehavior = 'smooth';
+
+        // Performance optimization: Debounce search input
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Replace direct search listener with debounced version
+        searchInput.removeEventListener('input', filterProducts);
+        searchInput.addEventListener('input', debounce(filterProducts, 300));
+
+        console.log('Brooklyn Dashboard inicializado com sucesso!');
     </script>
 </body>
 </html>
