@@ -234,6 +234,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-size: 0.9rem;
+            margin-left: 30px;
         }
 
         .edit-btn:hover {
@@ -369,6 +370,18 @@
             padding: 2rem;
             border-radius: 16px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
+        }
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
         }
 
         .chart-title {
@@ -541,14 +554,15 @@
 
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
-        <div class="logo">
-            <h1>Brooklyn</h1>
+       <div class="logo">
+            <a>
+                <img src="../Brook-Panel/Media/Identidade Visual.png" alt="" class="logo-img">
+            </a>
             <p>Gestão Inteligente</p>
         </div>
-        
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="../Brook-Panel/Homepage.html" class="nav-link">
                     <i class="fas fa-home"></i>
                     Home
                 </a>
@@ -560,7 +574,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="../Brook-Panel/Dashboard.html" class="nav-link">
                     <i class="fas fa-tachometer-alt"></i>
                     Dashboard
                 </a>
@@ -671,7 +685,7 @@
                 <div class="card-header">
                     <h2 class="card-title">
                         <i class="fas fa-chart-pie"></i>
-                        Informações Financeiras
+                        Informações Financeiras<br>
                     </h2>
                     <button class="edit-btn" onclick="toggleEdit('financial')">
                         <i class="fas fa-edit"></i> Editar
