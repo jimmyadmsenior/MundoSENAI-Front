@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Brooklyn - Sistema de Estoque de Periféricos</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -25,81 +26,128 @@
             padding: 0 20px;
         }
 
-        /* Header */
-        header {
+        /* Sidebar */
+        .sidebar {
             position: fixed;
+            left: 0;
             top: 0;
-            width: 100%;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+            padding: 2rem 0;
             z-index: 1000;
-            transition: all 0.3s ease;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
         }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
         .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow 2s ease-in-out infinite alternate;
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
         }
-
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 5px #31d5de); }
-            to { filter: drop-shadow(0 0 20px #31d5de); }
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
         }
-
-        .nav-links {
-            display: flex;
+        .logo p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .nav-menu {
             list-style: none;
-            gap: 2rem;
+            padding: 0 1rem;
         }
-
-        .nav-links a {
-            color: #f5f3ee;
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: #b0b0b0;
             text-decoration: none;
-            transition: color 0.3s ease;
+            border-radius: 12px;
+            transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
-
-        .nav-links a::after {
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, #31d5de20, #1c31a520);
+            color: #f5f3ee;
+            transform: translateX(5px);
+        }
+        .nav-link::before {
             content: '';
             position: absolute;
-            bottom: -5px;
             left: 0;
-            width: 0;
-            height: 2px;
-            background: #31d5de;
-            transition: width 0.3s ease;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, #31d5de, #1c31a5);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
         }
-
-        .nav-links a:hover::after {
-            width: 100%;
+        .nav-link:hover::before, .nav-link.active::before {
+            transform: scaleY(1);
         }
-
-        .cta-button {
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #f5f3ee;
-            font-weight: 600;
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+        .add-product-container {
+            display: flex;
+            justify-content: center;
+        }
+        .add-product-btn {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, #31d5de, #1c31a5);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(49, 213, 222, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
-
-        .cta-button:hover {
+        .add-product-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.4);
+            box-shadow: 0 8px 25px rgba(0, 14, 103, 0.3);
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #f5f3ee;
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 1100;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .menu-toggle {
+                display: block;
+            }
+            main {
+                margin-left: 0 !important;
+            }
+        }
+        main {
+            margin-left: 280px;
         }
 
         /* Hero Section */
@@ -416,22 +464,54 @@
     </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">Brooklyn</div>
-            <ul class="nav-links">
-                <li><a href="#home">Início</a></li>
-                <li><a href="#features">Recursos</a></li>
-                <li><a href="#testimonials">Clientes</a></li>
-                <li><a href="#reports">Relatórios</a></li>
-            </ul>
-            <a href="#signup" class="cta-button">Começar Agora</a>
-        </nav>
-    </header>
-
+    <!-- Menu Toggle Button (for mobile) -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <a>
+                <img src="../Brook-Panel/Media/Identidade Visual.png" alt="" class="logo-img">
+            </a>
+            <p>Gestão Inteligente</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="../Brook-Panel/Homepage.html" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../Brook-Panel/Dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Relatórios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../Brook-Panel/Dashboard.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../Brook-Panel/Usuários.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    Perfil
+                </a>
+            </li>
+        </ul>
+        <div class="add-product-container">
+            <button class="add-product-btn">
+                <i class="fas fa-plus"></i>
+                Adicionar Produto
+            </button>
+        </div>
+    </nav>
     <main>
         <section id="home" class="hero">
-            <div class="container">
+            <div class="container" style="position:relative; z-index:2;">
                 <div class="hero-content fade-in">
                     <h1>Gerencie seu <span class="highlight">Estoque</span> com <span class="highlight">Inteligência</span></h1>
                     <p>O Brooklyn revoluciona o controle de periféricos com tecnologia avançada, relatórios em tempo real e uma interface intuitiva que acelera seus resultados.</p>
@@ -441,7 +521,7 @@
                     </div>
                 </div>
             </div>
-            <div class="floating-elements">
+            <div class="floating-elements" style="z-index:1;">
                 <div class="floating-element" style="width: 100px; height: 100px; top: 20%; left: 10%; animation-delay: 0s;"></div>
                 <div class="floating-element" style="width: 60px; height: 60px; top: 60%; right: 20%; animation-delay: 2s;"></div>
                 <div class="floating-element" style="width: 80px; height: 80px; bottom: 30%; left: 70%; animation-delay: 4s;"></div>
@@ -1046,6 +1126,81 @@
             }
         `;
         document.head.appendChild(fabStyle);
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Smooth navigation active state and ripple effect
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                // Ripple effect
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(49, 213, 222, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add product button interaction
+        document.querySelector('.add-product-btn').addEventListener('click', function() {
+            alert('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + M to toggle menu
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                sidebar.classList.toggle('open');
+            }
+            // Alt + P to add product
+            if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                document.querySelector('.add-product-btn').click();
+            }
+        });
+
+        // Corrige o layout para garantir que o conteúdo não fique atrás da sidebar
+        function adjustMainMargin() {
+            const main = document.querySelector('main');
+            if (window.innerWidth > 768) {
+                main.style.marginLeft = '280px';
+            } else {
+                main.style.marginLeft = '0';
+            }
+        }
+        window.addEventListener('resize', adjustMainMargin);
+        document.addEventListener('DOMContentLoaded', adjustMainMargin);
     </script>
 </body>
 </html>
