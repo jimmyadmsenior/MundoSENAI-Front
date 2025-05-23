@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos - Mundo SENAI</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho comum -->
+        <header>
+            <h1>Mundo SENAI</h1>
+            <p>Gerenciamento de Produtos</p>
+        </header>
+
+        <!-- Navegação -->
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="products.html" class="active"><i class="fas fa-box"></i> Produtos</a></li>
+                <li><a href="users.html"><i class="fas fa-users"></i> Usuários</a></li>
+                <li><a href="profile.html" id="my-profile-link"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+                <li><a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="page-header">
+                <h2>Produtos</h2>
+                <div class="actions">
+                    <button id="refresh-products" class="btn"><i class="fas fa-sync-alt"></i> Atualizar</button>
+                    <button id="add-product-btn" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Produto</button>
+                </div>
+            </section>
+            
+            <!-- Barra de pesquisa por categoria -->
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" id="category-search" placeholder="Buscar por categoria...">
+                    <button id="search-btn" class="btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="filter-tags" id="filter-tags">
+                    <!-- Tags de filtro serão adicionadas aqui dinamicamente -->
+                </div>
+            </div>
+
+            <!-- Formulário de adição/edição de produto -->
+            <div id="product-form-container" class="form-container hidden">
+                <h3 id="product-form-title">Adicionar Novo Produto</h3>
+                <form id="product-form">
+                    <input type="hidden" id="product-id">
+                    <div class="form-group">
+                        <label for="product-name">Nome:</label>
+                        <input type="text" id="product-name" placeholder="Nome do produto" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-description">Descrição:</label>
+                        <textarea id="product-description" placeholder="Descrição do produto"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="product-price">Preço:</label>
+                            <input type="number" id="product-price" placeholder="Preço" step="0.01" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-stock">Estoque:</label>
+                            <input type="number" id="product-stock" placeholder="Quantidade em estoque" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-category">Categoria:</label>
+                        <input type="text" id="product-category" placeholder="Categoria">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-image">Imagem do Produto:</label>
+                        <div class="image-upload-container">
+                            <input type="file" id="product-image" accept="image/*">
+                            <div id="product-image-preview" class="image-preview"></div>
+                        </div>
+                        <small class="form-hint">Selecione uma imagem para o produto (opcional)</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="button" id="cancel-product" class="btn btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabela de produtos -->
+            <div class="table-container">
+                <table id="products-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-list">
+                        <tr>
+                            <td colspan="5" class="loading-cell">Carregando produtos...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer>
+            <p>Exemplo didático de integração com API - Mundo SENAI</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth-check.js"></script>
+    <script src="js/products.js"></script>
+</body>
+</html>

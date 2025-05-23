@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Mundo SENAI</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page">
+    <div class="container">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-container">
+                    <img src="assets/logo-senai.png" alt="Logo SENAI" class="senai-logo">
+                </div>
+                <h1>Mundo SENAI</h1>
+                <p>Sistema de Gerenciamento</p>
+            </div>
+            
+            <div class="auth-tabs">
+                <button id="login-tab" class="auth-tab active">Login</button>
+                <button id="register-tab" class="auth-tab">Cadastro</button>
+            </div>
+            
+            <div id="login-form" class="form-container">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Seu email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" placeholder="Sua senha">
+                </div>
+                <button id="login-btn" class="btn btn-block">Entrar</button>
+                <div id="login-message" class="message"></div>
+                <div class="form-footer">
+                    <p>Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a></p>
+                </div>
+            </div>
+            
+            <div id="register-form" class="form-container hidden">
+                <h2>Cadastro</h2>
+                <div class="form-group">
+                    <label for="register-name">Nome:</label>
+                    <input type="text" id="register-name" placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" placeholder="Seu email">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha:</label>
+                    <input type="password" id="register-password" placeholder="Crie uma senha">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirme a senha:</label>
+                    <input type="password" id="register-confirm-password" placeholder="Confirme sua senha">
+                </div>
+                <button id="register-btn" class="btn btn-block">Cadastrar</button>
+                <div id="register-message" class="message"></div>
+                <div class="form-footer">
+                    <p>Já tem uma conta? <a href="#" id="show-login">Faça login</a></p>
+                </div>
+            </div>
+            
+            <div class="login-footer">
+                <p>Exemplo didático de integração com API - Mundo SENAI</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/login.js"></script>
+</body>
+</html>
