@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +7,944 @@
     <link rel="stylesheet" href="../Media/CSS/Dashboard.css">
 </head>
 <body>
-    <h1>Dashboard</h1>
-    <nav>
-        <a href="produtos.html">Produtos</a> |
-        <a href="usuarios.html">Usuários</a> |
-        <a href="login.html">Sair</a>
-    </nav>
-    <section>
-        <h2>Bem-vindo ao painel de administração!</h2>
-        <!-- Aqui pode ter gráficos, resumos, etc. -->
-    </section>
-</body>
-</html>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="logo-container">
+            <div class="logo">
+                <div class="logo-icon">B</div>
+                <span>Brooklyn</span>
+            </div>
+        </div>
+        <div class="nav-menu">
+            <div class="nav-title">Principal</div>
+            <div class="nav-item active">
+                <a href="#" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" data-page="products">
+                    <i class="fas fa-box"></i>
+                    <span>Produtos</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" data-page="inventory">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Estoque</span>
+                </a>
+            </div>
+            <div class="nav-title">Gerenciamento</div>
+            <div class="nav-item">
+                <a href="#" data-page="orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Pedidos</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" data-page="customers">
+                    <i class="fas fa-users"></i>
+                    <span>Clientes</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Relatórios</span>
+                </a>
+            </div>
+            <div class="nav-title">Configurações</div>
+            <div class="nav-item">
+                <a href="#" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="#" data-page="profile">
+                    <i class="fas fa-user"></i>
+                    <span>Perfil</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Buscar produtos, pedidos...">
+            </div>
+        </div>
+
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard-page">
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-title">Vendas do Mês</div>
+                    <div class="stat-value">R$ 89.450</div>
+                    <div class="stat-info">
+                        <i class="fas fa-arrow-up stat-up"></i>
+                        <span class="stat-up">23% desde mês passado</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Total de Produtos</div>
+                    <div class="stat-value">156</div>
+                    <div class="stat-info">
+                        <i class="fas fa-arrow-up stat-up"></i>
+                        <span class="stat-up">12 novos produtos</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Produtos com Baixo Estoque</div>
+                    <div class="stat-value">8</div>
+                    <div class="stat-info">
+                        <i class="fas fa-arrow-down stat-down"></i>
+                        <span class="stat-down">Requer atenção</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-title">Pedidos Pendentes</div>
+                    <div class="stat-value">24</div>
+                    <div class="stat-info">
+                        <i class="fas fa-arrow-up stat-up"></i>
+                        <span class="stat-up">5 novos hoje</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <div class="section-header">
+                    <h2 class="section-title">Produtos Recentes</h2>
+                    <button class="btn btn-primary" id="add-product-btn">
+                        <i class="fas fa-plus"></i> Adicionar Produto
+                    </button>
+                </div>
+                <div class="content-grid" id="recent-products">
+                    <!-- Products will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Page -->
+        <div class="page" id="products-page">
+            <div class="section-header">
+                <h2 class="section-title">Gerenciamento de Produtos</h2>
+                <button class="btn btn-primary" id="add-product-btn-2">
+                    <i class="fas fa-plus"></i> Adicionar Produto
+                </button>
+            </div>
+
+            <div class="tabs">
+                <button class="tab-btn active" data-tab="all-products">Todos os Produtos</button>
+                <button class="tab-btn" data-tab="mouse">Mouse</button>
+                <button class="tab-btn" data-tab="keyboard">Teclado</button>
+                <button class="tab-btn" data-tab="monitor">Monitor</button>
+                <button class="tab-btn" data-tab="others">Outros</button>
+            </div>
+
+            <div class="tab-content active" id="all-products">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="products-table">
+                        <!-- Products will be loaded dynamically -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tab-content" id="mouse">
+                <div class="content-grid" id="mouse-products">
+                    <!-- Mouse products will be loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="keyboard">
+                <div class="content-grid" id="keyboard-products">
+                    <!-- Keyboard products will be loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="monitor">
+                <div class="content-grid" id="monitor-products">
+                    <!-- Monitor products will be loaded dynamically -->
+                </div>
+            </div>
+
+            <div class="tab-content" id="others">
+                <div class="content-grid" id="others-products">
+                    <!-- Other products will be loaded dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Page -->
+        <div class="page" id="inventory-page">
+            <div class="section-header">
+                <h2 class="section-title">Gerenciamento de Estoque</h2>
+                <div>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-file-export"></i> Exportar
+                    </button>
+                    <button class="btn btn-primary" id="update-stock-btn">
+                        <i class="fas fa-sync"></i> Atualizar Estoque
+                    </button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>SKU</th>
+                        <th>Categoria</th>
+                        <th>Estoque Atual</th>
+                        <th>Estoque Mínimo</th>
+                        <th>Status</th>
+                        <th>Última Atualização</th>
+                    </tr>
+                </thead>
+                <tbody id="inventory-table">
+                    <!-- Inventory data will be loaded dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Other pages would be added here -->
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Adicionar Novo Produto</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="product-form">
+                <div class="form-group">
+                    <label class="form-label">Nome do Produto</label>
+                    <input type="text" class="form-control" id="product-name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Categoria</label>
+                    <select class="form-control" id="product-category" required>
+                        <option value="">Selecione uma categoria</option>
+                        <option value="mouse">Mouse</option>
+                        <option value="keyboard">Teclado</option>
+                        <option value="monitor">Monitor</option>
+                        <option value="others">Outros</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Descrição</label>
+                    <textarea class="form-control" id="product-description" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Preço (R$)</label>
+                    <input type="number" class="form-control" id="product-price" min="0" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quantidade em Estoque</label>
+                    <input type="number" class="form-control" id="product-stock" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estoque Mínimo</label>
+                    <input type="number" class="form-control" id="product-min-stock" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">URL da Imagem</label>
+                    <input type="url" class="form-control" id="product-image">
+                </div>
+                <div class="form-footer">
+                    <button type="button" class="btn btn-outline cancel-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Produto</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Stock Modal -->
+    <div class="modal" id="stock-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Atualizar Estoque</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="stock-form">
+                <div class="form-group">
+                    <label class="form-label">Produto</label>
+                    <select class="form-control" id="stock-product" required>
+                        <!-- Products will be loaded dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Estoque Atual</label>
+                    <input type="number" class="form-control" id="current-stock" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Operação</label>
+                    <select class="form-control" id="stock-operation" required>
+                        <option value="add">Adicionar ao Estoque</option>
+                        <option value="remove">Remover do Estoque</option>
+                        <option value="set">Definir Quantidade Exata</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Quantidade</label>
+                    <input type="number" class="form-control" id="stock-quantity" min="1" required>
+                </div>
+                <div class="form-footer">
+                    <button type="button" class="btn btn-outline cancel-modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Atualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Font Awesome -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    
+    <script>
+        // Dados de exemplo para o dashboard
+        const products = [
+            {
+                id: 1,
+                name: "Mouse Gamer RGB Elite",
+                category: "mouse",
+                description: "Mouse gamer com iluminação RGB e 16000 DPI",
+                price: 349.90,
+                stock: 45,
+                minStock: 10,
+                image: "/api/placeholder/400/320",
+                sku: "MS-RGB-001",
+                lastUpdated: "2025-05-15"
+            },
+            {
+                id: 2,
+                name: "Teclado Mecânico Pro",
+                category: "keyboard",
+                description: "Teclado mecânico com switches blue e iluminação RGB",
+                price: 599.90,
+                stock: 28,
+                minStock: 15,
+                image: "/api/placeholder/400/320",
+                sku: "KB-MEC-002",
+                lastUpdated: "2025-05-10"
+            },
+            {
+                id: 3,
+                name: "Monitor UltraWide 34\"",
+                category: "monitor",
+                description: "Monitor ultrawide de 34 polegadas com resolução 3440x1440",
+                price: 2999.90,
+                stock: 8,
+                minStock: 5,
+                image: "/api/placeholder/400/320",
+                sku: "MN-UW-003",
+                lastUpdated: "2025-05-18"
+            },
+            {
+                id: 4,
+                name: "Mouse Sem Fio Ergonômico",
+                category: "mouse",
+                description: "Mouse ergonômico sem fio com bateria de longa duração",
+                price: 189.90,
+                stock: 32,
+                minStock: 10,
+                image: "/api/placeholder/400/320",
+                sku: "MS-ERG-004",
+                lastUpdated: "2025-05-14"
+            },
+            {
+                id: 5,
+                name: "Teclado Slim Wireless",
+                category: "keyboard",
+                description: "Teclado slim sem fio com teclas de perfil baixo",
+                price: 259.90,
+                stock: 18,
+                minStock: 8,
+                image: "/api/placeholder/400/320",
+                sku: "KB-SLM-005",
+                lastUpdated: "2025-05-12"
+            },
+            {
+                id: 6,
+                name: "Monitor Curvo 27\" 240Hz",
+                category: "monitor",
+                description: "Monitor gamer curvo de 27 polegadas com 240Hz de taxa de atualização",
+                price: 1899.90,
+                stock: 4,
+                minStock: 6,
+                image: "/api/placeholder/400/320",
+                sku: "MN-CRV-006",
+                lastUpdated: "2025-05-19"
+            },
+            {
+                id: 7,
+                name: "Mouse Pad XL",
+                category: "others",
+                description: "Mouse pad extra grande com superfície de tecido e base antiderrapante",
+                price: 129.90,
+                stock: 52,
+                minStock: 15,
+                image: "/api/placeholder/400/320",
+                sku: "MP-XL-007",
+                lastUpdated: "2025-05-05"
+            },
+            {
+                id: 8,
+                name: "Headset Gamer 7.1",
+                category: "others",
+                description: "Headset gamer com som surround 7.1 e microfone retrátil",
+                price: 449.90,
+                stock: 12,
+                minStock: 10,
+                image: "/api/placeholder/400/320",
+                sku: "HS-71-008",
+                lastUpdated: "2025-05-08"
+            }
+        ];
+
+        // Estado da aplicação
+        let appState = {
+            currentPage: 'dashboard',
+            currentTab: 'all-products',
+            editingProduct: null,
+            nextProductId: 9
+        };
+
+        // DOM Ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initApp();
+        });
+
+        // Inicializar a aplicação
+        function initApp() {
+            loadRecentProducts();
+            loadProductsTable();
+            loadCategoryProducts();
+            loadInventoryTable();
+            setupEventListeners();
+        }
+
+        // Configurar ouvintes de eventos
+        function setupEventListeners() {
+            // Navegação entre páginas
+            document.querySelectorAll('.nav-item a').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const pageName = this.getAttribute('data-page');
+                    changePage(pageName);
+                });
+            });
+
+            // Navegação entre abas
+            document.querySelectorAll('.tab-btn').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    changeTab(tabId);
+                });
+            });
+
+            // Botões para abrir modal de produtos
+            document.getElementById('add-product-btn').addEventListener('click', openAddProductModal);
+            document.getElementById('add-product-btn-2').addEventListener('click', openAddProductModal);
+
+            // Botão para abrir modal de estoque
+            document.getElementById('update-stock-btn').addEventListener('click', openUpdateStockModal);
+
+            // Fechar modais
+            document.querySelectorAll('.close-modal, .cancel-modal').forEach(btn => {
+                btn.addEventListener('click', closeAllModals);
+            });
+
+            // Formulário de produto
+            document.getElementById('product-form').addEventListener('submit', handleProductSubmit);
+
+            // Formulário de estoque
+            document.getElementById('stock-form').addEventListener('submit', handleStockSubmit);
+
+            // Atualizar informações de estoque no modal
+            document.getElementById('stock-product').addEventListener('change', updateStockInfo);
+
+            // Fechar modal ao clicar fora
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closeAllModals();
+                    }
+                });
+            });
+        }
+
+        // Carregar produtos recentes na página inicial
+        function loadRecentProducts() {
+            const recentProductsContainer = document.getElementById('recent-products');
+            recentProductsContainer.innerHTML = '';
+
+            // Mostrar os 4 produtos mais recentes (imaginando que os IDs mais altos são os mais recentes)
+            const recentProducts = [...products].sort((a, b) => b.id - a.id).slice(0, 4);
+
+            recentProducts.forEach(product => {
+                recentProductsContainer.appendChild(createProductCard(product));
+            });
+        }
+
+        // Carregar tabela de produtos
+        function loadProductsTable() {
+            const productsTable = document.getElementById('products-table');
+            productsTable.innerHTML = '';
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                
+                // Determinar o status baseado no estoque
+                let statusClass = 'status-in-stock';
+                let statusText = 'Em Estoque';
+                
+                if (product.stock === 0) {
+                    statusClass = 'status-out';
+                    statusText = 'Sem Estoque';
+                } else if (product.stock < product.minStock) {
+                    statusClass = 'status-low';
+                    statusText = 'Estoque Baixo';
+                }
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-center">
+                            <div style="width: 40px; height: 40px; background-color: rgba(245, 243, 238, 0.05); border-radius: 6px; margin-right: 10px; display: flex; align-items: center; justify-content: center;">
+                                <img src="${product.image}" style="max-width: 30px; max-height: 30px;">
+                            </div>
+                            ${product.name}
+                        </div>
+                    </td>
+                    <td>${capitalizeFirstLetter(product.category)}</td>
+                    <td>R$ ${product.price.toFixed(2)}</td>
+                    <td>${product.stock}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td class="action-cell">
+                        <button class="action-btn edit-product" data-id="${product.id}" title="Editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-product" data-id="${product.id}" title="Excluir">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                productsTable.appendChild(row);
+            });
+
+            // Adicionar eventos aos botões de ação
+            document.querySelectorAll('.edit-product').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    openEditProductModal(productId);
+                });
+            });
+
+            document.querySelectorAll('.delete-product').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const productId = parseInt(this.getAttribute('data-id'));
+                    confirmDeleteProduct(productId);
+                });
+            });
+        }
+
+        // Carregar produtos por categoria
+        function loadCategoryProducts() {
+            const categories = ['mouse', 'keyboard', 'monitor', 'others'];
+            
+            categories.forEach(category => {
+                const container = document.getElementById(`${category}-products`);
+                container.innerHTML = '';
+                
+                const categoryProducts = products.filter(product => product.category === category);
+                
+                if (categoryProducts.length === 0) {
+                    container.innerHTML = '<p class="mt-20">Nenhum produto encontrado nesta categoria.</p>';
+                    return;
+                }
+                
+                categoryProducts.forEach(product => {
+                    container.appendChild(createProductCard(product));
+                });
+            });
+        }
+
+        // Carregar tabela de estoque
+        function loadInventoryTable() {
+            const inventoryTable = document.getElementById('inventory-table');
+            inventoryTable.innerHTML = '';
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                
+                // Determinar o status baseado no estoque
+                let statusClass = 'status-in-stock';
+                let statusText = 'Em Estoque';
+                
+                if (product.stock === 0) {
+                    statusClass = 'status-out';
+                    statusText = 'Sem Estoque';
+                } else if (product.stock < product.minStock) {
+                    statusClass = 'status-low';
+                    statusText = 'Estoque Baixo';
+                }
+                
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td>${product.sku}</td>
+                    <td>${capitalizeFirstLetter(product.category)}</td>
+                    <td>${product.stock}</td>
+                    <td>${product.minStock}</td>
+                    <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+                    <td>${formatDate(product.lastUpdated)}</td>
+                `;
+                
+                inventoryTable.appendChild(row);
+            });
+        }
+
+        // Criar card de produto
+        function createProductCard(product) {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            
+            // Determinar o status do estoque
+            let stockClass = '';
+            if (product.stock === 0) {
+                stockClass = 'low';
+            } else if (product.stock < product.minStock) {
+                stockClass = 'medium';
+            }
+            
+            card.innerHTML = `
+                <div class="product-image">
+                    <img src="${product.image}" alt="${product.name}">
+                </div>
+                <div class="product-details">
+                    <div class="product-category">${capitalizeFirstLetter(product.category)}</div>
+                    <h3 class="product-name">${product.name}</h3>
+                    <div class="product-stats">
+                        <div class="product-price">R$ ${product.price.toFixed(2)}</div>
+                        <div class="product-stock ${stockClass}">Estoque: ${product.stock}</div>
+                    </div>
+                    <div class="product-actions">
+                        <button class="btn btn-outline edit-product" data-id="${product.id}">
+                            <i class="fas fa-edit"></i> Editar
+                        </button>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-eye"></i> Detalhes
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            // Adicionar evento ao botão de editar
+            card.querySelector('.edit-product').addEventListener('click', function() {
+                const productId = parseInt(this.getAttribute('data-id'));
+                openEditProductModal(productId);
+            });
+            
+            return card;
+        }
+
+        // Mudar página
+        function changePage(pageName) {
+            // Atualizar item de navegação ativo
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            document.querySelector(`.nav-item a[data-page="${pageName}"]`).parentElement.classList.add('active');
+            
+            // Atualizar título da página
+            const pageTitle = document.querySelector('.header h1');
+            pageTitle.textContent = document.querySelector(`.nav-item a[data-page="${pageName}"]`).querySelector('span').textContent;
+            
+            // Mostrar página selecionada
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            document.getElementById(`${pageName}-page`).classList.add('active');
+            
+            // Atualizar estado
+            appState.currentPage = pageName;
+        }
+
+        // Mudar aba
+        function changeTab(tabId) {
+            // Atualizar botão de aba ativo
+            document.querySelectorAll('.tab-btn').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
+            
+            // Mostrar conteúdo da aba selecionada
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+            
+            // Atualizar estado
+            appState.currentTab = tabId;
+        }
+
+        // Abrir modal para adicionar produto
+        function openAddProductModal() {
+            // Limpar o formulário
+            document.getElementById('product-form').reset();
+            
+            // Atualizar título do modal
+            document.querySelector('#product-modal .modal-title').textContent = 'Adicionar Novo Produto';
+            
+            // Resetar estado de edição
+            appState.editingProduct = null;
+            
+            // Mostrar modal
+            document.getElementById('product-modal').style.display = 'flex';
+        }
+
+        // Abrir modal para editar produto
+        function openEditProductModal(productId) {
+            // Encontrar o produto
+            const product = products.find(p => p.id === productId);
+            
+            if (!product) return;
+            
+            // Preencher o formulário
+            document.getElementById('product-name').value = product.name;
+            document.getElementById('product-category').value = product.category;
+            document.getElementById('product-description').value = product.description;
+            document.getElementById('product-price').value = product.price;
+            document.getElementById('product-stock').value = product.stock;
+            document.getElementById('product-min-stock').value = product.minStock;
+            document.getElementById('product-image').value = product.image;
+            
+            // Atualizar título do modal
+            document.querySelector('#product-modal .modal-title').textContent = 'Editar Produto';
+            
+            // Atualizar estado de edição
+            appState.editingProduct = productId;
+            
+            // Mostrar modal
+            document.getElementById('product-modal').style.display = 'flex';
+        }
+
+        // Abrir modal para atualizar estoque
+        function openUpdateStockModal() {
+            // Limpar o formulário
+            document.getElementById('stock-form').reset();
+            
+            // Preencher select de produtos
+            const stockProductSelect = document.getElementById('stock-product');
+            stockProductSelect.innerHTML = '<option value="">Selecione um produto</option>';
+            
+            products.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = product.name;
+                stockProductSelect.appendChild(option);
+            });
+            
+            // Mostrar modal
+            document.getElementById('stock-modal').style.display = 'flex';
+        }
+
+        // Atualizar informações de estoque no modal
+        function updateStockInfo() {
+            const productId = parseInt(this.value);
+            const product = products.find(p => p.id === productId);
+            
+            if (product) {
+                document.getElementById('current-stock').value = product.stock;
+            } else {
+                document.getElementById('current-stock').value = '';
+            }
+        }
+
+        // Fechar todos os modais
+        function closeAllModals() {
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+
+        // Tratar envio do formulário de produto
+        function handleProductSubmit(e) {
+            e.preventDefault();
+            
+            // Obter dados do formulário
+            const productData = {
+                name: document.getElementById('product-name').value,
+                category: document.getElementById('product-category').value,
+                description: document.getElementById('product-description').value,
+                price: parseFloat(document.getElementById('product-price').value),
+                stock: parseInt(document.getElementById('product-stock').value),
+                minStock: parseInt(document.getElementById('product-min-stock').value),
+                image: document.getElementById('product-image').value || "/api/placeholder/400/320",
+                sku: generateSku(document.getElementById('product-category').value, document.getElementById('product-name').value),
+                lastUpdated: getCurrentDate()
+            };
+            
+            // Validar campos obrigatórios
+            if (!productData.name || !productData.category || isNaN(productData.price) || isNaN(productData.stock)) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
+            if (appState.editingProduct) {
+                // Atualizar produto existente
+                const index = products.findIndex(p => p.id === appState.editingProduct);
+                
+                if (index !== -1) {
+                    products[index] = {
+                        ...products[index],
+                        ...productData
+                    };
+                }
+            } else {
+                // Adicionar novo produto
+                const newProduct = {
+                    id: appState.nextProductId++,
+                    ...productData
+                };
+                
+                products.unshift(newProduct);
+            }
+            
+            // Atualizar interface
+            loadRecentProducts();
+            loadProductsTable();
+            loadCategoryProducts();
+            loadInventoryTable();
+            
+            // Fechar modal
+            closeAllModals();
+            
+            // Exibir notificação
+            alert(`Produto ${appState.editingProduct ? 'atualizado' : 'adicionado'} com sucesso!`);
+        }
+
+        // Tratar envio do formulário de estoque
+        function handleStockSubmit(e) {
+            e.preventDefault();
+            
+            // Obter dados do formulário
+            const productId = parseInt(document.getElementById('stock-product').value);
+            const operation = document.getElementById('stock-operation').value;
+            const quantity = parseInt(document.getElementById('stock-quantity').value);
+            
+            // Validar campos
+            if (!productId || isNaN(quantity) || quantity <= 0) {
+                alert('Por favor, preencha todos os campos corretamente.');
+                return;
+            }
+            
+            // Encontrar produto
+            const index = products.findIndex(p => p.id === productId);
+            
+            if (index === -1) return;
+            
+            // Atualizar estoque
+            let newStock = products[index].stock;
+            
+            switch (operation) {
+                case 'add':
+                    newStock += quantity;
+                    break;
+                case 'remove':
+                    newStock = Math.max(0, newStock - quantity);
+                    break;
+                case 'set':
+                    newStock = quantity;
+                    break;
+            }
+            
+            // Atualizar produto
+            products[index] = {
+                ...products[index],
+                stock: newStock,
+                lastUpdated: getCurrentDate()
+            };
+            
+            // Atualizar interface
+            loadRecentProducts();
+            loadProductsTable();
+            loadCategoryProducts();
+            loadInventoryTable();
+            
+            // Fechar modal
+            closeAllModals();
+            
+            // Exibir notificação
+            alert('Estoque atualizado com sucesso!');
+        }
+
+        // Confirmar exclusão de produto
+        function confirmDeleteProduct(productId) {
+            if (confirm('Tem certeza que deseja excluir este produto?')) {
+                // Encontrar índice do produto
+                const index = products.findIndex(p => p.id === productId);
+                
+                if (index !== -1) {
+                    // Remover produto
+                    products.splice(index, 1);
+                    
+                    // Atualizar interface
+                    loadRecentProducts();
+                    loadProductsTable();
+                    loadCategoryProducts();
+                    loadInventoryTable();
+                    
+                    // Exibir notificação
+                    alert('Produto excluído com sucesso!');
+                }
+            }
+        }
+
+        // Funções auxiliares
+        function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function getCurrentDate() {
+            const now = new Date();
+            return now.toISOString().split('T')[0];
+        }
+
+        function generateSku(category, name) {
+            // Criar um SKU baseado na categoria e nome do produto
+            const categoryPrefix = category.substring(0, 2).toUpperCase();
+            const nameWords = name.split(' ');
+            const namePrefix = nameWords.length > 1 
+                ? nameWords[0].charAt(0).toUpperCase() + nameWords[1].charAt(0).toUpperCase()
+                : nameWords[0].substring(0, 2).toUpperCase();
+            
+            const random = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+            
+            return `${categoryPrefix}-${namePrefix}-${random}`;
+        }
+    </script>
