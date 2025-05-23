@@ -3,229 +3,985 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuários - Brook Panel</title>
-    <link rel="stylesheet" href="../Style/style.css">
+    <title>Brooklyn - Perfil da Empresa</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="header-content">
-                <div class="profile-avatar" id="avatar">BK</div>
-                <div class="profile-info">
-                    <h1>Brooklyn Stock System</h1>
-                    <p>Gerenciamento Avançado de Estoque de Periféricos</p>
-                </div>
-            </div>
-        </header>
+    <!-- Sidebar Menu Component -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <div class="tabs">
-            <button class="tab active" onclick="switchTab('overview')">Visão Geral</button>
-            <button class="tab" onclick="switchTab('company')">Dados da Empresa</button>
-            <button class="tab" onclick="switchTab('reports')">Relatórios</button>
-            <button class="tab" onclick="switchTab('analytics')">Analytics</button>
+        :root {
+            --primary-cyan: #31d5de;
+            --primary-blue: #1c31a5;
+            --accent-white: #f5f3ee;
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f3ee;
+            --text-secondary: #b0b0b0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
+            color: var(--accent-white);
+            transform: translateX(5px);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before, .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .add-product-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        .add-product-btn {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-product-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 14, 103, 0.3);
+        }
+
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 1100;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: var(--bg-dark);
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .profile-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: var(--accent-white);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .edit-btn {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .edit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(49, 213, 222, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: var(--accent-white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 0 3px rgba(49, 213, 222, 0.2);
+        }
+
+        .form-input:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #00d4aa, #00a085);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .save-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 212, 170, 0.3);
+        }
+
+        .cancel-btn {
+            background: #dc3545;
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            margin-left: 1rem;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .cancel-btn.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .charts-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            color: var(--accent-white);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .reports-section {
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .reports-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .generate-report-btn {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            border: none;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .generate-report-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.3);
+        }
+
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .report-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-cyan);
+            transition: all 0.3s ease;
+        }
+
+        .report-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .report-title {
+            font-weight: bold;
+            color: var(--accent-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .report-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .action-btn {
+            background: rgba(49, 213, 222, 0.2);
+            border: 1px solid var(--primary-cyan);
+            color: var(--primary-cyan);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .action-btn:hover {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .profile-grid, .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        /* Animations */
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #00d4aa, #00a085);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 2000;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+
+    <!-- Menu Toggle Button (for mobile) -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>Brooklyn</h1>
+            <p>Gestão Inteligente</p>
+        </div>
+        
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Relatórios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <i class="fas fa-user"></i>
+                    Perfil
+                </a>
+            </li>
+        </ul>
+        
+        <div class="add-product-container">
+            <button class="add-product-btn">
+                <i class="fas fa-plus"></i>
+                Adicionar Produto
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Page Header -->
+        <div class="page-header fade-in-up">
+            <h1 class="page-title">Perfil da Empresa</h1>
+            <p class="page-subtitle">Gerencie as informações da sua empresa e visualize relatórios detalhados</p>
         </div>
 
-        <div id="overview" class="tab-content active">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <span class="stat-number" id="totalProducts">2,847</span>
-                    <span class="stat-label">Produtos em Estoque</span>
+        <!-- Company Stats -->
+        <div class="stats-grid fade-in-up">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-boxes"></i>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="lowStock">23</span>
-                    <span class="stat-label">Estoque Baixo</span>
+                <div class="stat-value" id="totalProducts">1,247</div>
+                <div class="stat-label">Total de Produtos</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-dollar-sign"></i>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="totalValue">R$ 485.2K</span>
-                    <span class="stat-label">Valor Total</span>
+                <div class="stat-value" id="monthlyRevenue">R$ 89.5K</div>
+                <div class="stat-label">Faturamento Mensal</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
                 </div>
-                <div class="stat-item">
-                    <span class="stat-number" id="monthlyGrowth">+12.5%</span>
-                    <span class="stat-label">Crescimento Mensal</span>
+                <div class="stat-value" id="growthRate">+23.4%</div>
+                <div class="stat-label">Crescimento</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-warehouse"></i>
                 </div>
+                <div class="stat-value" id="stockValue">R$ 456.2K</div>
+                <div class="stat-label">Valor do Estoque</div>
+            </div>
+        </div>
+
+        <!-- Company Information Cards -->
+        <div class="profile-grid fade-in-up">
+            <!-- Company Details -->
+            <div class="profile-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-building"></i>
+                        Dados da Empresa
+                    </h2>
+                    <button class="edit-btn" onclick="toggleEdit('company')">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                </div>
+                <form id="companyForm">
+                    <div class="form-group">
+                        <label class="form-label">Nome da Empresa</label>
+                        <input type="text" class="form-input" id="companyName" value="Brooklyn Periféricos Ltda" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">CNPJ</label>
+                        <input type="text" class="form-input" id="companyCnpj" value="12.345.678/0001-90" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Endereço</label>
+                        <input type="text" class="form-input" id="companyAddress" value="Rua das Tecnologias, 123 - Centro" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Telefone</label>
+                        <input type="tel" class="form-input" id="companyPhone" value="(11) 99999-9999" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">E-mail</label>
+                        <input type="email" class="form-input" id="companyEmail" value="contato@brooklyn.com.br" disabled>
+                    </div>
+                    <div id="companyActions" style="display: none;">
+                        <button type="button" class="save-btn" onclick="saveChanges('company')">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
+                        <button type="button" class="cancel-btn" onclick="cancelEdit('company')">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </form>
             </div>
 
-            <div class="dashboard-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">📊</div>
-                        <h3 class="card-title">Vendas Mensais</h3>
+            <!-- Financial Information -->
+            <div class="profile-card">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-chart-pie"></i>
+                        Informações Financeiras
+                    </h2>
+                    <button class="edit-btn" onclick="toggleEdit('financial')">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                </div>
+                <form id="financialForm">
+                    <div class="form-group">
+                        <label class="form-label">Faturamento Anual</label>
+                        <input type="text" class="form-input" id="annualRevenue" value="R$ 1.250.000,00" disabled>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="salesChart"></canvas>
+                    <div class="form-group">
+                        <label class="form-label">Meta Mensal</label>
+                        <input type="text" class="form-input" id="monthlyGoal" value="R$ 120.000,00" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Margem de Lucro (%)</label>
+                        <input type="number" class="form-input" id="profitMargin" value="35" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Banco Principal</label>
+                        <input type="text" class="form-input" id="mainBank" value="Banco do Brasil" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Agência</label>
+                        <input type="text" class="form-input" id="bankBranch" value="1234-5" disabled>
+                    </div>
+                    <div id="financialActions" style="display: none;">
+                        <button type="button" class="save-btn" onclick="saveChanges('financial')">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
+                        <button type="button" class="cancel-btn" onclick="cancelEdit('financial')">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        
+
+        <!-- Reports Section -->
+        <div class="reports-section fade-in-up">
+            <div class="reports-header">
+                <h2 class="card-title">
+                    <i class="fas fa-file-alt"></i>
+                    Relatórios Recentes
+                </h2>
+                <button class="generate-report-btn" onclick="generateReport()">
+                    <i class="fas fa-plus"></i>
+                    Gerar Relatório
+                </button>
+            </div>
+            <div class="reports-grid" id="reportsGrid">
+                <div class="report-item">
+                    <div class="report-title">Relatório de Vendas - Dezembro 2024</div>
+                    <div class="report-date">Gerado em: 15/12/2024</div>
+                    <div class="report-actions">
+                        <button class="action-btn" onclick="downloadReport('vendas-dezembro')">
+                            <i class="fas fa-download"></i> Baixar
+                        </button>
+                        <button class="action-btn" onclick="viewReport('vendas-dezembro')">
+                            <i class="fas fa-eye"></i> Visualizar
+                        </button>
                     </div>
                 </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">🎯</div>
-                        <h3 class="card-title">Categorias Mais Vendidas</h3>
+                <div class="report-item">
+                    <div class="report-title">Análise de Estoque - Q4 2024</div>
+                    <div class="report-date">Gerado em: 10/12/2024</div>
+                    <div class="report-actions">
+                        <button class="action-btn" onclick="downloadReport('estoque-q4')">
+                            <i class="fas fa-download"></i> Baixar
+                        </button>
+                        <button class="action-btn" onclick="viewReport('estoque-q4')">
+                            <i class="fas fa-eye"></i> Visualizar
+                        </button>
                     </div>
-                    <div class="chart-container">
-                        <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="report-item">
+                    <div class="report-title">Performance Financeira - Novembro</div>
+                    <div class="report-date">Gerado em: 30/11/2024</div>
+                    <div class="report-actions">
+                        <button class="action-btn" onclick="downloadReport('financeiro-novembro')">
+                            <i class="fas fa-download"></i> Baixar
+                        </button>
+                        <button class="action-btn" onclick="viewReport('financeiro-novembro')">
+                            <i class="fas fa-eye"></i> Visualizar
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div id="company" class="tab-content">
-            <div class="dashboard-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">🏢</div>
-                        <h3 class="card-title">Informações da Empresa</h3>
-                    </div>
-                    <form id="companyForm">
-                        <div class="form-group">
-                            <label class="form-label">Razão Social</label>
-                            <input type="text" class="form-input" value="Brooklyn Periféricos LTDA" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">CNPJ</label>
-                            <input type="text" class="form-input" value="12.345.678/0001-90" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Inscrição Estadual</label>
-                            <input type="text" class="form-input" value="123.456.789.123" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Endereço</label>
-                            <input type="text" class="form-input" value="Rua das Tecnologias, 1234 - Tech District">
-                        </div>
-                        <button type="button" class="btn" onclick="updateCompanyInfo()">Atualizar Informações</button>
-                    </form>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">💰</div>
-                        <h3 class="card-title">Faturamento</h3>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 75%"></div>
-                    </div>
-                    <p>Meta Anual: R$ 2.500.000,00</p>
-                    <p>Atual: R$ 1.875.000,00 (75%)</p>
-                    
-                    <div style="margin-top: 2rem;">
-                        <div class="report-item">
-                            <span>Faturamento Janeiro</span>
-                            <span class="report-value">R$ 156.8K</span>
-                        </div>
-                        <div class="report-item">
-                            <span>Faturamento Fevereiro</span>
-                            <span class="report-value">R$ 187.2K</span>
-                        </div>
-                        <div class="report-item">
-                            <span>Faturamento Março</span>
-                            <span class="report-value">R$ 203.5K</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="reports" class="tab-content">
-            <div class="dashboard-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">📈</div>
-                        <h3 class="card-title">Performance de Vendas</h3>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="performanceChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">📋</div>
-                        <h3 class="card-title">Relatórios Gerados</h3>
-                    </div>
-                    <div>
-                        <div class="report-item">
-                            <div>
-                                <strong>Relatório de Estoque</strong>
-                                <div class="report-date">15/05/2025</div>
-                            </div>
-                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Download</button>
-                        </div>
-                        <div class="report-item">
-                            <div>
-                                <strong>Análise de Vendas Q1</strong>
-                                <div class="report-date">10/04/2025</div>
-                            </div>
-                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Download</button>
-                        </div>
-                        <div class="report-item">
-                            <div>
-                                <strong>Produtos Mais Vendidos</strong>
-                                <div class="report-date">05/04/2025</div>
-                            </div>
-                            <button class="btn" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Download</button>
-                        </div>
-                    </div>
-                    <button class="btn" onclick="generateReport()" style="width: 100%; margin-top: 1rem;">Gerar Novo Relatório</button>
-                </div>
-            </div>
-        </div>
-
-        <div id="analytics" class="tab-content">
-            <div class="dashboard-grid">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">🔍</div>
-                        <h3 class="card-title">Análise de Produtos</h3>
-                    </div>
-                    <div class="chart-container">
-                        <canvas id="productAnalyticsChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <div class="card-icon">⚡</div>
-                        <h3 class="card-title">Métricas em Tempo Real</h3>
-                    </div>
-                    <div class="stats-grid">
-                        <div class="stat-item">
-                            <span class="stat-number" id="realTimeVisitors">87</span>
-                            <span class="stat-label">Visitantes Online</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="realTimeSales">R$ 12.4K</span>
-                            <span class="stat-label">Vendas Hoje</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="conversionRate">3.2%</span>
-                            <span class="stat-label">Taxa Conversão</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-number" id="avgOrderValue">R$ 245</span>
-                            <span class="stat-label">Ticket Médio</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="notification" id="notification">
-        <span id="notificationText"></span>
-    </div>
+    </main>
 
     <script>
-        // Initialize Charts
+        // Global variables
+        let originalData = {};
+        let editingForm = null;
+
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Smooth navigation active state and ripple effect
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Ripple effect
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(49, 213, 222, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add product button interaction
+        document.querySelector('.add-product-btn').addEventListener('click', function() {
+            showNotification('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
+        });
+
+        // Form editing functions
+        function toggleEdit(formType) {
+            const form = document.getElementById(formType + 'Form');
+            const inputs = form.querySelectorAll('.form-input');
+            const actions = document.getElementById(formType + 'Actions');
+            const editBtn = form.parentElement.querySelector('.edit-btn');
+
+            if (editingForm && editingForm !== formType) {
+                showNotification('Termine a edição atual antes de editar outro formulário.');
+                return;
+            }
+
+            if (editingForm === formType) {
+                // Cancel editing
+                cancelEdit(formType);
+                return;
+            }
+
+            // Store original data
+            originalData[formType] = {};
+            inputs.forEach(input => {
+                originalData[formType][input.id] = input.value;
+            });
+
+            // Enable editing
+            editingForm = formType;
+            inputs.forEach(input => {
+                input.disabled = false;
+                input.style.background = 'rgba(49, 213, 222, 0.1)';
+                input.style.borderColor = 'var(--primary-cyan)';
+            });
+
+            actions.style.display = 'block';
+            setTimeout(() => {
+                actions.querySelectorAll('button').forEach(btn => btn.classList.add('show'));
+            }, 100);
+
+            editBtn.innerHTML = '<i class="fas fa-times"></i> Cancelar';
+            editBtn.style.background = '#dc3545';
+        }
+
+        function saveChanges(formType) {
+            const form = document.getElementById(formType + 'Form');
+            const inputs = form.querySelectorAll('.form-input');
+            
+            // Validate inputs
+            let isValid = true;
+            inputs.forEach(input => {
+                if (input.value.trim() === '') {
+                    input.style.borderColor = '#dc3545';
+                    isValid = false;
+                } else {
+                    input.style.borderColor = 'var(--primary-cyan)';
+                }
+            });
+
+            if (!isValid) {
+                showNotification('Por favor, preencha todos os campos obrigatórios.', 'error');
+                return;
+            }
+
+            // Simulate API call
+            showNotification('Salvando alterações...', 'info');
+            
+            setTimeout(() => {
+                // Disable inputs
+                inputs.forEach(input => {
+                    input.disabled = true;
+                    input.style.background = 'rgba(255, 255, 255, 0.05)';
+                    input.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                });
+
+                // Hide actions
+                const actions = document.getElementById(formType + 'Actions');
+                actions.querySelectorAll('button').forEach(btn => btn.classList.remove('show'));
+                setTimeout(() => {
+                    actions.style.display = 'none';
+                }, 300);
+
+                // Reset edit button
+                const editBtn = form.parentElement.querySelector('.edit-btn');
+                editBtn.innerHTML = '<i class="fas fa-edit"></i> Editar';
+                editBtn.style.background = 'linear-gradient(135deg, var(--primary-cyan), var(--primary-blue))';
+
+                editingForm = null;
+                showNotification('Alterações salvas com sucesso!', 'success');
+                
+                // Update stats if financial data was changed
+                if (formType === 'financial') {
+                    updateStats();
+                }
+            }, 1500);
+        }
+
+        function cancelEdit(formType) {
+            const form = document.getElementById(formType + 'Form');
+            const inputs = form.querySelectorAll('.form-input');
+            const actions = document.getElementById(formType + 'Actions');
+            const editBtn = form.parentElement.querySelector('.edit-btn');
+
+            // Restore original data
+            if (originalData[formType]) {
+                inputs.forEach(input => {
+                    input.value = originalData[formType][input.id];
+                });
+            }
+
+            // Disable inputs
+            inputs.forEach(input => {
+                input.disabled = true;
+                input.style.background = 'rgba(255, 255, 255, 0.05)';
+                input.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+            });
+
+            // Hide actions
+            actions.querySelectorAll('button').forEach(btn => btn.classList.remove('show'));
+            setTimeout(() => {
+                actions.style.display = 'none';
+            }, 300);
+
+            // Reset edit button
+            editBtn.innerHTML = '<i class="fas fa-edit"></i> Editar';
+            editBtn.style.background = 'linear-gradient(135deg, var(--primary-cyan), var(--primary-blue))';
+
+            editingForm = null;
+        }
+
+        // Notification system
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            
+            const icon = type === 'success' ? 'check' : type === 'error' ? 'exclamation-triangle' : 'info-circle';
+            const color = type === 'success' ? '#00d4aa' : type === 'error' ? '#dc3545' : '#31d5de';
+            
+            notification.innerHTML = `
+                <i class="fas fa-${icon}" style="margin-right: 0.5rem;"></i>
+                ${message}
+            `;
+            
+            if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #dc3545, #c82333)';
+            } else if (type === 'info') {
+                notification.style.background = 'linear-gradient(135deg, #31d5de, #1c31a5)';
+            }
+
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Charts initialization
         function initCharts() {
-            // Sales Chart
-            const salesCtx = document.getElementById('salesChart').getContext('2d');
-            new Chart(salesCtx, {
+            // Revenue Chart
+            const revenueCtx = document.getElementById('revenueChart').getContext('2d');
+            new Chart(revenueCtx, {
                 type: 'line',
                 data: {
-                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
                     datasets: [{
-                        label: 'Vendas (R$)',
-                        data: [156800, 187200, 203500, 198300, 223400, 245600],
+                        label: 'Faturamento (R$ mil)',
+                        data: [65, 78, 90, 81, 96, 105, 89, 94, 87, 92, 98, 89],
                         borderColor: '#31d5de',
                         backgroundColor: 'rgba(49, 213, 222, 0.1)',
                         tension: 0.4,
@@ -243,44 +999,43 @@
                         }
                     },
                     scales: {
-                        y: {
-                            ticks: {
-                                color: '#f5f3ee',
-                                callback: function(value) {
-                                    return 'R$ ' + (value/1000).toFixed(0) + 'K';
-                                }
-                            },
-                            grid: {
-                                color: 'rgba(245, 243, 238, 0.1)'
-                            }
-                        },
                         x: {
                             ticks: {
-                                color: '#f5f3ee'
+                                color: '#b0b0b0'
                             },
                             grid: {
-                                color: 'rgba(245, 243, 238, 0.1)'
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#b0b0b0'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
                             }
                         }
                     }
                 }
             });
 
-            // Category Chart
-            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
-            new Chart(categoryCtx, {
+            // Categories Chart
+            const categoriesCtx = document.getElementById('categoriesChart').getContext('2d');
+            new Chart(categoriesCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Mouses', 'Teclados', 'Headsets', 'Monitores', 'Webcams'],
+                    labels: ['Mouses', 'Teclados', 'Headsets', 'Monitores', 'Webcams', 'Outros'],
                     datasets: [{
-                        data: [35, 25, 20, 15, 5],
+                        data: [30, 25, 20, 15, 7, 3],
                         backgroundColor: [
                             '#31d5de',
                             '#1c31a5',
-                            '#f5f3ee',
-                            'rgba(49, 213, 222, 0.7)',
-                            'rgba(28, 49, 165, 0.7)'
-                        ]
+                            '#00d4aa',
+                            '#ff6b6b',
+                            '#feca57',
+                            '#a55eea'
+                        ],
+                        borderWidth: 0
                     }]
                 },
                 options: {
@@ -288,108 +1043,11 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
+                            position: 'right',
                             labels: {
-                                color: '#f5f3ee'
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Performance Chart
-            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
-            new Chart(performanceCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025'],
-                    datasets: [{
-                        label: 'Receita',
-                        data: [547300, 623400, 598200, 712500, 687900],
-                        backgroundColor: 'rgba(49, 213, 222, 0.8)',
-                        borderColor: '#31d5de',
-                        borderWidth: 1
-                    }, {
-                        label: 'Meta',
-                        data: [500000, 600000, 650000, 700000, 750000],
-                        backgroundColor: 'rgba(28, 49, 165, 0.8)',
-                        borderColor: '#1c31a5',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#f5f3ee'
-                            }
-                        }
-                    },
-                    scales: {
-                        y: {
-                            ticks: {
                                 color: '#f5f3ee',
-                                callback: function(value) {
-                                    return 'R$ ' + (value/1000).toFixed(0) + 'K';
-                                }
-                            },
-                            grid: {
-                                color: 'rgba(245, 243, 238, 0.1)'
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                color: '#f5f3ee'
-                            },
-                            grid: {
-                                color: 'rgba(245, 243, 238, 0.1)'
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Product Analytics Chart
-            const productAnalyticsCtx = document.getElementById('productAnalyticsChart').getContext('2d');
-            new Chart(productAnalyticsCtx, {
-                type: 'radar',
-                data: {
-                    labels: ['Qualidade', 'Preço', 'Disponibilidade', 'Demanda', 'Margem', 'Satisfação'],
-                    datasets: [{
-                        label: 'Mouses Gaming',
-                        data: [85, 70, 90, 95, 75, 88],
-                        borderColor: '#31d5de',
-                        backgroundColor: 'rgba(49, 213, 222, 0.2)',
-                        pointBackgroundColor: '#31d5de'
-                    }, {
-                        label: 'Teclados Mecânicos',
-                        data: [90, 60, 85, 80, 85, 92],
-                        borderColor: '#1c31a5',
-                        backgroundColor: 'rgba(28, 49, 165, 0.2)',
-                        pointBackgroundColor: '#1c31a5'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: '#f5f3ee'
-                            }
-                        }
-                    },
-                    scales: {
-                        r: {
-                            ticks: {
-                                color: '#f5f3ee'
-                            },
-                            grid: {
-                                color: 'rgba(245, 243, 238, 0.1)'
-                            },
-                            pointLabels: {
-                                color: '#f5f3ee'
+                                usePointStyle: true,
+                                padding: 20
                             }
                         }
                     }
@@ -397,407 +1055,196 @@
             });
         }
 
-        // Tab switching
-        function switchTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
+        // Update stats with animation
+        function updateStats() {
+            const stats = [
+                { id: 'totalProducts', value: Math.floor(Math.random() * 500) + 1000 },
+                { id: 'monthlyRevenue', value: 'R$ ' + (Math.floor(Math.random() * 50) + 70) + '.5K' },
+                { id: 'growthRate', value: '+' + (Math.floor(Math.random() * 10) + 20) + '.4%' },
+                { id: 'stockValue', value: 'R$ ' + (Math.floor(Math.random() * 200) + 400) + '.2K' }
+            ];
+
+            stats.forEach(stat => {
+                const element = document.getElementById(stat.id);
+                element.style.transform = 'scale(1.1)';
+                element.style.color = 'var(--primary-cyan)';
+                
+                setTimeout(() => {
+                    element.textContent = stat.value;
+                    element.style.transform = 'scale(1)';
+                    element.style.color = 'var(--accent-white)';
+                }, 200);
             });
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab
-            event.target.classList.add('active');
         }
 
-        // Show notification
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            const notificationText = document.getElementById('notificationText');
-            
-            notificationText.textContent = message;
-            notification.classList.add('show');
+        // Reports functions
+        function generateReport() {
+            showNotification('Gerando novo relatório...', 'info');
             
             setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
-
-        // Update company info
-        function updateCompanyInfo() {
-            showNotification('Informações da empresa atualizadas com sucesso!');
-        }
-
-        // Generate report
-        function generateReport() {
-            showNotification('Relatório sendo gerado... Você receberá uma notificação quando estiver pronto!');
-        }
-
-        // Real-time data simulation
-        function updateRealTimeData() {
-            const visitors = document.getElementById('realTimeVisitors');
-            const sales = document.getElementById('realTimeSales');
-            const conversion = document.getElementById('conversionRate');
-            const avgOrder = document.getElementById('avgOrderValue');
-            
-            // Simulate random changes
-            visitors.textContent = Math.floor(Math.random() * 50) + 70;
-            sales.textContent = 'R$ ' + (Math.random() * 5 + 10).toFixed(1) + 'K';
-            conversion.textContent = (Math.random() * 2 + 2).toFixed(1) + '%';
-            avgOrder.textContent = 'R$ ' + Math.floor(Math.random() * 100 + 200);
-        }
-
-        // Animate numbers on page load
-        function animateNumbers() {
-            const numbers = document.querySelectorAll('.stat-number');
-            numbers.forEach(number => {
-                const target = number.textContent;
-                number.textContent = '0';
+                const reportsGrid = document.getElementById('reportsGrid');
+                const currentDate = new Date().toLocaleDateString('pt-BR');
                 
-                // Simple counter animation
-                let current = 0;
-                const increment = 1;
-                const timer = setInterval(() => {
-                    if (current < 100) {
-                        current += increment;
-                        number.style.transform = `scale(${1 + current / 1000})`;
-                    } else {
-                        clearInterval(timer);
-                        number.textContent = target;
-                        number.style.transform = 'scale(1)';
-                    }
-                }, 20);
-            });
+                const newReport = document.createElement('div');
+                newReport.className = 'report-item';
+                newReport.style.opacity = '0';
+                newReport.style.transform = 'translateY(20px)';
+                
+                newReport.innerHTML = `
+                    <div class="report-title">Relatório Personalizado - ${new Date().toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' })}</div>
+                    <div class="report-date">Gerado em: ${currentDate}</div>
+                    <div class="report-actions">
+                        <button class="action-btn" onclick="downloadReport('personalizado-${Date.now()}')">
+                            <i class="fas fa-download"></i> Baixar
+                        </button>
+                        <button class="action-btn" onclick="viewReport('personalizado-${Date.now()}')">
+                            <i class="fas fa-eye"></i> Visualizar
+                        </button>
+                    </div>
+                `;
+                
+                reportsGrid.insertBefore(newReport, reportsGrid.firstChild);
+                
+                setTimeout(() => {
+                    newReport.style.transition = 'all 0.3s ease';
+                    newReport.style.opacity = '1';
+                    newReport.style.transform = 'translateY(0)';
+                }, 100);
+                
+                showNotification('Relatório gerado com sucesso!', 'success');
+            }, 2000);
         }
 
-        // Initialize everything when page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            initCharts();
-            animateNumbers();
+        function downloadReport(reportId) {
+            showNotification(`Baixando relatório ${reportId}...`, 'info');
             
-            // Update real-time data every 5 seconds
-            setInterval(updateRealTimeData, 5000);
-            
-            // Add hover effects to cards
-            document.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-10px) scale(1.02)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                });
-            });
+            // Simulate download
+            setTimeout(() => {
+                showNotification('Download concluído!', 'success');
+            }, 1500);
+        }
 
-            // Add click animation to buttons
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                    }, 150);
-                });
-            });
-        });
+        function viewReport(reportId) {
+            showNotification(`Abrindo visualização do relatório ${reportId}...`, 'info');
+            
+            // Simulate opening report viewer
+            setTimeout(() => {
+                showNotification('Relatório aberto em nova aba!', 'success');
+            }, 1000);
+        }
 
         // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey) {
-                switch(e.key) {
-                    case '1':
-                        e.preventDefault();
-                        switchTab('overview');
-                        break;
-                    case '2':
-                        e.preventDefault();
-                        switchTab('company');
-                        break;
-                    case '3':
-                        e.preventDefault();
-                        switchTab('reports');
-                        break;
-                    case '4':
-                        e.preventDefault();
-                        switchTab('analytics');
-                        break;
-                }
+            // Alt + M to toggle menu
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                sidebar.classList.toggle('open');
+            }
+            
+            // Alt + P to add product
+            if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                document.querySelector('.add-product-btn').click();
+            }
+            
+            // Alt + R to generate report
+            if (e.altKey && e.key === 'r') {
+                e.preventDefault();
+                generateReport();
+            }
+            
+            // Escape to cancel editing
+            if (e.key === 'Escape' && editingForm) {
+                e.preventDefault();
+                cancelEdit(editingForm);
             }
         });
 
-        // Progressive loading effect
-        function addProgressiveLoading() {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach((card, index) => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(50px)';
-                
-                setTimeout(() => {
-                    card.style.transition = 'all 0.6s ease';
-                    card.style.opacity = '1';
-                    card.style.transform = 'translateY(0)';
-                }, index * 150);
-            });
-        }
-
-        // Add loading effect on tab switch
-        function switchTab(tabName) {
-            // Hide all tab contents
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            
-            // Show selected tab content
-            document.getElementById(tabName).classList.add('active');
-            
-            // Add active class to clicked tab
-            if (event && event.target) {
-                event.target.classList.add('active');
-            } else {
-                // For keyboard shortcuts
-                document.querySelector(`[onclick="switchTab('${tabName}')"]`).classList.add('active');
-            }
-            
-            // Add progressive loading to new tab
-            setTimeout(() => addProgressiveLoading(), 100);
-        }
-
-        // Enhanced real-time updates with WebSocket simulation
-        function simulateWebSocketUpdates() {
-            const events = [
-                'Nova venda registrada: Mouse Gamer Pro',
-                'Estoque baixo: Teclado Mecânico RGB',
-                'Novo cliente cadastrado',
-                'Meta mensal atingida em 89%',
-                'Produto em destaque: Headset Wireless'
-            ];
-            
+        // Real-time stats update simulation
+        function startRealTimeUpdates() {
             setInterval(() => {
-                const randomEvent = events[Math.floor(Math.random() * events.length)];
+                // Update random stat every 30 seconds
+                const statIds = ['totalProducts', 'monthlyRevenue', 'growthRate', 'stockValue'];
+                const randomStat = statIds[Math.floor(Math.random() * statIds.length)];
+                const element = document.getElementById(randomStat);
                 
-                // Create floating notification
-                const floatingNotif = document.createElement('div');
-                floatingNotif.style.cssText = `
-                    position: fixed;
-                    bottom: 20px;
-                    left: 20px;
-                    background: linear-gradient(135deg, #31d5de, #1c31a5);
-                    color: white;
-                    padding: 1rem;
-                    border-radius: 10px;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                    transform: translateX(-400px);
-                    transition: all 0.5s ease;
-                    z-index: 1001;
-                    max-width: 300px;
-                `;
-                floatingNotif.textContent = randomEvent;
-                document.body.appendChild(floatingNotif);
+                element.style.transform = 'scale(1.05)';
+                element.style.transition = 'transform 0.3s ease';
                 
                 setTimeout(() => {
-                    floatingNotif.style.transform = 'translateX(0)';
-                }, 100);
-                
-                setTimeout(() => {
-                    floatingNotif.style.transform = 'translateX(-400px)';
-                    setTimeout(() => {
-                        document.body.removeChild(floatingNotif);
-                    }, 500);
-                }, 4000);
-                
-            }, 15000); // Every 15 seconds
+                    element.style.transform = 'scale(1)';
+                }, 300);
+            }, 30000);
         }
 
-        // Advanced chart interactions
-        function addChartInteractions() {
-            // Add click handlers to chart elements
-            Chart.defaults.interaction.intersect = false;
-            Chart.defaults.interaction.mode = 'index';
-            
-            // Custom tooltip styling
-            Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(26, 26, 26, 0.95)';
-            Chart.defaults.plugins.tooltip.titleColor = '#31d5de';
-            Chart.defaults.plugins.tooltip.bodyColor = '#f5f3ee';
-            Chart.defaults.plugins.tooltip.borderColor = '#31d5de';
-            Chart.defaults.plugins.tooltip.borderWidth = 1;
-            Chart.defaults.plugins.tooltip.cornerRadius = 10;
+        // Input formatting
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g, '');
+            value = (value / 100).toFixed(2) + '';
+            value = value.replace(".", ",");
+            value = value.replace(/(\d)(\d{3})(\d{3}),/g, "$1.$2.$3,");
+            value = value.replace(/(\d)(\d{3}),/g, "$1.$2,");
+            input.value = 'R$ ' + value;
         }
 
-        // Data export functionality
-        function exportData(format) {
-            const data = {
-                overview: {
-                    totalProducts: 2847,
-                    lowStock: 23,
-                    totalValue: 485200,
-                    monthlyGrowth: 12.5
-                },
-                sales: [156800, 187200, 203500, 198300, 223400, 245600],
-                categories: {
-                    'Mouses': 35,
-                    'Teclados': 25,
-                    'Headsets': 20,
-                    'Monitores': 15,
-                    'Webcams': 5
-                }
-            };
-
-            if (format === 'json') {
-                const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'brooklyn_data.json';
-                a.click();
-                URL.revokeObjectURL(url);
-            } else if (format === 'csv') {
-                let csv = 'Categoria,Valor\n';
-                Object.entries(data.categories).forEach(([key, value]) => {
-                    csv += `${key},${value}\n`;
-                });
-                
-                const blob = new Blob([csv], {type: 'text/csv'});
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'brooklyn_categories.csv';
-                a.click();
-                URL.revokeObjectURL(url);
-            }
-            
-            showNotification(`Dados exportados em formato ${format.toUpperCase()}!`);
+        function formatCNPJ(input) {
+            let value = input.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/, '$1.$2');
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
+            value = value.replace(/\.(\d{3})(\d)/, '.$1/$2');
+            value = value.replace(/(\d{4})(\d)/, '$1-$2');
+            input.value = value;
         }
 
-        // Add export buttons
-        function addExportButtons() {
-            const exportContainer = document.createElement('div');
-            exportContainer.style.cssText = `
-                position: fixed;
-                top: 20px;
-                left: 20px;
-                display: flex;
-                gap: 10px;
-                z-index: 1000;
-            `;
-            
-            const exportJsonBtn = document.createElement('button');
-            exportJsonBtn.textContent = 'Export JSON';
-            exportJsonBtn.className = 'btn';
-            exportJsonBtn.style.cssText = 'padding: 0.5rem 1rem; font-size: 0.8rem;';
-            exportJsonBtn.onclick = () => exportData('json');
-            
-            const exportCsvBtn = document.createElement('button');
-            exportCsvBtn.textContent = 'Export CSV';
-            exportCsvBtn.className = 'btn';
-            exportCsvBtn.style.cssText = 'padding: 0.5rem 1rem; font-size: 0.8rem;';
-            exportCsvBtn.onclick = () => exportData('csv');
-            
-            exportContainer.appendChild(exportJsonBtn);
-            exportContainer.appendChild(exportCsvBtn);
-            document.body.appendChild(exportContainer);
+        function formatPhone(input) {
+            let value = input.value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+            value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+            input.value = value;
         }
 
-        // Enhanced initialization
+        // Add input formatting listeners
         document.addEventListener('DOMContentLoaded', function() {
+            // CNPJ formatting
+            document.getElementById('companyCnpj').addEventListener('input', function() {
+                formatCNPJ(this);
+            });
+            
+            // Phone formatting
+            document.getElementById('companyPhone').addEventListener('input', function() {
+                formatPhone(this);
+            });
+            
+            // Currency formatting
+            document.querySelectorAll('#annualRevenue, #monthlyGoal').forEach(input => {
+                input.addEventListener('input', function() {
+                    formatCurrency(this);
+                });
+            });
+            
+            // Initialize charts
             initCharts();
-            addChartInteractions();
-            animateNumbers();
-            addProgressiveLoading();
-            addExportButtons();
             
             // Start real-time updates
-            setInterval(updateRealTimeData, 5000);
-            simulateWebSocketUpdates();
+            startRealTimeUpdates();
             
-            // Enhanced card interactions
-            document.querySelectorAll('.card').forEach(card => {
-                card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-10px) scale(1.02)';
-                    this.style.boxShadow = '0 20px 40px rgba(49, 213, 222, 0.2)';
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0) scale(1)';
-                    this.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
-                });
-            });
-
-            // Enhanced button interactions
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    this.style.transform = 'scale(0.95)';
-                    
-                    // Add ripple effect
-                    const ripple = document.createElement('span');
-                    ripple.style.cssText = `
-                        position: absolute;
-                        border-radius: 50%;
-                        background: rgba(255,255,255,0.3);
-                        transform: scale(0);
-                        animation: ripple 0.6s linear;
-                        pointer-events: none;
-                    `;
-                    
-                    const rect = this.getBoundingClientRect();
-                    const size = Math.max(rect.width, rect.height);
-                    ripple.style.width = ripple.style.height = size + 'px';
-                    ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
-                    ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
-                    
-                    this.style.position = 'relative';
-                    this.style.overflow = 'hidden';
-                    this.appendChild(ripple);
-                    
-                    setTimeout(() => {
-                        this.style.transform = 'scale(1)';
-                        if (ripple.parentNode) {
-                            ripple.parentNode.removeChild(ripple);
-                        }
-                    }, 150);
-                });
-            });
-
-            // Add CSS for ripple animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes ripple {
-                    to {
-                        transform: scale(4);
-                        opacity: 0;
+            // Add fade-in animation to elements
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
                     }
-                }
-                
-                .card {
-                    backdrop-filter: blur(10px);
-                    -webkit-backdrop-filter: blur(10px);
-                }
-                
-                .form-input:focus {
-                    transform: translateY(-2px);
-                }
-                
-                @media (prefers-reduced-motion: reduce) {
-                    *, *::before, *::after {
-                        animation-duration: 0.01ms !important;
-                        animation-iteration-count: 1 !important;
-                        transition-duration: 0.01ms !important;
-                    }
-                }
-            `;
-            document.head.appendChild(style);
-
-            console.log('Brooklyn Stock System - Profile Dashboard Loaded Successfully! 🚀');
-            console.log('Keyboard shortcuts: Ctrl+1,2,3,4 for tab navigation');
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.profile-card, .stat-card, .chart-card').forEach(el => {
+                observer.observe(el);
+            });
         });
     </script>
 </body>
