@@ -53,25 +53,28 @@ body {
             margin-bottom: 4px;
         }
         .nav-item a {
-            display: flex;
-            align-items: center;
-            color: #b3c7e6;
-            text-decoration: none;
-            padding: 10px 12px;
-            border-radius: 6px;
-            transition: background 0.2s;
-            font-size: 1rem;
-        }
+    display: flex;
+    align-items: center;
+    color: #b3c7e6;
+    text-decoration: none;
+    padding: 10px 22px 10px 22px; /* aumenta o espaçamento lateral */
+    border-radius: 6px;
+    transition: background 0.2s;
+    font-size: 1rem;
+    gap: 16px; /* espaçamento entre ícone e texto */
+}
         .nav-item.active a,
         .nav-item a:hover {
             background: #2463eb;
             color: #fff;
-        }
-        .nav-item i {
-            margin-right: 12px;
+        }        .nav-item i {
+            margin-right: 18px; /* Aumenta o espaçamento entre o ícone e o texto */
             font-size: 1.1rem;
-            width: 20px;
+            width: 22px;
             text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
         .main-content {
             margin-left: 240px;
