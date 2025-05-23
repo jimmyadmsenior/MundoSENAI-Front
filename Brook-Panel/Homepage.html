@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brooklyn - Sistema de Estoque de Periféricos</title>
+    <title>Brooklyn Panel - Gerenciamento de Estoque</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -11,292 +12,337 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-cyan: #31d5de;
+            --primary-blue: #1c31a5;
+            --accent-white: #f5f3ee;
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f3ee;
+            --text-secondary: #b0b0b0;
+        }
+
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-            color: #f5f3ee;
-            line-height: 1.6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
             overflow-x: hidden;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+            background: var(--bg-dark);
+        }
+
+        .header {
+            background: var(--bg-card);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+        }
+
+        .welcome-text h2 {
+            color: var(--accent-white);
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
+            color: var(--text-secondary);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%23333" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(49, 213, 222, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent-white);
+            border: 2px solid var(--primary-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 4rem 2rem;
+            background: var(--bg-card);
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(26, 26, 46, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 5px #31d5de); }
-            to { filter: drop-shadow(0 0 20px #31d5de); }
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: #f5f3ee;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #31d5de;
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .cta-button {
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #f5f3ee;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(49, 213, 222, 0.3);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.4);
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-content {
-            z-index: 2;
-            max-width: 600px;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero .highlight {
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 3rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            padding: 1rem 2.5rem;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #f5f3ee;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(49, 213, 222, 0.3);
-            border: none;
-            cursor: pointer;
-            font-size: 1.1rem;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            padding: 1rem 2.5rem;
-            border: 2px solid #31d5de;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #31d5de;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-secondary:hover {
-            background: #31d5de;
-            color: #1a1a2e;
-        }
-
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-
-        .floating-element {
-            position: absolute;
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            border-radius: 50%;
-            opacity: 0.1;
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-20px) rotate(180deg); }
-        }
-
-        /* Stats Section */
-        .stats {
-            padding: 5rem 0;
-            background: rgba(28, 49, 165, 0.1);
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
-            text-align: center;
         }
 
-        .stat-item {
+        .stat-card {
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #252525 100%);
             padding: 2rem;
-            background: rgba(245, 243, 238, 0.05);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(49, 213, 222, 0.2);
-            transition: transform 0.3s ease;
+            border-radius: 16px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+            position: relative;
+            overflow: hidden;
         }
 
-        .stat-item:hover {
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(49, 213, 222, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
+        }
+
+        .stat-card:hover {
             transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
         }
 
         .stat-number {
-            font-size: 3rem;
-            font-weight: 800;
-            color: #31d5de;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--accent-white);
             margin-bottom: 0.5rem;
         }
 
-        /* Features Section */
-        .features {
-            padding: 5rem 0;
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* Charts Section */
+        .charts {
+            padding: 4rem 2rem;
+            background: var(--bg-dark);
         }
 
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
-            font-weight: 800;
             margin-bottom: 3rem;
         }
 
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--accent-white);
+            margin-bottom: 1rem;
         }
 
-        .feature-card {
-            background: rgba(245, 243, 238, 0.05);
+        .section-title p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .chart-container {
+            background: var(--bg-card);
             padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(49, 213, 222, 0.2);
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            border: 1px solid #333;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            color: var(--accent-white);
+        }
+
+        .chart-period {
+            color: var(--text-secondary);
+            background: var(--bg-dark);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid #444;
+        }
+
+        .chart {
+            height: 300px;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .chart-bar {
+            width: 40px;
+            background: linear-gradient(to top, var(--primary-blue), var(--primary-cyan));
+            border-radius: 4px 4px 0 0;
+            animation: growUp 1.5s ease;
+            position: relative;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: #31d5de;
-            box-shadow: 0 10px 30px rgba(49, 213, 222, 0.2);
+        .chart-bar:hover {
+            filter: brightness(1.2);
+            transform: scale(1.05);
         }
 
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
+        .chart-bar::after {
+            content: attr(data-value);
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--accent-white);
+            font-size: 0.9rem;
+            font-weight: bold;
         }
 
         /* Testimonials */
         .testimonials {
-            padding: 5rem 0;
-            background: rgba(28, 49, 165, 0.1);
+            padding: 4rem 2rem;
+            background: var(--bg-card);
         }
 
-        .testimonial-grid {
+        .testimonials-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 2rem;
         }
 
         .testimonial-card {
-            background: rgba(245, 243, 238, 0.05);
+            background: var(--bg-dark);
             padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(49, 213, 222, 0.2);
+            border-radius: 16px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
             position: relative;
         }
 
-        .testimonial-content {
-            font-style: italic;
-            margin-bottom: 1rem;
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .testimonial-quote {
             font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
         }
 
         .testimonial-author {
@@ -309,607 +355,398 @@
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 600;
+            font-weight: bold;
         }
 
-        /* Chart Section */
-        .chart-section {
-            padding: 5rem 0;
+        .author-info h4 {
+            color: var(--accent-white);
+            margin-bottom: 0.25rem;
         }
 
-        .chart-container {
-            background: rgba(245, 243, 238, 0.05);
-            padding: 2rem;
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(49, 213, 222, 0.2);
-            margin-bottom: 2rem;
+        .author-info p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
         }
 
-        #performanceChart {
-            width: 100%;
-            height: 400px;
+        .stars {
+            margin-left: auto;
+            color: #ffd700;
         }
 
         /* CTA Section */
         .cta-section {
-            padding: 5rem 0;
-            background: linear-gradient(135deg, #1c31a5, #31d5de);
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-cyan));
             text-align: center;
             position: relative;
             overflow: hidden;
         }
 
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="white" opacity="0.1"/><circle cx="80" cy="40" r="1" fill="white" opacity="0.1"/><circle cx="40" cy="80" r="1.5" fill="white" opacity="0.1"/></svg>');
+        }
+
         .cta-content {
             position: relative;
             z-index: 2;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .cta-section h2 {
-            font-size: 3rem;
-            font-weight: 800;
+            font-size: 2.5rem;
+            color: white;
             margin-bottom: 1rem;
         }
 
         .cta-section p {
             font-size: 1.2rem;
+            color: rgba(255,255,255,0.9);
             margin-bottom: 2rem;
-            opacity: 0.9;
         }
 
-        .pulse-button {
-            display: inline-block;
-            background: #f5f3ee;
-            color: #1c31a5;
-            padding: 1.2rem 3rem;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.2rem;
+        .signup-form {
+            display: flex;
+            gap: 1rem;
+            max-width: 400px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .signup-input {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            placeholder-color: rgba(255,255,255,0.7);
+            backdrop-filter: blur(10px);
+            min-width: 200px;
+        }
+
+        .signup-input::placeholder {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .signup-btn {
+            padding: 1rem 2rem;
+            background: white;
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
             transition: all 0.3s ease;
-            animation: pulse 2s infinite;
         }
 
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(245, 243, 238, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(245, 243, 238, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(245, 243, 238, 0); }
+        .signup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255,255,255,0.3);
         }
 
-        /* Footer */
-        footer {
-            background: #0a0a0a;
-            padding: 3rem 0;
-            text-align: center;
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes growUp {
+            from {
+                height: 0;
+            }
+            to {
+                height: var(--height);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .floating {
+            animation: float 3s ease-in-out infinite;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+            }
+
             .hero h1 {
                 font-size: 2.5rem;
             }
-            
-            .hero-buttons {
+
+            .cta-buttons {
                 flex-direction: column;
+                align-items: center;
             }
-            
-            .nav-links {
-                display: none;
+
+            .signup-form {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .signup-input {
+                width: 100%;
             }
         }
 
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-white);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">Brooklyn</div>
-            <ul class="nav-links">
-                <li><a href="#home">Início</a></li>
-                <li><a href="#features">Recursos</a></li>
-                <li><a href="#testimonials">Clientes</a></li>
-                <li><a href="#reports">Relatórios</a></li>
-            </ul>
-            <a href="#signup" class="cta-button">Começar Agora</a>
-        </nav>
-    </header>
-
-    <main>
-        <section id="home" class="hero">
-            <div class="container">
-                <div class="hero-content fade-in">
-                    <h1>Gerencie seu <span class="highlight">Estoque</span> com <span class="highlight">Inteligência</span></h1>
-                    <p>O Brooklyn revoluciona o controle de periféricos com tecnologia avançada, relatórios em tempo real e uma interface intuitiva que acelera seus resultados.</p>
-                    <div class="hero-buttons">
-                        <a href="#signup" class="btn-primary">Teste Grátis por 30 Dias</a>
-                        <a href="#demo" class="btn-secondary">Ver Demonstração</a>
-                    </div>
-                </div>
-            </div>
-            <div class="floating-elements">
-                <div class="floating-element" style="width: 100px; height: 100px; top: 20%; left: 10%; animation-delay: 0s;"></div>
-                <div class="floating-element" style="width: 60px; height: 60px; top: 60%; right: 20%; animation-delay: 2s;"></div>
-                <div class="floating-element" style="width: 80px; height: 80px; bottom: 30%; left: 70%; animation-delay: 4s;"></div>
-            </div>
-        </section>
-
-        <section class="stats">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-item fade-in">
-                        <div class="stat-number" data-target="5000">0</div>
-                        <p>Produtos Gerenciados</p>
-                    </div>
-                    <div class="stat-item fade-in">
-                        <div class="stat-number" data-target="98">0</div>
-                        <p>% Precisão em Estoque</p>
-                    </div>
-                    <div class="stat-item fade-in">
-                        <div class="stat-number" data-target="250">0</div>
-                        <p>Empresas Atendidas</p>
-                    </div>
-                    <div class="stat-item fade-in">
-                        <div class="stat-number" data-target="45">0</div>
-                        <p>% Redução de Custos</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="features" class="features">
-            <div class="container">
-                <h2 class="section-title fade-in">Por que escolher o <span class="highlight">Brooklyn</span>?</h2>
-                <div class="features-grid">
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">📊</div>
-                        <h3>Controle Total</h3>
-                        <p>Monitore todos os periféricos em tempo real com alertas inteligentes de baixo estoque e movimentações suspeitas.</p>
-                    </div>
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">⚡</div>
-                        <h3>Automação Inteligente</h3>
-                        <p>Pedidos automáticos, códigos de barras integrados e sincronização com fornecedores para máxima eficiência.</p>
-                    </div>
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">📈</div>
-                        <h3>Relatórios Avançados</h3>
-                        <p>Dashboards interativos com análises preditivas e insights que impulsionam suas decisões estratégicas.</p>
-                    </div>
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">🔒</div>
-                        <h3>Segurança Máxima</h3>
-                        <p>Criptografia de ponta, backups automáticos e controle de acesso multinível para proteger seus dados.</p>
-                    </div>
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">📱</div>
-                        <h3>Acesso Mobile</h3>
-                        <p>Gerencie seu estoque de qualquer lugar com nosso app mobile intuitivo e sincronização em tempo real.</p>
-                    </div>
-                    <div class="feature-card fade-in">
-                        <div class="feature-icon">🤝</div>
-                        <h3>Suporte 24/7</h3>
-                        <p>Nossa equipe especializada está sempre disponível para garantir que você tenha o melhor desempenho.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="testimonials" class="testimonials">
-            <div class="container">
-                <h2 class="section-title fade-in">O que nossos <span class="highlight">clientes</span> dizem</h2>
-                <div class="testimonial-grid">
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-content">
-                            "O Brooklyn transformou completamente nossa operação. Reduzimos 60% do tempo gasto com controle de estoque e aumentamos nossa precisão para 99.5%."
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">MR</div>
-                            <div>
-                                <strong>Maria Rodriguez</strong><br>
-                                <small>Diretora de Operações - TechFlow</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-content">
-                            "A interface é incrivelmente intuitiva e os relatórios nos dão insights valiosos sobre nosso negócio. ROI positivo em apenas 3 meses!"
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">JS</div>
-                            <div>
-                                <strong>João Silva</strong><br>
-                                <small>CEO - PerifericosBR</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="testimonial-card fade-in">
-                        <div class="testimonial-content">
-                            "Suporte excepcional e funcionalidades que realmente fazem a diferença. Não conseguimos mais imaginar nossa empresa sem o Brooklyn."
-                        </div>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">AC</div>
-                            <div>
-                                <strong>Ana Costa</strong><br>
-                                <small>Gerente de Estoque - MegaTech</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="reports" class="chart-section">
-            <div class="container">
-                <h2 class="section-title fade-in">Resultados que <span class="highlight">Impressionam</span></h2>
-                <div class="chart-container fade-in">
-                    <h3 style="margin-bottom: 1rem;">Performance de Vendas - Últimos 12 Meses</h3>
-                    <canvas id="performanceChart"></canvas>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-item fade-in">
-                        <div class="stat-number">+127%</div>
-                        <p>Aumento em Eficiência</p>
-                    </div>
-                    <div class="stat-item fade-in">
-                        <div class="stat-number">-68%</div>
-                        <p>Redução em Perdas</p>
-                    </div>
-                    <div class="stat-item fade-in">
-                        <div class="stat-number">+95%</div>
-                        <p>Satisfação do Cliente</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="signup" class="cta-section">
-            <div class="container">
-                <div class="cta-content">
-                    <h2>Pronto para Revolucionar seu Estoque?</h2>
-                    <p>Junte-se a mais de 250 empresas que já transformaram sua gestão com o Brooklyn</p>
-                    <a href="#" class="pulse-button" onclick="showSignupForm()">COMEÇAR AGORA - GRÁTIS</a>
-                    <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.8;">30 dias grátis • Sem compromisso • Suporte incluído</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2024 Brooklyn. Todos os direitos reservados. | Transformando a gestão de estoque com tecnologia de ponta.</p>
+    <!-- Sidebar Menu Component - Copie este bloco para outras páginas -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #31d5de;
+            --primary-blue: #1c31a5;
+            --accent-white: #f5f3ee;
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f3ee;
+            --text-secondary: #b0b0b0;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
+        }
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
+            color: var(--accent-white);
+            transform: translateX(5px);
+        }
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        .nav-link:hover::before, .nav-link.active::before {
+            transform: scaleY(1);
+        }
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+        .add-product-container {
+            display: flex;
+            justify-content: center;
+        }
+        .add-product-btn {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .add-product-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 14, 103, 0.3);
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent-white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: fixed;
+            top: 1.5rem;
+            left: 1.5rem;
+            z-index: 1100;
+        }
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+        .main-content {
+            margin-left: 280px;
+        }
+    </style>
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <a>
+                <img src="../Brook-Panel/Media/Identidade Visual.png" alt="" class="logo-img">
+            </a>
+            <p>Gestão Inteligente</p>
         </div>
-    </footer>
-
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="../Brook-Panel/Homepage.html" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../Brook-Panel/Dashboard.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    Relatórios
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../Brook-Panel/Dashboard.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../Brook-Panel/Usuários.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    Perfil
+                </a>
+            </li>
+        </ul>
+        <div class="add-product-container">
+            <button class="add-product-btn">
+                <i class="fas fa-plus"></i>
+                Adicionar Produto
+            </button>
+        </div>
+    </nav>
     <script>
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
         });
 
-        // Animated counters
-        function animateCounters() {
-            const counters = document.querySelectorAll('.stat-number[data-target]');
-            
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-target'));
-                const duration = 2000;
-                const increment = target / (duration / 16);
-                let current = 0;
-                
-                const updateCounter = () => {
-                    if (current < target) {
-                        current += increment;
-                        counter.textContent = Math.floor(current);
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        counter.textContent = target;
-                    }
-                };
-                
-                updateCounter();
-            });
-        }
-
-        // Chart creation
-        function createChart() {
-            const canvas = document.getElementById('performanceChart');
-            const ctx = canvas.getContext('2d');
-            
-            // Set canvas size
-            canvas.width = canvas.offsetWidth;
-            canvas.height = 400;
-            
-            // Chart data
-            const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-            const data = [65, 75, 85, 78, 92, 88, 95, 102, 98, 110, 118, 125];
-            
-            // Chart dimensions
-            const padding = 60;
-            const chartWidth = canvas.width - 2 * padding;
-            const chartHeight = canvas.height - 2 * padding;
-            
-            // Find max value for scaling
-            const maxValue = Math.max(...data);
-            const scale = chartHeight / maxValue;
-            
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Set styles
-            ctx.strokeStyle = '#31d5de';
-            ctx.lineWidth = 3;
-            ctx.fillStyle = '#f5f3ee';
-            ctx.font = '14px Inter';
-            
-            // Draw grid lines
-            ctx.strokeStyle = 'rgba(245, 243, 238, 0.1)';
-            ctx.lineWidth = 1;
-            for (let i = 0; i <= 5; i++) {
-                const y = padding + (chartHeight / 5) * i;
-                ctx.beginPath();
-                ctx.moveTo(padding, y);
-                ctx.lineTo(padding + chartWidth, y);
-                ctx.stroke();
-            }
-            
-            // Draw line chart
-            ctx.strokeStyle = '#31d5de';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            
-            data.forEach((value, index) => {
-                const x = padding + (chartWidth / (data.length - 1)) * index;
-                const y = padding + chartHeight - (value * scale);
-                
-                if (index === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            });
-            
-            ctx.stroke();
-            
-            // Draw gradient fill
-            const gradient = ctx.createLinearGradient(0, padding, 0, padding + chartHeight);
-            gradient.addColorStop(0, 'rgba(49, 213, 222, 0.3)');
-            gradient.addColorStop(1, 'rgba(49, 213, 222, 0.05)');
-            
-            ctx.fillStyle = gradient;
-            ctx.beginPath();
-            ctx.moveTo(padding, padding + chartHeight);
-            
-            data.forEach((value, index) => {
-                const x = padding + (chartWidth / (data.length - 1)) * index;
-                const y = padding + chartHeight - (value * scale);
-                ctx.lineTo(x, y);
-            });
-            
-            ctx.lineTo(padding + chartWidth, padding + chartHeight);
-            ctx.closePath();
-            ctx.fill();
-            
-            // Draw data points
-            ctx.fillStyle = '#31d5de';
-            data.forEach((value, index) => {
-                const x = padding + (chartWidth / (data.length - 1)) * index;
-                const y = padding + chartHeight - (value * scale);
-                
-                ctx.beginPath();
-                ctx.arc(x, y, 5, 0, 2 * Math.PI);
-                ctx.fill();
-            });
-            
-            // Draw labels
-            ctx.fillStyle = '#f5f3ee';
-            ctx.textAlign = 'center';
-            months.forEach((month, index) => {
-                const x = padding + (chartWidth / (data.length - 1)) * index;
-                ctx.fillText(month, x, canvas.height - 20);
-            });
-            
-            // Draw values
-            ctx.textAlign = 'left';
-            for (let i = 0; i <= 5; i++) {
-                const value = Math.round((maxValue / 5) * (5 - i));
-                const y = padding + (chartHeight / 5) * i + 5;
-                ctx.fillText(value + '%', 10, y);
-            }
-        }
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(10, 10, 10, 0.95)';
-            } else {
-                header.style.background = 'rgba(26, 26, 46, 0.95)';
-            }
-        });
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Initialize counters when stats section becomes visible
-        const statsSection = document.querySelector('.stats');
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    animateCounters();
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        statsObserver.observe(statsSection);
-
-        // Initialize chart when chart section becomes visible
-        const chartSection = document.querySelector('.chart-section');
-        const chartObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    createChart();
-                    chartObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.3 });
-
-        chartObserver.observe(chartSection);
-
-        // Signup form function
-        function showSignupForm() {
-            alert('Funcionalidade de cadastro seria integrada aqui com sua API de backend!\n\nRecursos incluídos:\n• 30 dias grátis\n• Suporte completo\n• Migração de dados\n• Treinamento da equipe');
-        }
-
-        // Resize chart on window resize
-        window.addEventListener('resize', () => {
-            setTimeout(createChart, 100);
-        });
-
-        // Add some interactive elements
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-
-        // Parallax effect for floating elements
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const parallax = document.querySelectorAll('.floating-element');
-            
-            parallax.forEach((element, index) => {
-                const speed = 0.5 + (index * 0.2);
-                element.style.transform = `translateY(${scrolled * speed}px) rotate(${scrolled * 0.1}deg)`;
-            });
-        });
-
-        // Add loading animation
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '0';
-            document.body.style.transition = 'opacity 0.5s ease-in-out';
-            
-            setTimeout(() => {
-                document.body.style.opacity = '1';
-            }, 100);
-        });
-
-        // Add hover effects to testimonial cards
-        document.querySelectorAll('.testimonial-card').forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                card.style.transform = 'translateY(-5px) rotateX(5deg)';
-                card.style.boxShadow = '0 15px 35px rgba(49, 213, 222, 0.3)';
-            });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'translateY(0) rotateX(0deg)';
-                card.style.boxShadow = 'none';
-            });
-        });
-
-        // Add dynamic text animation
-        function typeWriter(element, text, speed = 50) {
-            let i = 0;
-            element.innerHTML = '';
-            
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            type();
-        }
-
-        // Initialize typing animation when hero section is visible
-        const heroTitle = document.querySelector('.hero h1');
-        const heroObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const originalText = heroTitle.innerHTML;
-                    setTimeout(() => {
-                        typeWriter(heroTitle, originalText.replace(/<[^>]*>/g, ''), 30);
-                    }, 500);
-                    heroObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        // Add click effects to buttons
-        document.querySelectorAll('.btn-primary, .btn-secondary, .cta-button, .pulse-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                // Create ripple effect
+        // Smooth navigation active state and ripple effect
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+                // Ripple effect
                 const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(49, 213, 222, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
                 const rect = this.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-                
                 ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.style.position = 'absolute';
-                ripple.style.borderRadius = '50%';
-                ripple.style.background = 'rgba(255, 255, 255, 0.3)';
-                ripple.style.transform = 'scale(0)';
-                ripple.style.animation = 'ripple 0.6s linear';
-                ripple.style.pointerEvents = 'none';
-                
-                this.style.position = 'relative';
-                this.style.overflow = 'hidden';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
                 this.appendChild(ripple);
-                
-                setTimeout(() => {
-                    ripple.remove();
-                }, 600);
+                setTimeout(() => ripple.remove(), 600);
             });
         });
 
-        // Add CSS for ripple animation
+        // Add ripple animation to CSS
         const style = document.createElement('style');
         style.textContent = `
             @keyframes ripple {
@@ -921,131 +758,535 @@
         `;
         document.head.appendChild(style);
 
-        // Advanced chart interactions
-        function addChartInteractions() {
-            const canvas = document.getElementById('performanceChart');
-            let tooltip = null;
-            
-            canvas.addEventListener('mousemove', (e) => {
-                const rect = canvas.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+        // Add product button interaction
+        document.querySelector('.add-product-btn').addEventListener('click', function() {
+            alert('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + M to toggle menu
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                sidebar.classList.toggle('open');
+            }
+            // Alt + P to add product
+            if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                document.querySelector('.add-product-btn').click();
+            }
+        });
+    </script>
+    <!-- Fim do componente Sidebar Menu -->
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <button class="menu-toggle" id="menuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="welcome-text">
+                <h2>Bem-vindo ao Brooklyn Panel</h2>
+                <p>Gerencie seu estoque com eficiência máxima</p>
+            </div>
+            <div class="user-profile">
+                <div class="profile-avatar">BP</div>
+                <div>
+                    <div style="color: var(--accent-white); font-weight: bold;">Admin</div>
+                    <div style="color: var(--text-secondary); font-size: 0.9rem;">Online</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1 class="floating">Brooklyn Panel</h1>
+                <p>A solução definitiva para gerenciamento de estoque de periféricos. Controle total, relatórios inteligentes e análises em tempo real.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn-primary">
+                        <i class="fas fa-rocket"></i>
+                        Iniciar Agora
+                    </a>
+                    <a href="#" class="btn-secondary">
+                        <i class="fas fa-play"></i>
+                        Ver Demo
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-boxes"></i>
+                        </div>
+                        <div class="stat-number" data-target="1247">0</div>
+                        <div class="stat-label">Produtos em Estoque</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="stat-number" data-target="89">0</div>
+                        <div class="stat-label">Empresas Clientes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-number" data-target="97">0</div>
+                        <div class="stat-label">% Eficiência</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <div class="stat-number" data-target="45">0</div>
+                        <div class="stat-label">% Economia</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Charts Section -->
+        <section class="charts">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Relatórios e Análises</h2>
+                    <p>Visualize o desempenho do seu estoque com gráficos interativos</p>
+                </div>
                 
-                // Chart data for tooltip
-                const data = [65, 75, 85, 78, 92, 88, 95, 102, 98, 110, 118, 125];
-                const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-                const padding = 60;
-                const chartWidth = canvas.width - 2 * padding;
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3 class="chart-title">Vendas Mensais</h3>
+                        <select class="chart-period">
+                            <option>Últimos 6 meses</option>
+                            <option>Último ano</option>
+                        </select>
+                    </div>
+                    <div class="chart" id="salesChart">
+                        <div class="chart-bar" style="--height: 120px; height: 120px;" data-value="850"></div>
+                        <div class="chart-bar" style="--height: 180px; height: 180px;" data-value="1200"></div>
+                        <div class="chart-bar" style="--height: 90px; height: 90px;" data-value="680"></div>
+                        <div class="chart-bar" style="--height: 220px; height: 220px;" data-value="1450"></div>
+                        <div class="chart-bar" style="--height: 160px; height: 160px;" data-value="1050"></div>
+                        <div class="chart-bar" style="--height: 200px; height: 200px;" data-value="1350"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-title">
+                    <h2>O que nossos clientes dizem</h2>
+                    <p>Feedbacks de empresas que confiam no Brooklyn Panel</p>
+                </div>
                 
-                // Find closest data point
-                let closestIndex = -1;
-                let minDistance = Infinity;
-                
-                data.forEach((value, index) => {
-                    const pointX = padding + (chartWidth / (data.length - 1)) * index;
-                    const distance = Math.abs(x - pointX);
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">
+                            "O Brooklyn Panel revolucionou nosso controle de estoque. Reduzimos perdas em 40% e aumentamos nossa eficiência operacional significativamente."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">TC</div>
+                            <div class="author-info">
+                                <h4>Tech Solutions</h4>
+                                <p>Diretor de Operações</p>
+                            </div>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
                     
-                    if (distance < minDistance && distance < 20) {
-                        minDistance = distance;
-                        closestIndex = index;
-                    }
-                });
-                
-                // Show/hide tooltip
-                if (closestIndex !== -1) {
-                    if (!tooltip) {
-                        tooltip = document.createElement('div');
-                        tooltip.style.position = 'absolute';
-                        tooltip.style.background = 'rgba(28, 49, 165, 0.9)';
-                        tooltip.style.color = '#f5f3ee';
-                        tooltip.style.padding = '8px 12px';
-                        tooltip.style.borderRadius = '8px';
-                        tooltip.style.fontSize = '14px';
-                        tooltip.style.pointerEvents = 'none';
-                        tooltip.style.zIndex = '1000';
-                        tooltip.style.backdropFilter = 'blur(10px)';
-                        tooltip.style.border = '1px solid rgba(49, 213, 222, 0.3)';
-                        document.body.appendChild(tooltip);
-                    }
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">
+                            "Interface intuitiva e relatórios detalhados. Conseguimos tomar decisões mais assertivas e otimizar nossos processos de compra."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">DG</div>
+                            <div class="author-info">
+                                <h4>Digital Games Store</h4>
+                                <p>Gerente de Estoque</p>
+                            </div>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
                     
-                    tooltip.innerHTML = `<strong>${months[closestIndex]}</strong><br>Eficiência: ${data[closestIndex]}%`;
-                    tooltip.style.left = (e.clientX + 10) + 'px';
-                    tooltip.style.top = (e.clientY - 50) + 'px';
-                    tooltip.style.display = 'block';
-                    canvas.style.cursor = 'pointer';
-                } else {
-                    if (tooltip) {
-                        tooltip.style.display = 'none';
-                    }
-                    canvas.style.cursor = 'default';
-                }
-            });
+                    <div class="testimonial-card">
+                        <p class="testimonial-quote">
+                            "Suporte excepcional e funcionalidades que realmente fazem a diferença. Recomendo para qualquer empresa que precise de controle de estoque profissional."
+                        </p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">ME</div>
+                            <div class="author-info">
+                                <h4>Mega Electronics</h4>
+                                <p>CEO</p>
+                            </div>
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="cta-section">
+            <div class="cta-content">
+                <h2>Pronto para transformar seu estoque?</h2>
+                <p>Junte-se a centenas de empresas que já utilizam o Brooklyn Panel para otimizar sua gestão de estoque</p>
+                <form class="signup-form" id="signupForm">
+                    <input type="email" class="signup-input" placeholder="Seu melhor e-mail" required>
+                    <button type="submit" class="signup-btn">
+                        <i class="fas fa-arrow-right"></i>
+                        Começar Grátis
+                    </button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
             
-            canvas.addEventListener('mouseleave', () => {
-                if (tooltip) {
-                    tooltip.style.display = 'none';
-                }
-                canvas.style.cursor = 'default';
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const duration = 2000;
+                const step = target / (duration / 16);
+                let current = 0;
+                
+                const timer = setInterval(() => {
+                    current += step;
+                    if (current >= target) {
+                        counter.textContent = target;
+                        clearInterval(timer);
+                    } else {
+                        counter.textContent = Math.floor(current);
+                    }
+                }, 16);
             });
         }
 
-        // Initialize chart interactions after chart is created
-        setTimeout(addChartInteractions, 1000);
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-        // Add floating action button for quick signup
-        const fab = document.createElement('div');
-        fab.innerHTML = '📈';
-        fab.style.cssText = `
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #31d5de, #1c31a5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 20px rgba(49, 213, 222, 0.4);
-            z-index: 1000;
-            animation: bounce 2s infinite;
-            transition: all 0.3s ease;
-        `;
-        
-        fab.addEventListener('click', () => {
-            document.getElementById('signup').scrollIntoView({ behavior: 'smooth' });
-        });
-        
-        fab.addEventListener('mouseenter', () => {
-            fab.style.transform = 'scale(1.1)';
-            fab.style.boxShadow = '0 6px 25px rgba(49, 213, 222, 0.6)';
-        });
-        
-        fab.addEventListener('mouseleave', () => {
-            fab.style.transform = 'scale(1)';
-            fab.style.boxShadow = '0 4px 20px rgba(49, 213, 222, 0.4)';
-        });
-        
-        document.body.appendChild(fab);
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    if (entry.target.classList.contains('stats')) {
+                        animateCounters();
+                    }
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-        // Add bounce animation for FAB
-        const fabStyle = document.createElement('style');
-        fabStyle.textContent = `
-            @keyframes bounce {
-                0%, 20%, 50%, 80%, 100% {
-                    transform: translateY(0);
+        // Observe elements for animation
+        document.querySelectorAll('.stat-card, .testimonial-card, .chart-container').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Chart interaction
+        const chartBars = document.querySelectorAll('.chart-bar');
+        chartBars.forEach(bar => {
+            bar.addEventListener('mouseenter', function() {
+                const tooltip = document.createElement('div');
+                tooltip.className = 'chart-tooltip';
+                tooltip.textContent = `Vendas: ${this.getAttribute('data-value')} unidades`;
+                tooltip.style.cssText = `
+                    position: absolute;
+                    background: var(--bg-card);
+                    color: var(--accent-white);
+                    padding: 0.5rem 1rem;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                    pointer-events: none;
+                    z-index: 1000;
+                    transform: translate(-50%, -100%);
+                    margin-top: -10px;
+                `;
+                this.appendChild(tooltip);
+            });
+
+            bar.addEventListener('mouseleave', function() {
+                const tooltip = this.querySelector('.chart-tooltip');
+                if (tooltip) {
+                    tooltip.remove();
                 }
-                40% {
-                    transform: translateY(-10px);
-                }
-                60% {
-                    transform: translateY(-5px);
+            });
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Remove active class from all links
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                // Add active class to clicked link
+                this.classList.add('active');
+                
+                // Add ripple effect
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(49, 213, 222, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        });
+
+        // Add ripple animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
                 }
             }
         `;
-        document.head.appendChild(fabStyle);
+        document.head.appendChild(style);
+
+        // Form submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('.signup-input').value;
+            
+            // Simulate form submission
+            const btn = this.querySelector('.signup-btn');
+            const originalText = btn.innerHTML;
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Sucesso!';
+                btn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                    btn.style.background = 'white';
+                    this.reset();
+                    
+                    // Show success message
+                    showNotification('Cadastro realizado com sucesso! Em breve entraremos em contato.', 'success');
+                }, 2000);
+            }, 1500);
+        });
+
+        // Add product button interaction
+        document.querySelector('.add-product-btn').addEventListener('click', function() {
+            showNotification('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.', 'info');
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+                z-index: 10000;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+                font-weight: 500;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            const heroContent = document.querySelector('.hero-content');
+            
+            if (hero && heroContent) {
+                heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        // Dynamic background animation
+        function createFloatingElements() {
+            const container = document.querySelector('.hero');
+            const colors = ['var(--primary-cyan)', 'var(--primary-blue)'];
+            
+            for (let i = 0; i < 5; i++) {
+                const element = document.createElement('div');
+                element.style.cssText = `
+                    position: absolute;
+                    width: ${Math.random() * 100 + 50}px;
+                    height: ${Math.random() * 100 + 50}px;
+                    background: linear-gradient(135deg, ${colors[Math.floor(Math.random() * colors.length)]}, transparent);
+                    border-radius: 50%;
+                    opacity: 0.1;
+                    animation: float ${Math.random() * 3 + 4}s ease-in-out infinite;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    pointer-events: none;
+                `;
+                container.appendChild(element);
+            }
+        }
+
+        // Chart data update simulation
+        function updateChartData() {
+            const bars = document.querySelectorAll('.chart-bar');
+            bars.forEach(bar => {
+                const currentValue = parseInt(bar.getAttribute('data-value'));
+                const variation = Math.floor(Math.random() * 200) - 100; // -100 to +100
+                const newValue = Math.max(100, currentValue + variation);
+                const newHeight = (newValue / 1500) * 220; // Scale to max height
+                
+                bar.setAttribute('data-value', newValue);
+                bar.style.height = `${newHeight}px`;
+            });
+        }
+
+        // Auto-update chart every 30 seconds
+        setInterval(updateChartData, 30000);
+
+        // Initialize animations and effects
+        document.addEventListener('DOMContentLoaded', function() {
+            createFloatingElements();
+            
+            // Animate elements on load
+            setTimeout(() => {
+                document.querySelectorAll('.hero-content > *').forEach((el, index) => {
+                    el.style.animation = `fadeInUp 0.8s ease ${index * 0.2}s both`;
+                });
+            }, 500);
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + M to toggle menu
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                sidebar.classList.toggle('open');
+            }
+            
+            // Alt + P to add product
+            if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                document.querySelector('.add-product-btn').click();
+            }
+        });
+
+        // Performance monitoring
+        let performanceData = {
+            loadTime: performance.now(),
+            interactions: 0
+        };
+
+        document.addEventListener('click', () => {
+            performanceData.interactions++;
+        });
+
+        // Simulate real-time updates
+        function simulateRealTimeUpdates() {
+            const statsNumbers = document.querySelectorAll('.stat-number');
+            const randomStat = statsNumbers[Math.floor(Math.random() * statsNumbers.length)];
+            const currentValue = parseInt(randomStat.textContent);
+            const change = Math.floor(Math.random() * 10) - 5; // -5 to +5
+            const newValue = Math.max(0, currentValue + change);
+            
+            // Animate the change
+            randomStat.style.transform = 'scale(1.1)';
+            randomStat.style.color = change > 0 ? 'var(--primary-cyan)' : change < 0 ? '#ff6b6b' : 'var(--accent-white)';
+            
+            setTimeout(() => {
+                randomStat.textContent = newValue;
+                randomStat.setAttribute('data-target', newValue);
+            }, 200);
+            
+            setTimeout(() => {
+                randomStat.style.transform = 'scale(1)';
+                randomStat.style.color = 'var(--accent-white)';
+            }, 400);
+        }
+
+        // Update stats every 15 seconds
+        setInterval(simulateRealTimeUpdates, 15000);
+
+        // Initialize observer for stats section
+        observer.observe(document.querySelector('.stats'));
+
+        // Add loading state
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+            showNotification('Brooklyn Panel carregado com sucesso!', 'success');
+        });
     </script>
 </body>
 </html>
