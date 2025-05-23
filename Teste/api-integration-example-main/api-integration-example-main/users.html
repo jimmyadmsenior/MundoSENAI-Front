@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuários - Mundo SENAI</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho comum -->
+        <header>
+            <h1>Mundo SENAI</h1>
+            <p>Gerenciamento de Usuários</p>
+        </header>
+
+        <!-- Navegação -->
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="products.html"><i class="fas fa-box"></i> Produtos</a></li>
+                <li><a href="users.html" class="active"><i class="fas fa-users"></i> Usuários</a></li>
+                <li><a href="profile.html" id="my-profile-link"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
+                <li><a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <section class="page-header">
+                <h2>Usuários</h2>
+                <div class="actions">
+                    <button id="refresh-users" class="btn"><i class="fas fa-sync-alt"></i> Atualizar</button>
+                    <button id="add-user-btn" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Usuário</button>
+                </div>
+            </section>
+
+            <!-- Formulário de adição/edição de usuário -->
+            <div id="user-form-container" class="form-container hidden">
+                <h3 id="user-form-title">Adicionar Novo Usuário</h3>
+                <form id="user-form">
+                    <input type="hidden" id="user-id">
+                    <div class="form-group">
+                        <label for="user-name">Nome:</label>
+                        <input type="text" id="user-name" placeholder="Nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email">Email:</label>
+                        <input type="email" id="user-email" placeholder="Email" required>
+                    </div>
+                    <div id="password-fields">
+                        <div class="form-group">
+                            <label for="user-password">Senha:</label>
+                            <input type="password" id="user-password" placeholder="Senha">
+                            <small class="form-hint">Senha para novo usuário</small>
+                        </div>
+                    </div>
+                    
+                    <div id="password-change-fields" class="hidden">
+                        <div class="form-group">
+                            <label for="current-password">Senha Atual:</label>
+                            <input type="password" id="current-password" placeholder="Senha atual">
+                        </div>
+                        <div class="form-group">
+                            <label for="new-password">Nova Senha:</label>
+                            <input type="password" id="new-password" placeholder="Nova senha">
+                        </div>
+                        <div class="form-actions password-actions">
+                            <button type="button" id="change-password-btn" class="btn btn-primary">Alterar Senha</button>
+                            <button type="button" id="cancel-password-change" class="btn btn-secondary">Cancelar</button>
+                        </div>
+                    </div>
+                    
+                    <div id="password-change-toggle" class="hidden">
+                        <button type="button" id="show-password-change" class="btn btn-secondary btn-sm">
+                            <i class="fas fa-key"></i> Alterar Senha
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-image">Imagem de Perfil:</label>
+                        <div class="image-upload-container">
+                            <input type="file" id="user-image" accept="image/*">
+                            <div id="image-preview" class="image-preview"></div>
+                        </div>
+                        <small class="form-hint">Selecione uma imagem para o perfil do usuário (opcional)</small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                        <button type="button" id="cancel-user" class="btn btn-secondary">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tabela de usuários -->
+            <div class="table-container">
+                <table id="users-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="users-list">
+                        <tr>
+                            <td colspan="3" class="loading-cell">Carregando usuários...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <footer>
+            <p>Exemplo didático de integração com API - Mundo SENAI</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/api.js"></script>
+    <script src="js/auth-check.js"></script>
+    <script src="js/users.js"></script>
+</body>
+</html>

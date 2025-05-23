@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brooklyn Panel - Gestão Inteligente de Estoque</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            color: #f5f3ee;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            background: radial-gradient(ellipse at center, #1c31a5 0%, #000000 70%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%2331d5de" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%2331d5de" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="%2331d5de" opacity="0.05"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            animation: float 20s infinite linear;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #31d5de, #f5f3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: linear-gradient(135deg, #31d5de, #1c31a5);
+            color: #000;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(49, 213, 222, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(49, 213, 222, 0.5);
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .dashboard-preview {
+            background: rgba(245, 243, 238, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(49, 213, 222, 0.3);
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 100px 0;
+            background: linear-gradient(180deg, #000 0%, #111 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(49, 213, 222, 0.1), rgba(28, 49, 165, 0.1));
+            border-radius: 15px;
+            border: 1px solid rgba(49, 213, 222, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: #31d5de;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #31d5de;
+            margin-bottom: 10px;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+            background: #000;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 3rem;
+            margin-bottom: 60px;
+            background: linear-gradient(135deg, #31d5de, #f5f3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            padding: 40px;
+            background: linear-gradient(135deg, #111, #1a1a1a);
+            border-radius: 20px;
+            border: 1px solid rgba(49, 213, 222, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #31d5de, #1c31a5);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: #31d5de;
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #31d5de;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #f5f3ee;
+        }
+
+        .feature-desc {
+            opacity: 0.8;
+            line-height: 1.6;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            padding: 100px 0;
+            background: linear-gradient(180deg, #000 0%, #1a1a1a 100%);
+        }
+
+        .chart-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            margin-top: 60px;
+        }
+
+        .chart-card {
+            background: rgba(245, 243, 238, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid rgba(49, 213, 222, 0.3);
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #31d5de;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+
+        .chart-wrapper canvas {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        .dashboard-preview {
+            background: rgba(245, 243, 238, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(49, 213, 222, 0.3);
+            animation: pulse 4s infinite;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-chart-wrapper {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+
+        .hero-chart-wrapper canvas {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 100px 0;
+            background: #000;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .testimonial-card {
+            padding: 40px;
+            background: linear-gradient(135deg, rgba(28, 49, 165, 0.1), rgba(49, 213, 222, 0.1));
+            border-radius: 20px;
+            border: 1px solid rgba(49, 213, 222, 0.2);
+            position: relative;
+        }
+
+        .testimonial-quote {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            font-weight: bold;
+            color: #31d5de;
+        }
+
+        .testimonial-company {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: radial-gradient(ellipse at center, #1c31a5 0%, #000 70%);
+            text-align: center;
+        }
+
+        .cta-content h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #31d5de, #f5f3ee);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .chart-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        .animated {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .animated.fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Brooklyn Panel</h1>
+                    <p>O futuro da gestão de estoque chegou. Controle total, análises em tempo real e automação inteligente para seu negócio de periféricos.</p>
+                    <a href="#" class="cta-button" onclick="showSignupAlert()">Começar Agora</a>
+                </div>
+                <div class="hero-visual">
+                    <div class="dashboard-preview">
+                        <div class="chart-title">Dashboard em Tempo Real</div>
+                        <div class="hero-chart-wrapper">
+                            <canvas id="heroChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="section-title animated">Resultados que Falam por Si</div>
+            <div class="stats-grid">
+                <div class="stat-card animated">
+                    <div class="stat-number" data-target="500">0</div>
+                    <div class="stat-label">Empresas Ativas</div>
+                </div>
+                <div class="stat-card animated">
+                    <div class="stat-number" data-target="89">0</div>
+                    <div class="stat-label">% Redução de Perdas</div>
+                </div>
+                <div class="stat-card animated">
+                    <div class="stat-number" data-target="2.5">0</div>
+                    <div class="stat-label">Milhões Gerenciados</div>
+                </div>
+                <div class="stat-card animated">
+                    <div class="stat-number" data-target="24">0</div>
+                    <div class="stat-label">Horas Economizadas/Dia</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-title animated">Por que Brooklyn Panel?</div>
+            <div class="features-grid">
+                <div class="feature-card animated">
+                    <div class="feature-icon">📊</div>
+                    <div class="feature-title">Análises Avançadas</div>
+                    <div class="feature-desc">Relatórios detalhados com IA que preveem tendências e otimizam seu inventário automaticamente.</div>
+                </div>
+                <div class="feature-card animated">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-title">Controle em Tempo Real</div>
+                    <div class="feature-desc">Monitore entrada e saída de produtos instantaneamente com notificações inteligentes.</div>
+                </div>
+                <div class="feature-card animated">
+                    <div class="feature-icon">🔒</div>
+                    <div class="feature-title">Segurança Total</div>
+                    <div class="feature-desc">Seus dados protegidos com criptografia militar e backups automáticos em nuvem.</div>
+                </div>
+                <div class="feature-card animated">
+                    <div class="feature-icon">🚀</div>
+                    <div class="feature-title">Automação Inteligente</div>
+                    <div class="feature-desc">Pedidos automáticos, alertas de estoque baixo e integração com fornecedores.</div>
+                </div>
+                <div class="feature-card animated">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-title">Multiplataforma</div>
+                    <div class="feature-desc">Acesse de qualquer lugar: desktop, tablet ou smartphone com sincronização instantânea.</div>
+                </div>
+                <div class="feature-card animated">
+                    <div class="feature-icon">💡</div>
+                    <div class="feature-title">IA Preditiva</div>
+                    <div class="feature-desc">Inteligência artificial que aprende seus padrões e sugere melhorias automaticamente.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chart Section -->
+    <section class="chart-section">
+        <div class="container">
+            <div class="section-title animated">Resultados Mensuráveis</div>
+            <div class="chart-container">
+                <div class="chart-card animated">
+                    <div class="chart-title">Crescimento Mensal</div>
+                    <div class="chart-wrapper">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card animated">
+                    <div class="chart-title">Eficiência por Categoria</div>
+                    <div class="chart-wrapper">
+                        <canvas id="efficiencyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title animated">O que Nossos Clientes Dizem</div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card animated">
+                    <div class="testimonial-quote">"Brooklyn Panel revolucionou nossa gestão. Reduzimos perdas em 75% e aumentamos a eficiência em 200%. Simplesmente incrível!"</div>
+                    <div class="testimonial-author">Maria Silva</div>
+                    <div class="testimonial-company">TechStore Pro</div>
+                </div>
+                <div class="testimonial-card animated">
+                    <div class="testimonial-quote">"A automação inteligente nos economiza 6 horas por dia. O ROI foi imediato e a interface é intuitiva para toda equipe."</div>
+                    <div class="testimonial-author">Carlos Mendes</div>
+                    <div class="testimonial-company">Periféricos Plus</div>
+                </div>
+                <div class="testimonial-card animated">
+                    <div class="testimonial-quote">"Melhor investimento que fizemos. Os relatórios são impressionantes e a previsão de demanda é certeira em 95% dos casos."</div>
+                    <div class="testimonial-author">Ana Costa</div>
+                    <div class="testimonial-company">Gaming World</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content animated">
+                <h2>Pronto para Transformar seu Negócio?</h2>
+                <p>Junte-se a centenas de empresas que já revolucionaram sua gestão de estoque</p>
+                <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                    <a href="#" class="cta-button" onclick="showSignupAlert()">Teste Grátis por 30 Dias</a>
+                    <a href="#" class="cta-button" onclick="showDemoAlert()" style="background: transparent; border: 2px solid #31d5de; color: #31d5de;">Ver Demo</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animated').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseFloat(counter.getAttribute('data-target'));
+                const increment = target / 50;
+                let current = 0;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        if (target >= 1000000) {
+                            counter.textContent = (current / 1000000).toFixed(1) + 'M';
+                        } else if (current < target) {
+                            counter.textContent = Math.ceil(current);
+                        } else {
+                            counter.textContent = target >= 1000000 ? (target / 1000000).toFixed(1) + 'M' : target;
+                        }
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target >= 1000000 ? (target / 1000000).toFixed(1) + 'M' : target + (target === 89 ? '%' : '');
+                    }
+                };
+                
+                updateCounter();
+            });
+        }
+
+        // Trigger counter animation when stats section is visible
+        const statsSection = document.querySelector('.stats');
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    animateCounters();
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        });
+        statsObserver.observe(statsSection);
+
+        // Hero Chart
+        const heroCtx = document.getElementById('heroChart').getContext('2d');
+        new Chart(heroCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Eficiência (%)',
+                    data: [65, 72, 78, 85, 92, 98],
+                    borderColor: '#31d5de',
+                    backgroundColor: 'rgba(49, 213, 222, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(245, 243, 238, 0.1)' },
+                        ticks: { color: '#f5f3ee' }
+                    },
+                    x: {
+                        grid: { color: 'rgba(245, 243, 238, 0.1)' },
+                        ticks: { color: '#f5f3ee' }
+                    }
+                }
+            }
+        });
+
+        // Growth Chart
+        const growthCtx = document.getElementById('growthChart').getContext('2d');
+        new Chart(growthCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+                datasets: [{
+                    label: 'Crescimento (%)',
+                    data: [12, 18, 25, 32, 45, 58],
+                    backgroundColor: [
+                        'rgba(49, 213, 222, 0.8)',
+                        'rgba(49, 213, 222, 0.7)',
+                        'rgba(49, 213, 222, 0.6)',
+                        'rgba(28, 49, 165, 0.8)',
+                        'rgba(28, 49, 165, 0.7)',
+                        'rgba(28, 49, 165, 0.6)'
+                    ],
+                    borderColor: '#31d5de',
+                    borderWidth: 2,
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        grid: { color: 'rgba(245, 243, 238, 0.1)' },
+                        ticks: { color: '#f5f3ee' }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#f5f3ee' }
+                    }
+                }
+            }
+        });
+
+        // Efficiency Chart
+        const efficiencyCtx = document.getElementById('efficiencyChart').getContext('2d');
+        new Chart(efficiencyCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Mouses', 'Teclados', 'Headsets', 'Monitores'],
+                datasets: [{
+                    data: [35, 25, 20, 20],
+                    backgroundColor: [
+                        '#31d5de',
+                        '#1c31a5',
+                        'rgba(49, 213, 222, 0.6)',
+                        'rgba(28, 49, 165, 0.6)'
+                    ],
+                    borderColor: '#000',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { 
+                            color: '#f5f3ee', 
+                            padding: 15,
+                            font: { size: 12 }
+                        }
+                    }
+                }
+            }
+        });
+
+        // CTA Alerts
+        function showSignupAlert() {
+            alert('🚀 Redirecionando para o cadastro... \n\nEm breve você terá acesso ao Brooklyn Panel!');
+        }
+
+        function showDemoAlert() {
+            alert('📺 Agendando demonstração... \n\nNossa equipe entrará em contato em breve!');
+        }
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Interactive hover effects
+        document.querySelectorAll('.feature-card, .testimonial-card, .stat-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

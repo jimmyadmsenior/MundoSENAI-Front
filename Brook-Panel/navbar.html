@@ -1,279 +1,288 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brooklyn Panel - Menu</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<!-- Sidebar Menu Component - Copie este bloco para outras páginas -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-        :root {
-            --primary-cyan: #31d5de;
-            --primary-blue: #1c31a5;
-            --accent-white: #f5f3ee;
-            --bg-dark: #0f0f0f;
-            --bg-card: #1a1a1a;
-            --text-primary: #f5f3ee;
-            --text-secondary: #b0b0b0;
-        }
+    :root {
+        --primary-cyan: #31d5de;
+        --primary-blue: #1c31a5;
+        --accent-white: #f5f3ee;
+        --bg-dark: #0f0f0f;
+        --bg-card: #1a1a1a;
+        --text-primary: #f5f3ee;
+        --text-secondary: #b0b0b0;
+    }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-primary);
-            overflow-x: hidden;
-        }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        overflow-x: hidden;
+    }
 
-        /* Sidebar */
+    /* Sidebar */
+    .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 280px;
+        height: 100vh;
+        background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+        padding: 2rem 0;
+        z-index: 1000;
+        box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+        transition: transform 0.3s ease;
+    }
+
+    .logo {
+        text-align: center;
+        margin-bottom: 3rem;
+        padding: 0 2rem;
+    }
+
+    .logo h1 {
+        font-size: 1.8rem;
+        background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: bold;
+    }
+
+    .logo p {
+        color: var(--text-secondary);
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+
+    .logo-img {
+        width: 150px;
+        height: auto;
+        display: block;
+        margin: 0 auto 0.5rem auto;
+    }
+
+    .nav-menu {
+        list-style: none;
+        padding: 0 1rem;
+    }
+
+    .nav-item {
+        margin-bottom: 0.5rem;
+    }
+
+    .nav-link {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        color: var(--text-secondary);
+        text-decoration: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .nav-link:hover, .nav-link.active {
+        background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
+        color: var(--accent-white);
+        transform: translateX(5px);
+    }
+
+    .nav-link::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 3px;
+        background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+        transform: scaleY(0);
+        transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover::before, .nav-link.active::before {
+        transform: scaleY(1);
+    }
+
+    .nav-link i {
+        margin-right: 1rem;
+        font-size: 1.2rem;
+        width: 20px;
+    }
+
+    /* Centraliza o botão de adicionar produto */
+    .add-product-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .add-product-btn {
+        margin: 2rem 0;
+        padding: 1rem;
+        background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+        border: none;
+        border-radius: 12px;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+    }
+
+    .add-product-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0, 14, 103, 0.3);
+    }
+
+    .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: var(--accent-white);
+        font-size: 1.5rem;
+        cursor: pointer;
+        position: fixed;
+        top: 1.5rem;
+        left: 1.5rem;
+        z-index: 1100;
+    }
+
+    @media (max-width: 768px) {
         .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 280px;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
-            padding: 2rem 0;
-            z-index: 1000;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
+            transform: translateX(-100%);
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 3rem;
-            padding: 0 2rem;
-        }
-
-        .logo h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-        }
-
-        .logo p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
-        .nav-menu {
-            list-style: none;
-            padding: 0 1rem;
-        }
-
-        .nav-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
-            color: var(--accent-white);
-            transform: translateX(5px);
-        }
-
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-
-        .nav-link:hover::before, .nav-link.active::before {
-            transform: scaleY(1);
-        }
-
-        .nav-link i {
-            margin-right: 1rem;
-            font-size: 1.2rem;
-            width: 20px;
-        }
-
-        .add-product-btn {
-            margin: 2rem 1rem;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .add-product-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.3);
+        .sidebar.open {
+            transform: translateX(0);
         }
 
         .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--accent-white);
-            font-size: 1.5rem;
-            cursor: pointer;
-            position: fixed;
-            top: 1.5rem;
-            left: 1.5rem;
-            z-index: 1100;
+            display: block;
         }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.open {
-                transform: translateX(0);
-            }
-
-            .menu-toggle {
-                display: block;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Menu Toggle Button (for mobile) -->
-    <button class="menu-toggle" id="menuToggle">
-        <i class="fas fa-bars"></i>
-    </button>
-    <!-- Sidebar -->
-    <nav class="sidebar" id="sidebar">
-        <div class="logo">
-            <h1>Brooklyn Panel</h1>
-            <p>Gestão Inteligente</p>
-        </div>
-        
-        <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="#" class="nav-link active">
-                    <i class="fas fa-home"></i>
-                    Home
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-chart-line"></i>
-                    Relatórios
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-tachometer-alt"></i>
-                    Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-user"></i>
-                    Perfil
-                </a>
-            </li>
-        </ul>
-        
+    }
+</style>
+<!-- Menu Toggle Button (for mobile) -->
+<button class="menu-toggle" id="menuToggle">
+    <i class="fas fa-bars"></i>
+</button>
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+    <div class="logo">
+        <a>
+            <img src="../Brook-Panel/Media/Identidade Visual.png" alt="" class="logo-img">
+        </a>
+        <p>Gestão Inteligente</p>
+    </div>
+    
+    <ul class="nav-menu">
+        <li class="nav-item">
+            <a href="../Brook-Panel/Homepage.html" class="nav-link active">
+                <i class="fas fa-home"></i>
+                Home
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="../Brook-Panel/Dashboard.html" class="nav-link">
+                <i class="fas fa-chart-line"></i>
+                Relatórios
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="../Brook-Panel/Dashboard.html" class="nav-link">
+                <i class="fas fa-tachometer-alt"></i>
+                Dashboard
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="../Brook-Panel/Usuários.html" class="nav-link">
+                <i class="fas fa-user"></i>
+                Perfil
+            </a>
+        </li>
+    </ul>
+    
+    <div class="add-product-container">
         <button class="add-product-btn">
             <i class="fas fa-plus"></i>
             Adicionar Produto
         </button>
-    </nav>
+    </div>
+</nav>
 
-    <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
+<script>
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebar = document.getElementById('sidebar');
 
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
+    menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('open');
+    });
 
-        // Smooth navigation active state and ripple effect
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                
-                // Ripple effect
-                const ripple = document.createElement('span');
-                ripple.style.cssText = `
-                    position: absolute;
-                    border-radius: 50%;
-                    background: rgba(49, 213, 222, 0.3);
-                    transform: scale(0);
-                    animation: ripple 0.6s linear;
-                    pointer-events: none;
-                `;
-                
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-                
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });
-
-        // Add ripple animation to CSS
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        // Add product button interaction
-        document.querySelector('.add-product-btn').addEventListener('click', function() {
-            alert('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            // Alt + M to toggle menu
-            if (e.altKey && e.key === 'm') {
-                e.preventDefault();
-                sidebar.classList.toggle('open');
-            }
+    // Smooth navigation active state and ripple effect
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
             
-            // Alt + P to add product
-            if (e.altKey && e.key === 'p') {
-                e.preventDefault();
-                document.querySelector('.add-product-btn').click();
-            }
+            // Ripple effect
+            const ripple = document.createElement('span');
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(49, 213, 222, 0.3);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+            `;
+            
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
         });
-    </script>
-</body>
-</html>
+    });
+
+    // Add ripple animation to CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Add product button interaction
+    document.querySelector('.add-product-btn').addEventListener('click', function() {
+        alert('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
+    });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Alt + M to toggle menu
+        if (e.altKey && e.key === 'm') {
+            e.preventDefault();
+            sidebar.classList.toggle('open');
+        }
+        
+        // Alt + P to add product
+        if (e.altKey && e.key === 'p') {
+            e.preventDefault();
+            document.querySelector('.add-product-btn').click();
+        }
+    });
+</script>
+<!-- Fim do componente Sidebar Menu -->
