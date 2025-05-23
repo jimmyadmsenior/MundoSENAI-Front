@@ -63,6 +63,13 @@
             margin-top: 0.5rem;
         }
 
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
@@ -112,8 +119,14 @@
             width: 20px;
         }
 
+        /* Centraliza o botão de adicionar produto */
+        .add-product-container {
+            display: flex;
+            justify-content: center;
+        }
+
         .add-product-btn {
-            margin: 2rem 1rem;
+            margin: 2rem 0;
             padding: 1rem;
             background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
             border: none;
@@ -130,7 +143,7 @@
 
         .add-product-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.3);
+            box-shadow: 0 8px 25px rgba(0, 14, 103, 0.3);
         }
 
         .menu-toggle {
@@ -169,7 +182,9 @@
     <!-- Sidebar -->
     <nav class="sidebar" id="sidebar">
         <div class="logo">
-            <h1>Brooklyn Panel</h1>
+            <a>
+                <img src="../Brook-Panel/Media/Identidade Visual.png" alt="" class="logo-img">
+            </a>
             <p>Gestão Inteligente</p>
         </div>
         
@@ -200,10 +215,12 @@
             </li>
         </ul>
         
-        <button class="add-product-btn">
-            <i class="fas fa-plus"></i>
-            Adicionar Produto
-        </button>
+        <div class="add-product-container">
+            <button class="add-product-btn">
+                <i class="fas fa-plus"></i>
+                Adicionar Produto
+            </button>
+        </div>
     </nav>
 
     <script>
