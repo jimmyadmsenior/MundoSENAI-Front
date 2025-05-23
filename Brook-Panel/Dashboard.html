@@ -44,68 +44,46 @@
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <div class="logo-container">
-            <div class="logo">
-                <div class="logo-icon">B</div>
-                <span>Brooklyn</span>
-            </div>
+    <!-- Menu Toggle Button (for mobile) -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <h1>Brooklyn Panel</h1>
+            <p>Gestão Inteligente</p>
         </div>
-        <div class="nav-menu">
-            <div class="nav-title">Principal</div>
-            <div class="nav-item active">
-                <a href="#" data-page="dashboard">
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="#" class="nav-link active" data-page="dashboard">
                     <i class="fas fa-home"></i>
-                    <span>Dashboard</span>
+                    Home
                 </a>
-            </div>
-            <div class="nav-item">
-                <a href="#" data-page="products">
-                    <i class="fas fa-box"></i>
-                    <span>Produtos</span>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-line"></i>
+                    Relatórios
                 </a>
-            </div>
-            <div class="nav-item">
-                <a href="#" data-page="inventory">
-                    <i class="fas fa-warehouse"></i>
-                    <span>Estoque</span>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
                 </a>
-            </div>
-            <div class="nav-title">Gerenciamento</div>
-            <div class="nav-item">
-                <a href="#" data-page="orders">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span>Pedidos</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="#" data-page="customers">
-                    <i class="fas fa-users"></i>
-                    <span>Clientes</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="#" data-page="reports">
-                    <i class="fas fa-chart-bar"></i>
-                    <span>Relatórios</span>
-                </a>
-            </div>
-            <div class="nav-title">Configurações</div>
-            <div class="nav-item">
-                <a href="#" data-page="settings">
-                    <i class="fas fa-cog"></i>
-                    <span>Configurações</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="#" data-page="profile">
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link" data-page="profile">
                     <i class="fas fa-user"></i>
-                    <span>Perfil</span>
+                    Perfil
                 </a>
-            </div>
-        </div>
-    </div>
+            </li>
+        </ul>
+        <button class="add-product-btn" id="add-product-btn-navbar">
+            <i class="fas fa-plus"></i>
+            Adicionar Produto
+        </button>
+    </nav>
 
     <!-- Main Content -->
     <div class="main-content">
