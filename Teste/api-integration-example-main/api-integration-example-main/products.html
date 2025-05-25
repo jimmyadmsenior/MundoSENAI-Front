@@ -4,116 +4,354 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produtos - Mundo SENAI</title>
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-cyan: #31d5de;
+            --primary-blue: #1c31a5;
+            --accent-white: #f5f3ee;
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f3ee;
+            --text-secondary: #b0b0b0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            margin: 0;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .logo-img {
+            width: 120px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
+            color: var(--accent-white);
+            transform: translateX(5px);
+        }
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+        }
+        .page-header {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .page-header h2 {
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.3);
+        }
+        .btn-secondary {
+            background: rgba(176, 176, 176, 0.2);
+            color: var(--text-secondary);
+        }
+        .btn-secondary:hover {
+            background: rgba(176, 176, 176, 0.3);
+        }
+        .search-container {
+            margin-bottom: 2rem;
+        }
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .search-box:focus-within {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 20px rgba(49, 213, 222, 0.3);
+        }
+        .search-box input {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            padding: 0.5rem;
+            outline: none;
+            width: 300px;
+        }
+        .search-box button {
+            background: var(--primary-cyan);
+            color: var(--bg-dark);
+            border-radius: 8px;
+            border: none;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .filter-tags {
+            margin-top: 0.5rem;
+        }
+        .form-container {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(49, 213, 222, 0.1);
+            margin-bottom: 2rem;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        .form-hint {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .image-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .image-preview img {
+            max-width: 60px;
+            border-radius: 8px;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            color: var(--text-primary);
+        }
+        th, td {
+            padding: 1rem;
+            text-align: left;
+        }
+        th {
+            background: rgba(49, 213, 222, 0.1);
+            color: var(--primary-cyan);
+        }
+        tr {
+            border-bottom: 1px solid rgba(49, 213, 222, 0.05);
+        }
+        tr:last-child {
+            border-bottom: none;
+        }
+        .loading-cell {
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 70px;
+                padding: 1rem 0;
+            }
+            .main-content {
+                margin-left: 70px;
+                padding: 1rem;
+            }
+            .logo-img {
+                width: 40px;
+            }
+            .logo p, .nav-link span {
+                display: none;
+            }
+            .nav-link {
+                justify-content: center;
+                padding: 1rem 0.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .main-content {
+                margin-left: 0;
+                padding: 0.5rem;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
+    <nav class="sidebar">
+        <div class="logo">
+            <img src="Brooklyn.png" alt="Logo Brooklyn" class="logo-img">
+            <p>Gestão Inteligente</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html" class="nav-link active"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
+            <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
+            <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
+            <li class="nav-item"><a href="#" id="logout-link" class="nav-link"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a></li>
+        </ul>
+    </nav>
+    <main class="main-content">
         <!-- Cabeçalho comum -->
-        <header>
-            <h1>Mundo SENAI</h1>
-            <p>Gerenciamento de Produtos</p>
+        <header class="page-header">
+            <h2>Produtos</h2>
+            <div class="actions">
+                <button id="refresh-products" class="btn"><i class="fas fa-sync-alt"></i> Atualizar</button>
+                <button id="add-product-btn" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Produto</button>
+            </div>
         </header>
-
-        <!-- Navegação -->
-        <nav>
-            <ul>
-                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="products.html" class="active"><i class="fas fa-box"></i> Produtos</a></li>
-                <li><a href="users.html"><i class="fas fa-users"></i> Usuários</a></li>
-                <li><a href="profile.html" id="my-profile-link"><i class="fas fa-user-circle"></i> Meu Perfil</a></li>
-                <li><a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-            </ul>
-        </nav>
-
-        <main>
-            <section class="page-header">
-                <h2>Produtos</h2>
-                <div class="actions">
-                    <button id="refresh-products" class="btn"><i class="fas fa-sync-alt"></i> Atualizar</button>
-                    <button id="add-product-btn" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Produto</button>
-                </div>
-            </section>
-            
-            <!-- Barra de pesquisa por categoria -->
-            <div class="search-container">
-                <div class="search-box">
-                    <input type="text" id="category-search" placeholder="Buscar por categoria...">
-                    <button id="search-btn" class="btn"><i class="fas fa-search"></i></button>
-                </div>
-                <div class="filter-tags" id="filter-tags">
-                    <!-- Tags de filtro serão adicionadas aqui dinamicamente -->
-                </div>
+        
+        <!-- Barra de pesquisa por categoria -->
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="category-search" placeholder="Buscar por categoria...">
+                <button id="search-btn" class="btn"><i class="fas fa-search"></i></button>
             </div>
-
-            <!-- Formulário de adição/edição de produto -->
-            <div id="product-form-container" class="form-container hidden">
-                <h3 id="product-form-title">Adicionar Novo Produto</h3>
-                <form id="product-form">
-                    <input type="hidden" id="product-id">
-                    <div class="form-group">
-                        <label for="product-name">Nome:</label>
-                        <input type="text" id="product-name" placeholder="Nome do produto" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="product-description">Descrição:</label>
-                        <textarea id="product-description" placeholder="Descrição do produto"></textarea>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="product-price">Preço:</label>
-                            <input type="number" id="product-price" placeholder="Preço" step="0.01" min="0" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="product-stock">Estoque:</label>
-                            <input type="number" id="product-stock" placeholder="Quantidade em estoque" min="0" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="product-category">Categoria:</label>
-                        <input type="text" id="product-category" placeholder="Categoria">
-                    </div>
-                    <div class="form-group">
-                        <label for="product-image">Imagem do Produto:</label>
-                        <div class="image-upload-container">
-                            <input type="file" id="product-image" accept="image/*">
-                            <div id="product-image-preview" class="image-preview"></div>
-                        </div>
-                        <small class="form-hint">Selecione uma imagem para o produto (opcional)</small>
-                    </div>
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Salvar</button>
-                        <button type="button" id="cancel-product" class="btn btn-secondary">Cancelar</button>
-                    </div>
-                </form>
+            <div class="filter-tags" id="filter-tags">
+                <!-- Tags de filtro serão adicionadas aqui dinamicamente -->
             </div>
+        </div>
 
-            <!-- Tabela de produtos -->
-            <div class="table-container">
-                <table id="products-table">
-                    <thead>
-                        <tr>
-                            <th>Nome</th>
-                            <th>Categoria</th>
-                            <th>Preço</th>
-                            <th>Estoque</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="products-list">
-                        <tr>
-                            <td colspan="5" class="loading-cell">Carregando produtos...</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </main>
+        <!-- Formulário de adição/edição de produto -->
+        <div id="product-form-container" class="form-container hidden">
+            <h3 id="product-form-title">Adicionar Novo Produto</h3>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <div class="form-group">
+                    <label for="product-name">Nome:</label>
+                    <input type="text" id="product-name" placeholder="Nome do produto" required>
+                </div>
+                <div class="form-group">
+                    <label for="product-description">Descrição:</label>
+                    <textarea id="product-description" placeholder="Descrição do produto"></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="product-price">Preço:</label>
+                        <input type="number" id="product-price" placeholder="Preço" step="0.01" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-stock">Estoque:</label>
+                        <input type="number" id="product-stock" placeholder="Quantidade em estoque" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="product-category">Categoria:</label>
+                    <input type="text" id="product-category" placeholder="Categoria">
+                </div>
+                <div class="form-group">
+                    <label for="product-image">Imagem do Produto:</label>
+                    <div class="image-upload-container">
+                        <input type="file" id="product-image" accept="image/*">
+                        <div id="product-image-preview" class="image-preview"></div>
+                    </div>
+                    <small class="form-hint">Selecione uma imagem para o produto (opcional)</small>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar</button>
+                    <button type="button" id="cancel-product" class="btn btn-secondary">Cancelar</button>
+                </div>
+            </form>
+        </div>
 
+        <!-- Tabela de produtos -->
+        <div class="table-container">
+            <table id="products-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Estoque</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="products-list">
+                    <tr>
+                        <td colspan="5" class="loading-cell">Carregando produtos...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         <footer>
             <p>Exemplo didático de integração com API - Mundo SENAI</p>
         </footer>
-    </div>
-
+    </main>
     <!-- Scripts -->
     <script src="js/api.js"></script>
     <script src="js/auth-check.js"></script>

@@ -4,88 +4,276 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meu Perfil - Mundo SENAI</title>
-    <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-cyan: #31d5de;
+            --primary-blue: #1c31a5;
+            --accent-white: #f5f3ee;
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f3ee;
+            --text-secondary: #b0b0b0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            margin: 0;
+        }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .logo-img {
+            width: 120px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
+            color: var(--accent-white);
+            transform: translateX(5px);
+        }
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+        }
+        .page-header {
+            margin-bottom: 2rem;
+        }
+        .page-header h2 {
+            font-size: 2.2rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .form-container {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(49, 213, 222, 0.1);
+            margin-bottom: 2rem;
+        }
+        .profile-info {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .profile-image-container {
+            flex: 0 0 120px;
+        }
+        .profile-details {
+            flex: 1;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .image-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .image-preview img {
+            max-width: 60px;
+            border-radius: 8px;
+        }
+        #password-change-section {
+            margin-top: 2rem;
+            background: rgba(49, 213, 222, 0.05);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            margin-top: 2rem;
+        }
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(49, 213, 222, 0.3);
+        }
+        .btn-secondary {
+            background: rgba(176, 176, 176, 0.2);
+            color: var(--text-secondary);
+        }
+        .btn-secondary:hover {
+            background: rgba(176, 176, 176, 0.3);
+        }
+        .message {
+            margin-top: 1rem;
+            color: var(--primary-cyan);
+            text-align: center;
+        }
+        footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 70px;
+                padding: 1rem 0;
+            }
+            .main-content {
+                margin-left: 70px;
+                padding: 1rem;
+            }
+            .logo-img {
+                width: 40px;
+            }
+            .logo p, .nav-link span {
+                display: none;
+            }
+            .nav-link {
+                justify-content: center;
+                padding: 1rem 0.5rem;
+            }
+            .profile-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .main-content {
+                margin-left: 0;
+                padding: 0.5rem;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
+    <nav class="sidebar">
+        <div class="logo">
+            <img src="Brooklyn.png" alt="Logo Brooklyn" class="logo-img">
+            <p>Gestão Inteligente</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
+            <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
+            <li class="nav-item"><a href="profile.html" class="nav-link active"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
+            <li class="nav-item"><a href="#" id="logout-link" class="nav-link"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a></li>
+        </ul>
+    </nav>
+    <main class="main-content">
         <!-- Cabeçalho comum -->
-        <header>
-            <h1>Mundo SENAI</h1>
-            <p>Perfil</p>
+        <header class="page-header">
+            <h2>Perfil</h2>
         </header>
 
-        <!-- Navegação -->
-        <nav>
-            <ul>
-                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
-                <li><a href="products.html"><i class="fas fa-box"></i> Produtos</a></li>
-                <li><a href="users.html"><i class="fas fa-users"></i> Usuários</a></li>
-                <li><a href="profile.html" class="active" id="my-profile-link"><i class="fas fa-user-circle"></i> Perfil</a></li>
-                <li><a href="#" id="logout-link"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
-            </ul>
-        </nav>
-
-        <main>
-            <section class="page-header">
-                <h2>Perfil</h2>
-            </section>
-
-            <!-- Formulário de edição de perfil -->
-            <div id="profile-form-container" class="form-container">
-                <h3>Informações do Perfil</h3>
-                <form id="profile-form">
-                    <input type="hidden" id="profile-id">
-                    <div class="profile-info">
-                        <div class="profile-image-container">
-                            <div class="form-group">
-                                <label for="profile-image">Foto de Perfil:</label>
-                                <div class="image-upload-container">
-                                    <input type="file" id="profile-image" accept="image/*">
-                                    <div id="profile-image-preview" class="image-preview"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="profile-details">
-                            <div class="form-group">
-                                <label for="profile-name">Nome:</label>
-                                <input type="text" id="profile-name" placeholder="Nome completo" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="profile-email">Email:</label>
-                                <input type="email" id="profile-email" placeholder="Email" required>
+        <!-- Formulário de edição de perfil -->
+        <div id="profile-form-container" class="form-container">
+            <h3>Informações do Perfil</h3>
+            <form id="profile-form">
+                <input type="hidden" id="profile-id">
+                <div class="profile-info">
+                    <div class="profile-image-container">
+                        <div class="form-group">
+                            <label for="profile-image">Foto de Perfil:</label>
+                            <div class="image-upload-container">
+                                <input type="file" id="profile-image" accept="image/*">
+                                <div id="profile-image-preview" class="image-preview"></div>
                             </div>
                         </div>
                     </div>
-
-                    <div id="password-change-section">
-                        <h4>Alterar Senha</h4>
+                    <div class="profile-details">
                         <div class="form-group">
-                            <label for="current-password">Senha Atual:</label>
-                            <input type="password" id="current-password" placeholder="Senha atual">
+                            <label for="profile-name">Nome:</label>
+                            <input type="text" id="profile-name" placeholder="Nome completo" required>
                         </div>
                         <div class="form-group">
-                            <label for="new-password">Nova Senha:</label>
-                            <input type="password" id="new-password" placeholder="Nova senha">
-                        </div>
-                        <div class="form-group">
-                            <label for="confirm-password">Confirme a Nova Senha:</label>
-                            <input type="password" id="confirm-password" placeholder="Confirme a nova senha">
+                            <label for="profile-email">Email:</label>
+                            <input type="email" id="profile-email" placeholder="Email" required>
                         </div>
                     </div>
+                </div>
 
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <div id="password-change-section">
+                    <h4>Alterar Senha</h4>
+                    <div class="form-group">
+                        <label for="current-password">Senha Atual:</label>
+                        <input type="password" id="current-password" placeholder="Senha atual">
                     </div>
-                </form>
-                <div id="profile-message" class="message"></div>
-            </div>
-        </main>
+                    <div class="form-group">
+                        <label for="new-password">Nova Senha:</label>
+                        <input type="password" id="new-password" placeholder="Nova senha">
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirme a Nova Senha:</label>
+                        <input type="password" id="confirm-password" placeholder="Confirme a nova senha">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+            <div id="profile-message" class="message"></div>
+        </div>
 
         <footer>
             <p>Exemplo didático de integração com API - Mundo SENAI</p>
         </footer>
-    </div>
+    </main>
 
     <!-- Scripts -->
     <script src="js/api.js"></script>
