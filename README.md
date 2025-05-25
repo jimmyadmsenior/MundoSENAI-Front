@@ -37,6 +37,14 @@ Página de detalhes de cada periférico
     </td>
     <td align="center">
       <a href="#" title="defina o título do link">
+        <img src="https://avatars.githubusercontent.com/u/142106079?v=4" width="100px;" alt="Foto de Jimmy Castilho no GitHub"/><br>
+        <sub>
+          <b>Jimmy Castilho</b>
+        </sub>
+      </a>
+    </td>
+    <td align="center">
+      <a href="#" title="defina o título do link">
         <img src="https://avatars.githubusercontent.com/u/173830808?v=4" width="100px;" alt="Foto de Lívia Clemente no GitHub"/><br>
         <sub>
           <b>Lívia Clemente</b>
@@ -51,16 +59,7 @@ Página de detalhes de cada periférico
         </sub>
       </a>
     </td>
-        <td align="center">
-      <a href="#" title="defina o título do link">
-        <img src="https://avatars.githubusercontent.com/u/142106079?v=4" width="100px;" alt="Foto de Jimmy Castilho no GitHub"/><br>
-        <sub>
-          <b>Jimmy Castilho</b>
-        </sub>
-      </a>
-    </td>
-
- <td align="center">
+    <td align="center">
       <a href="#" title="defina o título do link">
         <img src="https://avatars.githubusercontent.com/u/173831129?v=4" width="100px;" alt="Foto de Jimmy Castilho no GitHub"/><br>
         <sub>
