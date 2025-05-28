@@ -98,6 +98,7 @@
             padding: 20px;
             position: relative;
             z-index: 1;
+            /* Garante que o container ocupe toda a tela e centralize o conteúdo */
         }
 
         .login-card {
@@ -107,13 +108,14 @@
             border-radius: 24px;
             padding: 40px;
             width: 100%;
-            max-width: 450px;
+            max-width: 600px;
             box-shadow: 
                 0 25px 50px rgba(0, 0, 0, 0.3),
                 0 0 0 1px rgba(49, 213, 222, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
             animation: slideUp 0.8s ease-out;
             position: relative;
+            /* Removido max-height e overflow-y para evitar scroll interno */
         }
 
         @keyframes slideUp {
@@ -209,6 +211,20 @@
             color: rgba(28, 49, 165, 0.5);
         }
 
+        /* Grid para inputs em duas colunas */
+        .form-grid {
+            display: block;
+        }
+        @media (max-width: 700px) {
+            .login-card {
+                max-width: 98vw;
+                padding: 20px 5px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Botões */
         .btn {
             display: inline-block;
@@ -270,6 +286,7 @@
         .btn-secondary {
             background: transparent;
             color: #ffffff;
+            text-align: center;
             
             padding: 12px 24px;
             font-size: 14px;
@@ -392,65 +409,134 @@
             </div>
 
             <div class="welcome-text">
-                <h1>Bem-vindo de volta!</h1>
-                <p>Faça login em sua conta para continuar</p>
+                <h1>Seja bem-vindo!</h1>
+                <p>Faça cadastro para continuar</p>
             </div>
 
             <form id="loginForm">
-                <div class="form-group">
-                    <label for="email">E-mail</label>
-                    <div class="input-container">
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            placeholder="email@empresa.com"
-                            required
-                        >
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nome">Nome da empresa</label>
+                        <div class="input-container">
+                            <input 
+                                type="text" 
+                                id="nome" 
+                                name="nome" 
+                                placeholder="Empresa Exemplo"
+                                required
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <div class="input-container">
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                placeholder="email@exemplo.com"
+                                required
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <div class="input-container">
+                            <input 
+                                type="password" 
+                                id="senha" 
+                                name="senha" 
+                                placeholder="Digite sua senha"
+                                required
+                                minlength="6"
+                            >
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <div class="input-container">
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            placeholder="Digite sua senha"
-                            required
-                        >
-                    </div>
-                </div>
-
                 <button type="submit" class="btn btn-primary" id="loginBtn" href="../Brook-Panel/Homepage.html">
-                    Entrar
+                    Cadastrar
                 </button>
-
-                <div class="secondary-actions">
-                    <a href="#" class="btn btn-secondary" onclick="forgotPassword()">
-                        Esqueci minha senha
-                    </a>
-                    <a href="../Brook-Panel/cadastroteste.html" class="btn btn-secondary" onclick="register()">
-                        Cadastrar-se
-                    </a>
-                </div>
+                <a href="../Brook-Panel/loginteste.html" class="btn btn-secondary" onclick="register()">
+                    Já tem uma conta? LOGIN
+                </a>
             </form>
         </div>
     </div>
 
     <script>
+        // Máscara para CNPJ
+        function maskCNPJ(value) {
+            return value
+                .replace(/\D/g, '')
+                .replace(/^(\d{2})(\d)/, '$1.$2')
+                .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                .replace(/\.(\d{3})(\d)/, '.$1/$2')
+                .replace(/(\d{4})(\d)/, '$1-$2')
+                .substring(0, 18);
+        }
+        document.getElementById('cnpj').addEventListener('input', function(e) {
+            e.target.value = maskCNPJ(e.target.value);
+        });
+
+        // Máscara para telefone
+        function maskTelefone(value) {
+            return value
+                .replace(/\D/g, '')
+                .replace(/^(\d{2})(\d)/g, '($1) $2')
+                .replace(/(\d{5})(\d)/, '$1-$2')
+                .substring(0, 15);
+        }
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            e.target.value = maskTelefone(e.target.value);
+        });
+
+        // Validação de CNPJ
+        function validateCNPJ(cnpj) {
+            cnpj = cnpj.replace(/[^\d]+/g, '');
+            
+            if (cnpj.length !== 14) return false;
+            
+            if (/^(\d)\1+$/.test(cnpj)) return false;
+            
+            let length = cnpj.length - 2;
+            let numbers = cnpj.substring(0, length);
+            let digits = cnpj.substring(length);
+            let sum = 0;
+            let pos = length - 7;
+            
+            for (let i = length; i >= 1; i--) {
+                sum += numbers.charAt(length - i) * pos--;
+                if (pos < 2) pos = 9;
+            }
+            
+            let result = sum % 11 < 2 ? 0 : 11 - sum % 11;
+            if (result !== parseInt(digits.charAt(0))) return false;
+            
+            length = length + 1;
+            numbers = cnpj.substring(0, length);
+            sum = 0;
+            pos = length - 7;
+            
+            for (let i = length; i >= 1; i--) {
+                sum += numbers.charAt(length - i) * pos--;
+                if (pos < 2) pos = 9;
+            }
+            
+            result = sum % 11 < 2 ? 0 : 11 - sum % 11;
+            return result === parseInt(digits.charAt(1));
+        }
+
         // Função de login
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const email = document.getElementById('email').value;
+            const cnpj = document.getElementById('cnpj').value;
             const password = document.getElementById('password').value;
             const loginBtn = document.getElementById('loginBtn');
             
-            // Validação simples de e-mail
-            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                showNotification('E-mail inválido!', 'error');
+            // Validações
+            if (!validateCNPJ(cnpj)) {
+                showNotification('CNPJ inválido!', 'error');
                 return;
             }
             
@@ -472,7 +558,7 @@
                 
                 setTimeout(() => {
                     // Redirecionar para o dashboard
-                    window.location.href = '../Brook-Panel/Homepage.html';
+                    window.location.href = '/dashboard';
                 }, 1500);
                 
             } catch (error) {
