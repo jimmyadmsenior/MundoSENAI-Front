@@ -98,6 +98,7 @@
             padding: 20px;
             position: relative;
             z-index: 1;
+            /* Garante que o container ocupe toda a tela e centralize o conteúdo */
         }
 
         .login-card {
@@ -107,13 +108,14 @@
             border-radius: 24px;
             padding: 40px;
             width: 100%;
-            max-width: 450px;
+            max-width: 600px;
             box-shadow: 
                 0 25px 50px rgba(0, 0, 0, 0.3),
                 0 0 0 1px rgba(49, 213, 222, 0.1),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
             animation: slideUp 0.8s ease-out;
             position: relative;
+            /* Removido max-height e overflow-y para evitar scroll interno */
         }
 
         @keyframes slideUp {
@@ -209,6 +211,22 @@
             color: rgba(28, 49, 165, 0.5);
         }
 
+        /* Grid para inputs em duas colunas */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 700px) {
+            .login-card {
+                max-width: 98vw;
+                padding: 20px 5px;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Botões */
         .btn {
             display: inline-block;
@@ -270,6 +288,7 @@
         .btn-secondary {
             background: transparent;
             color: #ffffff;
+            text-align: center;
             
             padding: 12px 24px;
             font-size: 14px;
@@ -392,50 +411,96 @@
             </div>
 
             <div class="welcome-text">
-                <h1>Bem-vindo de volta!</h1>
-                <p>Faça login em sua conta para continuar</p>
+                <h1>Seja bem-vindo!</h1>
+                <p>Faça cadastro para continuar</p>
             </div>
 
             <form id="loginForm">
-                <div class="form-group">
-                    <label for="cnpj">CNPJ</label>
-                    <div class="input-container">
-                        <input 
-                            type="text" 
-                            id="cnpj" 
-                            name="cnpj" 
-                            placeholder="00.000.000/0000-00"
-                            required
-                            maxlength="18"
-                        >
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nomeFantasia">Nome Fantasia</label>
+                        <div class="input-container">
+                            <input 
+                                type="text" 
+                                id="nomeFantasia" 
+                                name="nomeFantasia" 
+                                placeholder="Nome Fantasia da Empresa"
+                                required
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cnpj">CNPJ</label>
+                        <div class="input-container">
+                            <input 
+                                type="text" 
+                                id="cnpj" 
+                                name="cnpj" 
+                                placeholder="00.000.000/0000-00"
+                                required
+                                maxlength="18"
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <div class="input-container">
+                            <input 
+                                type="text" 
+                                id="endereco" 
+                                name="endereco" 
+                                placeholder="Endereço completo"
+                                required
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="porte">Porte da Empresa</label>
+                        <div class="input-container">
+                            <select id="porte" name="porte" required style="width:100%;padding:16px 20px;border:2px solid rgba(49,213,222,0.3);border-radius:12px;background:rgba(243,243,243,0.892);color:#1c31a5;font-size:16px;">
+                                <option value="" disabled selected>Selecione o porte</option>
+                                <option value="micro">Micro</option>
+                                <option value="pequena">Pequena</option>
+                                <option value="media">Média</option>
+                                <option value="grande">Grande Porte</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefone">Telefone</label>
+                        <div class="input-container">
+                            <input 
+                                type="tel" 
+                                id="telefone" 
+                                name="telefone" 
+                                placeholder="(99) 99999-9999"
+                                required
+                                maxlength="15"
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">E-mail</label>
+                        <div class="input-container">
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                placeholder="email@empresa.com"
+                                required
+                            >
+                        </div>
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="password">Senha</label>
-                    <div class="input-container">
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password" 
-                            placeholder="Digite sua senha"
-                            required
-                        >
-                    </div>
-                </div>
-
                 <button type="submit" class="btn btn-primary" id="loginBtn" href="../Brook-Panel/Homepage.html">
-                    Entrar
+                    Cadastrar
                 </button>
-
-                <div class="secondary-actions">
-                    <a href="#" class="btn btn-secondary" onclick="forgotPassword()">
-                        Esqueci senha
-                    </a>
-                    <a href="../Brook-Panel/cadastroteste.html" class="btn btn-secondary" onclick="register()">
-                        Cadastrar-se
+                
+                    <a href="../Brook-Panel/loginteste.html" class="btn btn-secondary" onclick="register()">
+                        Já tem uma conta? LOGIN
                     </a>
                 </div>
+                
             </form>
         </div>
     </div>
@@ -451,10 +516,20 @@
                 .replace(/(\d{4})(\d)/, '$1-$2')
                 .substring(0, 18);
         }
-
-        // Aplicar máscara ao campo CNPJ
         document.getElementById('cnpj').addEventListener('input', function(e) {
             e.target.value = maskCNPJ(e.target.value);
+        });
+
+        // Máscara para telefone
+        function maskTelefone(value) {
+            return value
+                .replace(/\D/g, '')
+                .replace(/^(\d{2})(\d)/g, '($1) $2')
+                .replace(/(\d{5})(\d)/, '$1-$2')
+                .substring(0, 15);
+        }
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            e.target.value = maskTelefone(e.target.value);
         });
 
         // Validação de CNPJ
@@ -525,7 +600,7 @@
                 
                 setTimeout(() => {
                     // Redirecionar para o dashboard
-                    window.location.href = '../Brook-Panel/Homepage.html';
+                    window.location.href = '/dashboard';
                 }, 1500);
                 
             } catch (error) {
