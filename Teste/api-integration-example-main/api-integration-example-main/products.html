@@ -197,10 +197,12 @@
             border-collapse: collapse;
             background: var(--bg-card);
             color: var(--text-primary);
+            table-layout: auto;
         }
         th, td {
             padding: 1rem;
             text-align: left;
+            vertical-align: middle;
         }
         th {
             background: rgba(49, 213, 222, 0.1);
@@ -211,6 +213,19 @@
         }
         tr:last-child {
             border-bottom: none;
+        }
+        .product-img-cell {
+            width: 70px;
+            min-width: 70px;
+            max-width: 70px;
+        }
+        .product-img-thumb {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            display: block;
+            margin: 0 auto;
         }
         .loading-cell {
             text-align: center;
@@ -347,6 +362,7 @@
             <table id="products-table">
                 <thead>
                     <tr>
+                        <th>Foto</th>
                         <th>Nome</th>
                         <th>Categoria</th>
                         <th>Preço</th>
@@ -355,8 +371,19 @@
                     </tr>
                 </thead>
                 <tbody id="products-list">
+                    <!-- Exemplo de linha de produto, ajuste seu JS para gerar assim: -->
+                    <!--
                     <tr>
-                        <td colspan="5" class="loading-cell">Carregando produtos...</td>
+                        <td class="product-img-cell"><img src="URL_DA_IMAGEM" alt="Foto do produto" class="product-img-thumb"></td>
+                        <td>Nome do Produto</td>
+                        <td>Categoria</td>
+                        <td>Preço</td>
+                        <td>Estoque</td>
+                        <td>Ações</td>
+                    </tr>
+                    -->
+                    <tr>
+                        <td colspan="6" class="loading-cell">Carregando produtos...</td>
                     </tr>
                 </tbody>
             </table>

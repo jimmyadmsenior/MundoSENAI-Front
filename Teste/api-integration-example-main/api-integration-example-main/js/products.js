@@ -84,49 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             
-            let html = '';
-            
-            products.forEach(product => {
-                // Verifica se o estoque está baixo (menos de 10 unidades)
-                const stockClass = product.stock < 10 ? 'low-stock' : '';
-                
-                html += `
-                    <tr data-id="${product.id}">
-                        <td>
-                            ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" class="product-thumbnail">` : ''}
-                            ${product.name}
-                        </td>
-                        <td>${product.category || 'N/A'}</td>
-                        <td>${formatCurrency(product.price)}</td>
-                        <td class="${stockClass}">${product.stock}</td>
-                        <td class="actions-cell">
-                            <button class="btn btn-sm edit-product" data-id="${product.id}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-product" data-id="${product.id}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            productsList.innerHTML = html;
-            
-            // Adiciona eventos aos botões de ação
-            document.querySelectorAll('.edit-product').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const productId = e.currentTarget.getAttribute('data-id');
-                    editProduct(productId);
-                });
-            });
-            
-            document.querySelectorAll('.delete-product').forEach(button => {
-                button.addEventListener('click', (e) => {
-                    const productId = e.currentTarget.getAttribute('data-id');
-                    deleteProduct(productId);
-                });
-            });
+            // Usa a função de renderização da tabela
+            renderProductsTable(products);
             
         } catch (error) {
             console.error('Erro ao carregar produtos:', error);
@@ -385,6 +344,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 deleteProduct(productId);
             });
         });
+    }
+    
+    // Função para renderizar uma linha de produto na tabela
+    function renderProductRow(produto) {
+        return `<tr>
+            <td class="product-img-cell"><img src="${produto.image || ''}" alt="Foto do produto" class="product-img-thumb"></td>
+            <td>${produto.name}</td>
+            <td>${produto.category}</td>
+            <td>R$ ${Number(produto.price).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+            <td>${produto.stock}</td>
+            <td><!-- Botões de ação aqui --></td>
+        </tr>`;
     }
     
     // Modifica a função loadProducts para usar a função renderProductsTable
