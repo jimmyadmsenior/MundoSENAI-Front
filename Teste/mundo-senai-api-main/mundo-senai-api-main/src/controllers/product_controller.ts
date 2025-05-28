@@ -34,7 +34,7 @@ const updateProductBodySchema = z.object({
     price: z.number().positive("O preço deve ser um número positivo").optional(),
     stock: z.number().int().nonnegative("O estoque deve ser um número inteiro não negativo").optional(),
     category: z.string().min(1, "A categoria é obrigatória").optional(),
-    imageUrl: z.url("A URL da imagem deve ser válida").optional()
+    imageUrl: z.string("A URL da imagem deve ser válida").optional()
 }).refine(data => Object.keys(data).length > 0, {
     message: "Pelo menos um campo deve ser fornecido para atualização"
 })

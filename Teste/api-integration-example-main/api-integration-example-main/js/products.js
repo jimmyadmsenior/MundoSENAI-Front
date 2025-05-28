@@ -181,6 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // Mostra o formulário
             toggleProductForm(true, true);
             
+            // Mostra a imagem atual do produto
+            showCurrentProductImage(product.imageUrl);
+            
         } catch (error) {
             console.error('Erro ao carregar produto para edição:', error);
             alert(`Erro ao carregar produto: ${error.message}`);
@@ -491,6 +494,19 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Se não houver imagem, retorna null
         return Promise.resolve(null);
+    }
+    
+    // Função para mostrar a imagem atual ao editar
+    function showCurrentProductImage(imageUrl) {
+        const group = document.getElementById('product-current-image-group');
+        const preview = document.getElementById('product-current-image-preview');
+        if (imageUrl) {
+            group.style.display = '';
+            preview.innerHTML = `<img src="${imageUrl}" alt="Foto do produto" style="max-width:120px;max-height:120px;border-radius:8px;box-shadow:0 2px 8px #0002;">`;
+        } else {
+            group.style.display = 'none';
+            preview.innerHTML = '';
+        }
     }
     
     // Configura os eventos
