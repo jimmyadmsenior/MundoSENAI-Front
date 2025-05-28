@@ -740,28 +740,36 @@
     </button>
     <nav class="sidebar" id="sidebar">
         <div class="logo">
-            <h1>Brooklyn Panel</h1>
+            <h1>Brooklyn</h1>
             <p>Gestão Inteligente</p>
         </div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="../MundoSENAI-Front/Brook-Panel/Homepage.html" class="nav-link" id="homeLink">
+                <a href="..Brook-Panel/Homepagesemlogin.html" class="nav-link active">
                     <i class="fas fa-home"></i>
                     Home
                 </a>
             </li>
+
             <li class="nav-item">
-                <a href="../MundoSENAI-Front/Brook-Panel/Dashboard.html" class="nav-link" id="dashboardLink">
+                <a href="../Brook-Panel/Dashboard.html" class="nav-link">
                     <i class="fas fa-tachometer-alt"></i>
                     Dashboard
                 </a>
             </li>
+             <li class="nav-item">
+                <a href="../Brook-Panel/perfil.html" class="nav-link">
+                    <i class="fa-solid fa-box"></i>
+                    Produtos
+                </a>
+            </li>
             <li class="nav-item">
-                <a href="../MundoSENAI-Front/Brook-Panel/Usuários.html" class="nav-link" id="perfilLink">
+                <a href="../Brook-Panel/perfil.html" class="nav-link">
                     <i class="fas fa-user"></i>
                     Perfil
                 </a>
             </li>
+
         </ul>
         <div class="sidebar-footer">
             <button class="add-product-btn">
@@ -769,9 +777,9 @@
                 Adicionar Produto
             </button>
             <div class="auth-section">
-                <a href="../MundoSENAI-Front/Brook-Panel/loginteste.html" class="auth-link" id="loginLink">
+                <a href="../Brook-Panel/Homepagesemlogin.html" class="auth-link" id="loginLink">
                     <i class="fas fa-sign-in-alt"></i>
-                    Cadastro / Logar
+                    Sair
                 </a>
             </div>
         </div>
@@ -792,10 +800,8 @@
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                // Remove active de todos
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
-                // Ripple effect
                 const ripple = document.createElement('span');
                 ripple.style.cssText = `
                     position: absolute;
@@ -816,14 +822,8 @@
                     sidebar.classList.remove('open');
                     overlay.classList.remove('active');
                 }
-                // Redireciona corretamente
-                const href = this.getAttribute('href');
-                if (href && href !== '#') {
-                    window.location.href = href;
-                }
             });
         });
-
         document.querySelector('.auth-link').addEventListener('click', function(e) {
             e.preventDefault();
             const ripple = document.createElement('span');
@@ -846,14 +846,47 @@
                 sidebar.classList.remove('open');
                 overlay.classList.remove('active');
             }
-            // Redireciona corretamente
-            const href = this.getAttribute('href');
-            if (href && href !== '#') {
-                window.location.href = href;
+            window.location.href = '../MundoSENAI-Front/Brook-Panel/loginteste.html';
+        });
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        document.querySelector('.add-product-btn').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            alert('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            }
+            if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                document.querySelector('.add-product-btn').click();
+            }
+            if (e.key === 'Escape') {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
             }
         });
-
-        // ...existing code...
+        document.addEventListener('touchstart', function() {}, { passive: true });
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        });
     </script>
     <!-- Fim do componente Sidebar Menu -->
 
@@ -883,7 +916,7 @@
                 <h1 class="floating">Brooklyn Panel</h1>
                 <p>A solução definitiva para gerenciamento de estoque de periféricos. Controle total, relatórios inteligentes e análises em tempo real.</p>
                 <div class="cta-buttons">
-                    <a href="#" class="btn-primary">
+                    <a href="../Brook-Panel/Dashboard.html" class="btn-primary">
                         <i class="fas fa-rocket"></i>
                         Iniciar Agora
                     </a>
