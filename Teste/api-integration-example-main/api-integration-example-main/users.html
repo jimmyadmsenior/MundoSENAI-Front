@@ -199,6 +199,44 @@
             text-align: center;
             color: var(--text-secondary);
         }
+        /* Remove sublinhado dos botões de ação */
+        .table-actions a,
+        .table-actions button,
+        .btn,
+        .btn-primary,
+        .btn-secondary {
+            text-decoration: none !important;
+        }
+        /* Estilo moderno para todos os campos de formulário */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            background: #2d3742; /* cinza */
+            color: #f5f3ee; /* texto claro */
+            border: 2px solid #444a54; /* cinza escuro */
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1.05rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #888fa1; /* cinza mais claro ao focar */
+            box-shadow: 0 0 8px #888fa1;
+        }
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #b0b0b0; /* cinza placeholder */
+            opacity: 1;
+            font-size: 1.05rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
         @media (max-width: 900px) {
             .sidebar {
                 width: 70px;

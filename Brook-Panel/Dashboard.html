@@ -71,6 +71,123 @@
             margin: 0 auto 0.5rem auto;
         }
 
+        /* Carrossel de imagens */
+        .carousel-container {
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto 2rem auto;
+            position: relative;
+            overflow: hidden;
+            border-radius: 16px;
+            box-shadow: 0 4px 24px rgba(49,213,222,0.10);
+        }
+        .carousel-slide {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+        .carousel-image {
+            min-width: 100%;
+            max-width: 350px;
+            max-height: 120px;
+            height: auto;
+            object-fit: contain;
+            display: block;
+            background: #222;
+            margin: 0 auto;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(49,213,222,0.7);
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            cursor: pointer;
+            z-index: 2;
+            transition: background 0.2s;
+        }
+        .carousel-btn:hover {
+            background: var(--primary-blue);
+        }
+        .carousel-btn.prev {
+            left: 16px;
+        }
+        .carousel-btn.next {
+            right: 16px;
+        }
+        .carousel-dots {
+            position: absolute;
+            bottom: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+        }
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(49,213,222,0.4);
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .carousel-dot.active {
+            background: var(--primary-cyan);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
@@ -725,134 +842,20 @@
             </div>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="stats-grid">
-            <div class="stat-card">
-                <h3>Total de Produtos</h3>
-                <div class="number" id="totalProducts">0</div>
-                <div class="change positive">
-                    <i class="fas fa-arrow-up"></i>
-                    +12% este mês
-                </div>
+        <!-- Carrossel de Imagens -->
+        <div class="carousel-container" id="imageCarousel">
+            <div class="carousel-slide">
+                <img src="https://via.placeholder.com/700x320/1c31a5/ffffff?text=Imagem+1" alt="Imagem 1" class="carousel-image">
+                <img src="https://via.placeholder.com/700x320/31d5de/ffffff?text=Imagem+2" alt="Imagem 2" class="carousel-image">
+                <img src="https://via.placeholder.com/700x320/16213e/ffffff?text=Imagem+3" alt="Imagem 3" class="carousel-image">
             </div>
-            <div class="stat-card">
-                <h3>Estoque Baixo</h3>
-                <div class="number" id="lowStock">0</div>
-                <div class="change negative">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    Requer atenção
-                </div>
-            </div>
-            <div class="stat-card">
-                <h3>Valor Total</h3>
-                <div class="number" id="totalValue">R$ 0</div>
-                <div class="change positive">
-                    <i class="fas fa-arrow-up"></i>
-                    +8% este mês
-                </div>
-            </div>
-            <div class="stat-card">
-                <h3>Categorias</h3>
-                <div class="number" id="totalCategories">3</div>
-                <div class="change positive">
-                    <i class="fas fa-check"></i>
-                    Ativo
-                </div>
-            </div>
-        </div>
-
-        <!-- Filters -->
-        <div class="filters">
-            <div class="filter-group">
-                <label>Categoria:</label>
-                <select class="filter-select" id="categoryFilter">
-                    <option value="all">Todas</option>
-                    <option value="mouse">Mouse</option>
-                    <option value="teclado">Teclado</option>
-                    <option value="monitor">Monitor</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Estoque:</label>
-                <select class="filter-select" id="stockFilter">
-                    <option value="all">Todos</option>
-                    <option value="high">Alto (50+)</option>
-                    <option value="medium">Médio (10-49)</option>
-                    <option value="low">Baixo (0-9)</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label>Ordenar por:</label>
-                <select class="filter-select" id="sortFilter">
-                    <option value="name">Nome</option>
-                    <option value="stock">Estoque</option>
-                    <option value="price">Preço</option>
-                </select>
-            </div>
-        </div>
-
-        <!-- Products Section -->
-        <div class="products-section">
-            <div class="section-header">
-                <h2 class="section-title">Catálogo de Produtos</h2>
-                <div class="view-toggle">
-                    <button class="view-btn active" id="gridView">
-                        <i class="fas fa-th"></i>
-                    </button>
-                    <button class="view-btn" id="listView">
-                        <i class="fas fa-list"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="products-grid" id="productsGrid">
-                <!-- Products will be dynamically generated -->
-            </div>
-        </div>
-    </main>
-
-    <!-- Modal -->
-    <div class="modal" id="productModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title" id="modalTitle">Adicionar Produto</h2>
-                <button class="close-btn" id="closeModal">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form id="productForm">
-                <div class="form-group">
-                    <label class="form-label">Nome do Produto</label>
-                    <input type="text" class="form-input" id="productName" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Categoria</label>
-                    <select class="form-input" id="productCategory" required>
-                        <option value="">Selecione uma categoria</option>
-                        <option value="mouse">Mouse</option>
-                        <option value="teclado">Teclado</option>
-                        <option value="monitor">Monitor</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Preço (R$)</label>
-                    <input type="number" class="form-input" id="productPrice" step="0.01" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Quantidade em Estoque</label>
-                    <input type="number" class="form-input" id="productStock" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label">Descrição</label>
-                    <input type="text" class="form-input" id="productDescription">
-                </div>
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
-                    <button type="submit" class="btn btn-primary">Salvar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
+            <button class="carousel-btn prev" id="prevBtn">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="carousel-btn next" id="nextBtn">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <div class="carousel-dots" id="carouselDots">
     <script>
         // Products data - In a real app, this would come from a database
         let products = [
