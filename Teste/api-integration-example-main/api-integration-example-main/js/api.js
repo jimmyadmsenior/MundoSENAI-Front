@@ -41,7 +41,7 @@ class ApiService {
      */
     getHeaders(includeAuth = true, includeContentType = true) {
         const headers = {};
-        
+       
         if (includeContentType) {
             headers['Content-Type'] = 'application/json';
         }
@@ -152,12 +152,12 @@ class ApiService {
                 method: 'DELETE',
                 headers: this.getHeaders(true, data !== null) // Só inclui Content-Type se tiver dados
             };
-            
+           
             // Adiciona o body apenas se houver dados
             if (data !== null) {
                 options.body = JSON.stringify(data);
             }
-            
+           
             const response = await fetch(`${this.baseUrl}${endpoint}`, options);
 
             if (!response.ok) {
@@ -173,7 +173,7 @@ class ApiService {
             if (contentType && contentType.includes('application/json')) {
                 return await response.json();
             }
-            
+           
             return { success: true };
         } catch (error) {
             console.error('Erro na requisição DELETE:', error);

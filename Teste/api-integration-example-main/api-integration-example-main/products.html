@@ -15,6 +15,68 @@
             --text-primary: #f5f3ee;
             --text-secondary: #b0b0b0;
         }
+        /* Estilo moderno para todos os input[type="text"] */
+        input[type="text"] {
+            background: var(--bg-card);
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1.05rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 8px var(--primary-cyan);
+        }
+        /* Estilo para textarea de descrição */
+        #product-description {
+            background: var(--bg-card);
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1.05rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            min-height: 80px;
+            box-sizing: border-box;
+            outline: none;
+            resize: vertical;
+        }
+        #product-description:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 8px var(--primary-cyan);
+        }
+        /* Estilo para input de número (preço e estoque) */
+        input[type="number"]#product-price,
+        input[type="number"]#product-stock {
+            background: var(--bg-card);
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1.05rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            appearance: textfield;
+        }
+        input[type="number"]#product-price:focus,
+        input[type="number"]#product-stock:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 8px var(--primary-cyan);
+        }
+        /* Remove setas dos inputs number no Chrome/Safari */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-dark);
@@ -271,6 +333,29 @@
             }
             .sidebar {
                 display: none;
+            }
+
+            #product-name {
+                background: var(--bg-dark);
+                color: var(--primary-cyan);
+                border: 2px solid var(--primary-cyan);
+                border-radius: 8px;
+                padding: 0.7rem 1rem;
+                font-size: 1.1rem;
+                transition: border-color 0.3s, box-shadow 0.3s;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            #product-name:focus {
+                border-color: var(--primary-blue);
+                box-shadow: 0 0 8px var(--primary-cyan);
+                outline: none;
+            }
+            label[for="product-name"] {
+                color: var(--primary-cyan);
+                font-weight: bold;
+                margin-bottom: 0.3rem;
+                display: block;
             }
         }
     </style>
