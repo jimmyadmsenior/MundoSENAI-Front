@@ -15,6 +15,75 @@
             --text-primary: #f5f3ee;
             --text-secondary: #b0b0b0;
         }
+        /* Estilo moderno para todos os input[type="text"] */
+        input[type="text"] {
+            background: var(--bg-card);
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1.05rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 8px var(--primary-cyan);
+        }
+        /* Estilo para textarea de descrição */
+        #product-description {
+            background: var(--bg-card);
+           
+            border: 2px solid var(--primary-cyan);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1.1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            min-height: 80px;
+            box-sizing: border-box;
+            outline: none;
+            resize: vertical;
+        }
+        #product-description:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 8px var(--primary-cyan);
+        }
+        #product-description::placeholder {
+            color: var(--primary-cyan);
+            font-size: 1.1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            opacity: 1;
+        }
+        /* Estilo para input de número (preço e estoque) */
+        input[type="number"]#product-price,
+        input[type="number"]#product-stock {
+            background: var(--bg-card);
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1.05rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+            appearance: textfield;
+        }
+        input[type="number"]#product-price:focus,
+        input[type="number"]#product-stock:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 8px var(--primary-cyan);
+        }
+        /* Remove setas dos inputs number no Chrome/Safari */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-dark);
@@ -122,8 +191,6 @@
         }
         .search-container {
             margin-bottom: 2rem;
-            display: flex;
-            justify-content: flex-end;
         }
         .search-box {
             display: flex;
@@ -133,9 +200,6 @@
             padding: 0.5rem 1rem;
             border: 2px solid transparent;
             transition: all 0.3s ease;
-            justify-content: flex-end;
-            width: auto;
-            min-width: 0;
         }
         .search-box:focus-within {
             border-color: var(--primary-cyan);
@@ -147,8 +211,7 @@
             color: var(--text-primary);
             padding: 0.5rem;
             outline: none;
-            max-width: 300px;
-            width: 100%;
+            width: 300px;
         }
         .search-box button {
             background: var(--primary-cyan);
@@ -278,6 +341,29 @@
             .sidebar {
                 display: none;
             }
+
+            #product-name {
+                background: var(--bg-dark);
+                color: var(--primary-cyan);
+                border: 2px solid var(--primary-cyan);
+                border-radius: 8px;
+                padding: 0.7rem 1rem;
+                font-size: 1.1rem;
+                transition: border-color 0.3s, box-shadow 0.3s;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            #product-name:focus {
+                border-color: var(--primary-blue);
+                box-shadow: 0 0 8px var(--primary-cyan);
+                outline: none;
+            }
+            label[for="product-name"] {
+                color: var(--primary-cyan);
+                font-weight: bold;
+                margin-bottom: 0.3rem;
+                display: block;
+            }
         }
     </style>
 </head>
@@ -309,7 +395,7 @@
         <div class="search-container">
             <div class="search-box">
                 <input type="text" id="category-search" placeholder="Buscar por categoria...">
-                <button id="search-btn" class="btn" style="margin-left:auto;"><i class="fas fa-search"></i></button>
+                <button id="search-btn" class="btn"><i class="fas fa-search"></i></button>
             </div>
             <div class="filter-tags" id="filter-tags">
                 <!-- Tags de filtro serão adicionadas aqui dinamicamente -->
@@ -368,6 +454,7 @@
             <table id="products-table">
                 <thead>
                     <tr>
+                        <th>Foto</th>
                         <th>Nome</th>
                         <th>Categoria</th>
                         <th>Preço</th>
@@ -379,6 +466,7 @@
                     <!-- Exemplo de linha de produto, ajuste seu JS para gerar assim: -->
                     <!--
                     <tr>
+                        <td class="product-img-cell"><img src="URL_DA_IMAGEM" alt="Foto do produto" class="product-img-thumb"></td>
                         <td>Nome do Produto</td>
                         <td>Categoria</td>
                         <td>Preço</td>
@@ -387,7 +475,7 @@
                     </tr>
                     -->
                     <tr>
-                        <td colspan="5" class="loading-cell">Carregando produtos...</td>
+                        <td colspan="6" class="loading-cell">Carregando produtos...</td>
                     </tr>
                 </tbody>
             </table>
