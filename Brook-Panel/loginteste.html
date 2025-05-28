@@ -73,6 +73,15 @@
             animation-delay: -3s;
         }
 
+         .blob:nth-child(5) {
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(28, 49, 165, 0.9), rgba(49, 213, 222, 0.4));
+            top: 50%;
+            right: 10%;
+            animation-delay: -3s;
+        }
+
         @keyframes float {
             0%, 100% { transform: translate(0, 0) scale(1); }
             25% { transform: translate(100px, -100px) scale(1.1); }
@@ -121,7 +130,7 @@
         /* Logo */
         .logo-container {
             text-align: center;
-            margin-bottom: 10000px;
+            margin-bottom: 10px;
         }
 
         .logo {
@@ -182,7 +191,7 @@
             padding: 16px 20px;
             border: 2px solid rgba(49, 213, 222, 0.3);
             border-radius: 12px;
-            background: rgba(245, 243, 238, 0.8);
+            background: rgba(243, 243, 243, 0.892);
             color: #1c31a5;
             font-size: 16px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -260,18 +269,18 @@
 
         .btn-secondary {
             background: transparent;
-            color: #31d5de;
-            border: 2px solid #31d5de;
+            color: #ffffff;
+            
             padding: 12px 24px;
             font-size: 14px;
             flex: 1;
         }
 
         .btn-secondary:hover {
-            background: linear-gradient(135deg, #1c31a5, #31d5de);
+            background: linear-gradient(135deg, #151515, #002b41);
             color: #f5f3ee;
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(49, 213, 222, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
 
         /* Animações de Loading */
