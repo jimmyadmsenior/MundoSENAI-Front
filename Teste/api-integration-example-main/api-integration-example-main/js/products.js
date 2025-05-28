@@ -302,17 +302,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função para renderizar a tabela de produtos
     function renderProductsTable(products) {
         let html = '';
-        
         products.forEach(product => {
             // Verifica se o estoque está baixo (menos de 10 unidades)
             const stockClass = product.stock < 10 ? 'low-stock' : '';
-            
             html += `
                 <tr data-id="${product.id}">
-                    <td>
-                        ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" class="product-thumbnail">` : ''}
-                        ${product.name}
-                    </td>
+                    <td>${product.name}</td>
                     <td>${product.category || 'N/A'}</td>
                     <td>${formatCurrency(product.price)}</td>
                     <td class="${stockClass}">${product.stock}</td>
@@ -327,7 +322,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 </tr>
             `;
         });
-        
         productsList.innerHTML = html;
         
         // Adiciona eventos aos botões de ação
@@ -344,48 +338,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 deleteProduct(productId);
             });
         });
-    }
-    
-    // Função para renderizar uma linha de produto na tabela
-    function renderProductRow(produto) {
-        return `<tr>
-            <td class="product-img-cell"><img src="${produto.image || ''}" alt="Foto do produto" class="product-img-thumb"></td>
-            <td>${produto.name}</td>
-            <td>${produto.category}</td>
-            <td>R$ ${Number(produto.price).toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
-            <td>${produto.stock}</td>
-            <td><!-- Botões de ação aqui --></td>
-        </tr>`;
-    }
-    
-    // Modifica a função loadProducts para usar a função renderProductsTable
-    async function loadProducts() {
-        try {
-            // Mostra mensagem de carregamento
-            productsList.innerHTML = '<tr><td colspan="5" class="loading-cell">Carregando produtos...</td></tr>';
-            
-            // Busca os produtos na API
-            const products = await apiService.get('/product');
-            
-            // Renderiza a tabela de produtos
-            if (!products || products.length === 0) {
-                productsList.innerHTML = '<tr><td colspan="5" class="empty-cell">Nenhum produto encontrado</td></tr>';
-                return;
-            }
-            
-            // Usa a função de renderização da tabela
-            renderProductsTable(products);
-            
-        } catch (error) {
-            console.error('Erro ao carregar produtos:', error);
-            productsList.innerHTML = `
-                <tr>
-                    <td colspan="5" class="error-cell">
-                        Erro ao carregar produtos: ${error.message}
-                    </td>
-                </tr>
-            `;
-        }
     }
     
     // Função para lidar com a pré-visualização da imagem
