@@ -35,11 +35,12 @@
         /* Estilo para textarea de descrição */
         #product-description {
             background: var(--bg-card);
-            color: var(--primary-cyan);
+           
             border: 2px solid var(--primary-cyan);
             border-radius: 8px;
             padding: 0.7rem 1rem;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             transition: border-color 0.3s, box-shadow 0.3s;
             width: 100%;
             min-height: 80px;
@@ -50,6 +51,12 @@
         #product-description:focus {
             border-color: var(--primary-blue);
             box-shadow: 0 0 8px var(--primary-cyan);
+        }
+        #product-description::placeholder {
+            color: var(--primary-cyan);
+            font-size: 1.1rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            opacity: 1;
         }
         /* Estilo para input de número (preço e estoque) */
         input[type="number"]#product-price,
