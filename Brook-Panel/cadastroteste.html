@@ -213,9 +213,7 @@
 
         /* Grid para inputs em duas colunas */
         .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            display: block;
         }
         @media (max-width: 700px) {
             .login-card {
@@ -418,52 +416,14 @@
             <form id="loginForm">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="nomeFantasia">Nome Fantasia</label>
+                        <label for="nome">Nome da empresa</label>
                         <div class="input-container">
                             <input 
                                 type="text" 
-                                id="nomeFantasia" 
-                                name="nomeFantasia" 
-                                placeholder="Nome Fantasia da Empresa"
+                                id="nome" 
+                                name="nome" 
+                                placeholder="Empresa Exemplo"
                                 required
-                            >
-                        </div>
-                    </div>
-                   
-                    <div class="form-group">
-                        <label for="endereco">Endereço</label>
-                        <div class="input-container">
-                            <input 
-                                type="text" 
-                                id="endereco" 
-                                name="endereco" 
-                                placeholder="Endereço completo"
-                                required
-                            >
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="porte">Porte da Empresa</label>
-                        <div class="input-container">
-                            <select id="porte" name="porte" required style="width:100%;padding:16px 20px;border:2px solid rgba(49,213,222,0.3);border-radius:12px;background:rgba(243,243,243,0.892);color:#1c31a5;font-size:16px;">
-                                <option value="" disabled selected>Selecione o porte</option>
-                                <option value="micro">Micro</option>
-                                <option value="pequena">Pequena</option>
-                                <option value="media">Média</option>
-                                <option value="grande">Grande Porte</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="telefone">Telefone</label>
-                        <div class="input-container">
-                            <input 
-                                type="tel" 
-                                id="telefone" 
-                                name="telefone" 
-                                placeholder="(99) 99999-9999"
-                                required
-                                maxlength="15"
                             >
                         </div>
                     </div>
@@ -474,8 +434,21 @@
                                 type="email" 
                                 id="email" 
                                 name="email" 
-                                placeholder="email@empresa.com"
+                                placeholder="email@exemplo.com"
                                 required
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <div class="input-container">
+                            <input 
+                                type="password" 
+                                id="senha" 
+                                name="senha" 
+                                placeholder="Digite sua senha"
+                                required
+                                minlength="6"
                             >
                         </div>
                     </div>
@@ -483,12 +456,9 @@
                 <button type="submit" class="btn btn-primary" id="loginBtn" href="../Brook-Panel/Homepage.html">
                     Cadastrar
                 </button>
-                
-                    <a href="../Brook-Panel/loginteste.html" class="btn btn-secondary" onclick="register()">
-                        Já tem uma conta? LOGIN
-                    </a>
-                </div>
-                
+                <a href="../Brook-Panel/loginteste.html" class="btn btn-secondary" onclick="register()">
+                    Já tem uma conta? LOGIN
+                </a>
             </form>
         </div>
     </div>

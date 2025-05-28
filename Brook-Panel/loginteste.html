@@ -398,15 +398,14 @@
 
             <form id="loginForm">
                 <div class="form-group">
-                    <label for="cnpj">CNPJ</label>
+                    <label for="email">E-mail</label>
                     <div class="input-container">
                         <input 
-                            type="text" 
-                            id="cnpj" 
-                            name="cnpj" 
-                            placeholder="00.000.000/0000-00"
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            placeholder="email@empresa.com"
                             required
-                            maxlength="18"
                         >
                     </div>
                 </div>
@@ -430,7 +429,7 @@
 
                 <div class="secondary-actions">
                     <a href="#" class="btn btn-secondary" onclick="forgotPassword()">
-                        Esqueci senha
+                        Esqueci minha senha
                     </a>
                     <a href="../Brook-Panel/cadastroteste.html" class="btn btn-secondary" onclick="register()">
                         Cadastrar-se
@@ -441,69 +440,17 @@
     </div>
 
     <script>
-        // Máscara para CNPJ
-        function maskCNPJ(value) {
-            return value
-                .replace(/\D/g, '')
-                .replace(/^(\d{2})(\d)/, '$1.$2')
-                .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
-                .replace(/\.(\d{3})(\d)/, '.$1/$2')
-                .replace(/(\d{4})(\d)/, '$1-$2')
-                .substring(0, 18);
-        }
-
-        // Aplicar máscara ao campo CNPJ
-        document.getElementById('cnpj').addEventListener('input', function(e) {
-            e.target.value = maskCNPJ(e.target.value);
-        });
-
-        // Validação de CNPJ
-        function validateCNPJ(cnpj) {
-            cnpj = cnpj.replace(/[^\d]+/g, '');
-            
-            if (cnpj.length !== 14) return false;
-            
-            if (/^(\d)\1+$/.test(cnpj)) return false;
-            
-            let length = cnpj.length - 2;
-            let numbers = cnpj.substring(0, length);
-            let digits = cnpj.substring(length);
-            let sum = 0;
-            let pos = length - 7;
-            
-            for (let i = length; i >= 1; i--) {
-                sum += numbers.charAt(length - i) * pos--;
-                if (pos < 2) pos = 9;
-            }
-            
-            let result = sum % 11 < 2 ? 0 : 11 - sum % 11;
-            if (result !== parseInt(digits.charAt(0))) return false;
-            
-            length = length + 1;
-            numbers = cnpj.substring(0, length);
-            sum = 0;
-            pos = length - 7;
-            
-            for (let i = length; i >= 1; i--) {
-                sum += numbers.charAt(length - i) * pos--;
-                if (pos < 2) pos = 9;
-            }
-            
-            result = sum % 11 < 2 ? 0 : 11 - sum % 11;
-            return result === parseInt(digits.charAt(1));
-        }
-
         // Função de login
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const cnpj = document.getElementById('cnpj').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const loginBtn = document.getElementById('loginBtn');
             
-            // Validações
-            if (!validateCNPJ(cnpj)) {
-                showNotification('CNPJ inválido!', 'error');
+            // Validação simples de e-mail
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showNotification('E-mail inválido!', 'error');
                 return;
             }
             
