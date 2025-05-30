@@ -22,8 +22,61 @@
             color: var(--text-primary);
             margin: 0;
         }
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .logo-img {
+            width: 210px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
+            color: var(--accent-white);
+            transform: translateX(5px);
+        }
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
         .main-content {
-            margin: 0;
+            margin-left: 260px;
             padding: 2rem;
             min-height: 100vh;
             background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
@@ -163,6 +216,19 @@
     </style>
 </head>
 <body>
+    <nav class="sidebar">
+        <div class="logo">
+            <img src="../api-integration-example-main/Brooklyn_original.png" alt="Logo Brooklyn" class="logo-img">
+            <p>Gestão Inteligente</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
+            <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
+            <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
+            <li class="nav-item"><a href="#" id="logout-link" class="nav-link"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a></li>
+        </ul>
+    </nav>
     <main class="main-content">
         <!-- Cabeçalho comum -->
         <header class="dashboard-header">
