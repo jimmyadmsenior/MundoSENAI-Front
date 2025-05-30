@@ -5,182 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Mundo SENAI</title>
     <link rel="icon" type="image/png" href="../api-integration-example-main/Brooklyn-Favicon.png">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1a1a;
-            min-height: 100vh;
-            overflow: hidden;
-            position: relative;
-        }
-        .lava-lamp {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            background: linear-gradient(135deg, #1c1c1c, #001797);
-        }
-        .blob { position: absolute; border-radius: 50%; filter: blur(2px); animation: float 20s infinite ease-in-out; }
-        .blob:nth-child(1) { width: 300px; height: 300px; background: radial-gradient(circle, rgba(49, 213, 222, 0.8), rgba(28, 49, 165, 0.6)); top: 20%; left: 10%; animation-delay: 0s; }
-        .blob:nth-child(2) { width: 200px; height: 200px; background: radial-gradient(circle, rgba(28, 49, 165, 0.7), rgba(49, 213, 222, 0.5)); top: 60%; right: 20%; animation-delay: -7s; }
-        .blob:nth-child(3) { width: 250px; height: 250px; background: radial-gradient(circle, rgba(49, 213, 222, 0.6), rgba(28, 49, 165, 0.8)); bottom: 10%; left: 30%; animation-delay: -14s; }
-        .blob:nth-child(4) { width: 180px; height: 180px; background: radial-gradient(circle, rgba(28, 49, 165, 0.9), rgba(49, 213, 222, 0.4)); top: 10%; right: 10%; animation-delay: -3s; }
-        .blob:nth-child(5) { width: 250px; height: 250px; background: radial-gradient(circle, rgba(28, 49, 165, 0.9), rgba(49, 213, 222, 0.4)); top: 50%; right: 10%; animation-delay: -3s; }
-        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 25% { transform: translate(100px, -100px) scale(1.1); } 50% { transform: translate(-80px, 50px) scale(0.9); } 75% { transform: translate(-120px, -80px) scale(1.05); } }
-        .container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; position: relative; z-index: 1; }
-        .login-card { background:#011c30; backdrop-filter: blur(20px); border: 1px solid rgba(49, 213, 222, 0.3); border-radius: 24px; padding: 40px; width: 100%; max-width: 450px; box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(49, 213, 222, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1); animation: slideUp 0.8s ease-out; position: relative; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
-        .logo-container { text-align: center; margin-bottom: 10px; }
-        .logo { max-width: 250px; height: auto; border-radius: 12px; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; }
-        .logo:hover { transform: scale(1.10); }
-        .welcome-text { text-align: center; margin-bottom: 30px; }
-        .welcome-text h1 { color: #1c65a5; font-size: 28px; font-weight: 700; margin-bottom: 8px; background: linear-gradient(135deg, #5bd2fa, #31d5de); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .welcome-text p { color: #bbbbbb; font-size: 16px; }
-        .auth-tabs { display: flex; gap: 8px; justify-content: center; margin-bottom: 18px; }
-        .auth-tab { background: #10182a; color: #60a5fa; border: none; border-radius: 8px 8px 0 0; padding: 10px 24px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
-        .auth-tab.active, .auth-tab:hover { background: #2463eb; color: #fff; }
-        .form-container { background: transparent; color: #e3eafc; border-radius: 0; box-shadow: none; }
-        .form-group { margin-bottom: 24px; position: relative; }
-        .form-group label { display: block; color: #2edcff; font-weight: 600; margin-bottom: 8px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
-        .input-container { position: relative; }
-        .form-group input { width: 100%; padding: 16px 20px; border: 2px solid rgba(49, 213, 222, 0.3); border-radius: 12px; background: rgba(243, 243, 243, 0.892); color: #1c31a5; font-size: 16px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); outline: none; }
-        .form-group input:focus { border-color: #31d5de; background: #f5f3ee; box-shadow: 0 0 0 4px rgba(49, 213, 222, 0.1); transform: translateY(-2px); }
-        .form-group input::placeholder { color: rgba(28, 49, 165, 0.5); }
-        .btn { display: inline-block; padding: 16px 32px; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; text-decoration: none; text-align: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden; text-transform: uppercase; letter-spacing: 1px; }
-        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: left 0.5s; }
-        .btn:hover::before { left: 100%; }
-        .btn-primary { background: linear-gradient(135deg, #1c31a5, #31d5de); color: #f5f3ee; width: 100%; margin-bottom: 20px; box-shadow: 0 8px 25px rgba(28, 49, 165, 0.3); }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(28, 49, 165, 0.4); }
-        .btn-primary:active { transform: translateY(-1px); }
-        .secondary-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 24px; gap: 16px; }
-        .btn-secondary { background: transparent; color: #ffffff; padding: 12px 24px; font-size: 14px; flex: 1; text-align: center; }
-        .btn-secondary:hover { background: linear-gradient(135deg, #151515, #002b41); color: #f5f3ee; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); }
-        .loading { position: relative; }
-        .loading::after { content: ''; position: absolute; width: 20px; height: 20px; margin: auto; border: 2px solid transparent; border-top-color: #f5f3ee; border-radius: 50%; animation: spin 1s linear infinite; top: 0; left: 0; bottom: 0; right: 0; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        @media (max-width: 768px) { .container { padding: 10px; } .login-card { padding: 30px 20px; margin: 20px 10px; } .secondary-actions { flex-direction: column; gap: 12px; } .btn-secondary { width: 100%; } }
-    </style>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/login-brooklyn.css">
+    <link rel="stylesheet" href="css/floating-bubbles-login.css">
 </head>
-<body>
-    <!-- Efeito Lava Lamp -->
-    <div class="lava-lamp">
-        <div class="blob"></div>
-        <div class="blob"></div>
-        <div class="blob"></div>
-        <div class="blob"></div>
-        <div class="blob"></div>
+<body class="login-page">
+    <!-- Plano de fundo animado Floating Bubbles -->
+    <div class="floating-bubbles-bg">
+      <canvas id="bubble"></canvas>
     </div>
+
     <div class="container">
-        <div class="login-card">
-            <div class="logo-container">
-                <img src="../api-integration-example-main/Brooklyn.png" alt="Logo Brooklyn" class="logo" onerror="this.style.display='none'">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="logo-container">
+                    <img src="../api-integration-example-main/Brooklyn.png" alt="Logo Brooklyn" class="brooklyn-logo" style="max-width: 170px; display: block; margin: 0 auto 18px auto;">
+                </div>
+                <p>SISTEMA DE GERENCIAMENTO</p>
             </div>
-            <div class="welcome-text">
-                <h1>Bem-vindo!</h1>
-                <p>Acesse sua conta ou cadastre-se para continuar</p>
-            </div>
+            
             <div class="auth-tabs">
-                <button id="login-tab" class="auth-tab active" type="button">Login</button>
-                <button id="register-tab" class="auth-tab" type="button">Cadastro</button>
+                <button id="login-tab" class="auth-tab active">Login</button>
+                <button id="register-tab" class="auth-tab">Cadastro</button>
             </div>
-            <div id="login-section">
-                <form id="login-form" class="form-container">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <div class="input-container">
-                            <input type="email" id="email" name="email" placeholder="Seu email" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Senha</label>
-                        <div class="input-container">
-                            <input type="password" id="password" name="password" placeholder="Sua senha" required>
-                        </div>
-                    </div>
-                    <button type="submit" id="login-btn" class="btn btn-primary">Entrar</button>
-                    <div id="login-message" class="message"></div>
-                    <div class="form-footer">
-                        <p>Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a></p>
-                    </div>
-                </form>
+            <div id="login-form" class="form-container">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Seu email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" placeholder="Sua senha">
+                </div>
+                <button id="login-btn" class="btn btn-block">Entrar</button>
+                <div id="login-message" class="message"></div>
+                <div class="form-footer">
+                    <p>Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a></p>
+                </div>
             </div>
-            <div id="register-section" class="hidden">
-                <form id="register-form" class="form-container">
-                    <div class="form-group">
-                        <label for="register-name">Nome</label>
-                        <div class="input-container">
-                            <input type="text" id="register-name" name="register-name" placeholder="Seu nome completo" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-email">Email</label>
-                        <div class="input-container">
-                            <input type="email" id="register-email" name="register-email" placeholder="Seu email" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-password">Senha</label>
-                        <div class="input-container">
-                            <input type="password" id="register-password" name="register-password" placeholder="Crie uma senha" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="register-confirm-password">Confirme a senha</label>
-                        <div class="input-container">
-                            <input type="password" id="register-confirm-password" name="register-confirm-password" placeholder="Confirme sua senha" required>
-                        </div>
-                    </div>
-                    <button type="submit" id="register-btn" class="btn btn-primary">Cadastrar</button>
-                    <div id="register-message" class="message"></div>
-                    <div class="form-footer">
-                        <p>Já tem uma conta? <a href="#" id="show-login">Faça login</a></p>
-                    </div>
-                </form>
+            
+            <div id="register-form" class="form-container hidden">
+                <h2>Cadastro</h2>
+                <div class="form-group">
+                    <label for="register-name">Nome:</label>
+                    <input type="text" id="register-name" placeholder="Seu nome completo">
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email:</label>
+                    <input type="email" id="register-email" placeholder="Seu email">
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Senha:</label>
+                    <input type="password" id="register-password" placeholder="Crie uma senha">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirme a senha:</label>
+                    <input type="password" id="register-confirm-password" placeholder="Confirme sua senha">
+                </div>
+                <button id="register-btn" class="btn btn-block">Cadastrar</button>
+                <div id="register-message" class="message"></div>
+                <div class="form-footer">
+                    <p>Já tem uma conta? <a href="#" id="show-login">Faça login</a></p>
+                </div>
             </div>
+            
             <div class="login-footer">
                 <p>Exemplo didático de integração com API - Mundo SENAI</p>
             </div>
         </div>
     </div>
+
+    <!-- Scripts -->
+    <script>
+      // Garante que o canvas das bubbles seja redimensionado e renderizado imediatamente
+      document.addEventListener('DOMContentLoaded', function() {
+        var canvas = document.getElementById('bubble');
+        if (canvas) {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+      });
+    </script>
     <script src="js/api.js"></script>
     <script src="js/login.js"></script>
-    <script>
-        // Alternância de abas Login/Cadastro
-        const loginTab = document.getElementById('login-tab');
-        const registerTab = document.getElementById('register-tab');
-        const loginSection = document.getElementById('login-section');
-        const registerSection = document.getElementById('register-section');
-        // Corrige os seletores dos links
-        document.querySelectorAll('#show-register').forEach(el => el.onclick = function(e) { e.preventDefault(); showRegister(); });
-        document.querySelectorAll('#show-login').forEach(el => el.onclick = function(e) { e.preventDefault(); showLogin(); });
-        function showLogin() {
-            loginTab.classList.add('active');
-            registerTab.classList.remove('active');
-            loginSection.classList.remove('hidden');
-            registerSection.classList.add('hidden');
-        }
-        function showRegister() {
-            loginTab.classList.remove('active');
-            registerTab.classList.add('active');
-            loginSection.classList.add('hidden');
-            registerSection.classList.remove('hidden');
-        }
-        loginTab.onclick = showLogin;
-        registerTab.onclick = showRegister;
-        // Inicializa mostrando o login
-        showLogin();
-        // Animação blobs com movimento do mouse
-        document.addEventListener('mousemove', function(e) {
-            const blobs = document.querySelectorAll('.blob');
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            blobs.forEach((blob, index) => {
-                const speed = (index + 1) * 0.5;
-                const xMove = (x - 0.5) * speed * 50;
-                const yMove = (y - 0.5) * speed * 50;
-                blob.style.transform = `translate(${xMove}px, ${yMove}px)`;
-            });
-        });
-    </script>
+    <script src="js/floating-bubbles-login.js"></script>
 </body>
 </html>
