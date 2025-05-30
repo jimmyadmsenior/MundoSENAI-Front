@@ -32,8 +32,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const showRegisterLink = document.getElementById('show-register');
     const showLoginLink = document.getElementById('show-login');
     
+    // Função para mostrar popup elegante (usa função global do HTML)
+    function showPopup(message) {
+        if (typeof window.showPopup === 'function') {
+            window.showPopup(message);
+        }
+    }
+
     // Função para mostrar mensagens de login
     function showLoginMessage(text, type) {
+        if (type === 'success') {
+            showPopup(text);
+            loginMessage.textContent = '';
+            loginMessage.className = 'message';
+            return;
+        }
         loginMessage.textContent = text;
         loginMessage.className = 'message';
         loginMessage.classList.add(type);

@@ -380,6 +380,48 @@
                 width: 100%;
             }
         }
+
+        .popup-notification {
+            position: fixed;
+            top: 32px;
+            right: 32px;
+            z-index: 9999;
+            background: linear-gradient(135deg, #1c31a5, #31d5de);
+            color: #f5f3ee;
+            padding: 1.1rem 2.2rem 1.1rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(28, 49, 165, 0.18), 0 1.5px 8px #31d5de33;
+            font-size: 1.1rem;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s, transform 0.4s;
+            transform: translateY(-20px);
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+        }
+
+        .popup-notification.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .popup-notification .popup-icon {
+            font-size: 1.3rem;
+            color: #2edcff;
+        }
+
+        @media (max-width: 600px) {
+            .popup-notification {
+                right: 10px;
+                left: 10px;
+                top: 10px;
+                padding: 1rem 1.2rem 1rem 1.2rem;
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 
@@ -423,7 +465,8 @@
                     <button type="submit" id="login-btn" class="btn btn-primary">Entrar</button>
                     <div id="login-message" class="message"></div>
                     <div class="form-footer" style="text-align: center;">
-                        <p><span style="color: #ffffff;">Não tem uma conta?</span> <a href="#" id="show-register" style="color: #31d5de;">Cadastre-se</a></p>
+                        <p><span style="color: #ffffff;">Não tem uma conta?</span> <a href="#" id="show-register" style="color: #31d5de;">Cadastre-se</a>
+                        </p>
                     </div>
                 </form>
             </div>
@@ -460,12 +503,17 @@
                     <button type="submit" id="register-btn" class="btn btn-primary">Cadastrar</button>
                     <div id="register-message" class="message"></div>
                     <div class="form-footer" style="text-align: center;">
-                        <p style="color: #ffffff;">Já tem uma conta? <a href="#" id="show-login" style="color: #31d5de;">Faça login</a></p>
+                        <p style="color: #ffffff;">Já tem uma conta? <a href="#" id="show-login" style="color: #31d5de;">Faça login</a>
+                        </p>
                     </div>
                 </form>
             </div>
 
         </div>
+    </div>
+    <div id="popup-notification" class="popup-notification" style="display:none;">
+        <span class="popup-icon"><i class="fas fa-check-circle"></i></span>
+        <span id="popup-message"></span>
     </div>
     <script src="js/api.js"></script>
     <script src="js/login.js"></script>
@@ -508,6 +556,22 @@
                 blob.style.transform = `translate(${xMove}px, ${yMove}px)`;
             });
         });
+        // Função para mostrar popup elegante
+        function showPopup(message) {
+            const popup = document.getElementById('popup-notification');
+            const popupMsg = document.getElementById('popup-message');
+            popupMsg.textContent = message;
+            popup.style.display = 'flex';
+            setTimeout(() => {
+                popup.classList.add('show');
+            }, 10);
+            setTimeout(() => {
+                popup.classList.remove('show');
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                }, 400);
+            }, 2500);
+        }
     </script>
 </body>
 
