@@ -307,15 +307,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const stockClass = product.stock < 10 ? 'low-stock' : '';
             html += `
                 <tr data-id="${product.id}">
-<<<<<<< HEAD
                     <td>
                         ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" class="product-thumbnail">` : ''}
                     </td>
                     <td>${product.name}</td>
                     <td>${product.description || ''}</td>
-=======
-                    <td>${product.name}</td>
->>>>>>> 600245218cd9ee047a66dc785190c25db76395da
                     <td>${product.category || 'N/A'}</td>
                     <td>${formatCurrency(product.price)}</td>
                     <td class="${stockClass}">${product.stock}</td>
