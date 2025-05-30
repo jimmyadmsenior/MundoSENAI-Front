@@ -16,33 +16,28 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleUserForm(show = true, isEditing = false) {
         if (show) {
             userFormContainer.classList.remove('hidden');
+            userFormContainer.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s';
+            userFormContainer.style.transform = 'translateY(-30px) scale(1.03)';
+            userFormContainer.style.boxShadow = '0 8px 32px 0 rgba(49,213,222,0.15)';
+            setTimeout(() => {
+                userFormContainer.style.transform = 'translateY(0) scale(1)';
+                userFormContainer.style.boxShadow = '';
+            }, 400);
             userFormTitle.textContent = isEditing ? 'Editar Usuário' : 'Adicionar Novo Usuário';
-            
-            // Configura a visibilidade dos campos de senha
-            const passwordFields = document.getElementById('password-fields');
-            const passwordChangeToggle = document.getElementById('password-change-toggle');
-            const passwordChangeFields = document.getElementById('password-change-fields');
-            
-            if (isEditing) {
-                // Se estiver editando, esconde o campo de senha normal e mostra o botão de alterar senha
-                passwordFields.classList.add('hidden');
-                passwordChangeToggle.classList.remove('hidden');
-                passwordChangeFields.classList.add('hidden');
-            } else {
-                // Se estiver criando, mostra apenas o campo de senha normal
-                passwordFields.classList.remove('hidden');
-                passwordChangeToggle.classList.add('hidden');
-                passwordChangeFields.classList.add('hidden');
-            }
-            
+            // Esconde todos os campos de senha e botões de troca de senha ao editar
+            document.getElementById('password-fields').classList.add('hidden');
+            document.getElementById('password-change-toggle').classList.add('hidden');
+            document.getElementById('password-change-fields').classList.add('hidden');
             if (!isEditing) {
                 clearUserForm();
+                // Mostra campos de senha apenas ao adicionar
+                document.getElementById('password-fields').classList.remove('hidden');
             }
-            
-            // Rola até o formulário
-            userFormContainer.scrollIntoView({ behavior: 'smooth' });
+            userFormContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
             userFormContainer.classList.add('hidden');
+            userFormContainer.style.transform = '';
+            userFormContainer.style.boxShadow = '';
         }
     }
     
@@ -108,9 +103,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${user.name}</td>
                     <td>${user.email}</td>
                     <td class="actions-cell">
-                        <a href="profile.html?id=${user.id}" class="btn btn-sm btn-primary">
-                            <i class="fas fa-user-edit"></i> Ver Perfil
-                        </a>
+                        <button class="btn btn-sm btn-primary edit-user" data-id="${user.id}">
+                            <i class="fas fa-user-edit"></i> Editar
+                        </button>
                         <button class="btn btn-sm btn-danger delete-user" data-id="${user.id}">
                             <i class="fas fa-trash"></i>
                         </button>
@@ -124,10 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.querySelectorAll('.edit-user').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const userId = e.currentTarget.getAttribute('data-id');
-                    editUser(userId);
+                    editUser(userId); // Abre o formulário de edição na mesma página
                 });
             });
-            
             document.querySelectorAll('.delete-user').forEach(button => {
                 button.addEventListener('click', (e) => {
                     const userId = e.currentTarget.getAttribute('data-id');
@@ -220,8 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 password: document.getElementById('user-password').value
             };
             
-            // Se estiver editando e a senha estiver vazia, remove do objeto
-            if (isEditing && !userData.password) {
+            // Se estiver editando, remove o campo de senha para não exigir senha
+            if (isEditing) {
                 delete userData.password;
             }
             
@@ -335,72 +329,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    // Função para alternar a visibilidade dos campos de troca de senha
-    function togglePasswordChangeFields(show = true) {
-        const passwordFields = document.getElementById('password-fields');
-        const passwordChangeToggle = document.getElementById('password-change-toggle');
-        const passwordChangeFields = document.getElementById('password-change-fields');
-        
-        if (show) {
-            passwordFields.classList.add('hidden');
-            passwordChangeToggle.classList.add('hidden');
-            passwordChangeFields.classList.remove('hidden');
-        } else {
-            passwordFields.classList.add('hidden');
-            passwordChangeToggle.classList.remove('hidden');
-            passwordChangeFields.classList.add('hidden');
-        }
-    }
-    
-    // Função para alterar a senha do usuário
-    async function changeUserPassword() {
-        try {
-            const userId = document.getElementById('user-id').value;
-            if (!userId) {
-                alert('ID de usuário não encontrado.');
-                return;
-            }
-            
-            const currentPassword = document.getElementById('current-password').value;
-            const newPassword = document.getElementById('new-password').value;
-            
-            if (!currentPassword || !newPassword) {
-                alert('Por favor, preencha a senha atual e a nova senha.');
-                return;
-            }
-            
-            // Envia a requisição para alterar a senha
-            const response = await apiService.put(`/user/password/${userId}`, {
-                currentPassword,
-                newPassword
-            });
-            
-            // Limpa os campos de senha
-            document.getElementById('current-password').value = '';
-            document.getElementById('new-password').value = '';
-            
-            // Volta para o modo de edição normal
-            togglePasswordChangeFields(false);
-            
-            // Mostra mensagem de sucesso
-            alert('Senha alterada com sucesso!');
-            
-        } catch (error) {
-            console.error('Erro ao alterar senha:', error);
-            alert(`Erro ao alterar senha: ${error.message || 'Senha atual incorreta ou erro de conexão'}`);
-        }
-    }
-    
     // Configura os eventos
     addUserBtn.addEventListener('click', () => toggleUserForm(true, false));
     cancelUserBtn.addEventListener('click', () => toggleUserForm(false));
     refreshUsersBtn.addEventListener('click', loadUsers);
     userForm.addEventListener('submit', saveUser);
-    
-    // Configura os eventos para troca de senha
-    document.getElementById('show-password-change').addEventListener('click', () => togglePasswordChangeFields(true));
-    document.getElementById('cancel-password-change').addEventListener('click', () => togglePasswordChangeFields(false));
-    document.getElementById('change-password-btn').addEventListener('click', changeUserPassword);
     
     handleImagePreview();
     
