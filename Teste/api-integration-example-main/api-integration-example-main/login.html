@@ -380,10 +380,327 @@
                 width: 100%;
             }
         }
+
+        /* Estilos da Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #10182a;
+            padding: 20px;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .sidebar.open {
+            transform: translateX(0);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            max-width: 40px;
+            margin-right: 10px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .nav-item {
+            margin-bottom: 20px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            color: #e3eafc;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .nav-link i {
+            margin-right: 10px;
+        }
+
+        .nav-link.active,
+        .nav-link:hover {
+            background: #2463eb;
+            color: #fff;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        .auth-section {
+            text-align: center;
+        }
+
+        .auth-link {
+            display: inline-block;
+            padding: 10px 20px;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .auth-link:hover {
+            background: #2463eb;
+            color: #fff;
+        }
+
+        /* Estilos do Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.3s ease;
+            z-index: 900;
+        }
+
+        .overlay.active {
+            transform: scaleY(1);
+        }
+
+        /* Ícones da FontAwesome */
+        @font-face {
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            src: url('../fonts/fontawesome-webfont.eot?v=5.15.1');
+            src: url('../fonts/fontawesome-webfont.eot?#iefix&v=5.15.1') format('embedded-opentype'), url('../fonts/fontawesome-webfont.woff2?v=5.15.1') format('woff2'), url('../fonts/fontawesome-webfont.woff?v=5.15.1') format('woff'), url('../fonts/fontawesome-webfont.ttf?v=5.15.1') format('truetype'), url('../fonts/fontawesome-webfont.svg?v=5.15.1#fontawesome') format('svg');
+        }
+
+        /* Animação de Ripple */
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
 <body>
+    <!-- Menu Toggle Button (for mobile) -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <a><img src="../Brook-Panel/Media/Identidade Visual.png" alt=""></a>
+            <p>Gestão Inteligente</p>
+        </div>
+
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="../MundoSENAI-Front/Brook-Panel/Homepage.html" class="nav-link active">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="../MundoSENAI-Front/Brook-Panel/Dashboard.html" class="nav-link">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../MundoSENAI-Front/Brook-Panel/Dashboard.html" class="nav-link">
+                    <i class="fas fa-box"></i>
+                    Produtos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../MundoSENAI-Front/Brook-Panel/Usuários.html" class="nav-link">
+                    <i class="fas fa-users"></i>
+                    Clientes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../MundoSENAI-Front/Brook-Panel/Usuários.html" class="nav-link">
+                    <i class="fas fa-user"></i>
+                    Perfil
+                </a>
+            </li>
+
+        </ul>
+
+        <!-- Footer da Sidebar -->
+        <div class="sidebar-footer">
+
+            <div class="auth-section">
+                <a href="../MundoSENAI-Front/Brook-Panel/loginteste.html" class="auth-link" id="loginLink">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sair
+                </a>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Overlay para mobile -->
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        menuToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('active');
+        });
+
+        // Fechar menu ao clicar no overlay
+        overlay.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('active');
+        });
+
+        // Smooth navigation active state and ripple effect
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+
+                // Ripple effect
+                const ripple = document.createElement('span');
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(49, 213, 222, 0.3);
+                    transform: scale(0);
+                    animation: ripple 0.6s linear;
+                    pointer-events: none;
+                `;
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+
+                // Fechar menu no mobile após clique
+                if (window.innerWidth <= 768) {
+                    sidebar.classList.remove('open');
+                    overlay.classList.remove('active');
+                }
+            });
+        });
+
+        // Add ripple effect to auth link
+        document.querySelector('.auth-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            // Ripple effect
+            const ripple = document.createElement('span');
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(49, 213, 222, 0.3);
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+            `;
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+
+            // Fechar menu no mobile após clique
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+
+            // Redireciona para a página de login/cadastro
+            window.location.href = '../MundoSENAI-Front/Brook-Panel/loginteste.html';
+        });
+
+        // Add ripple animation to CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add product button interaction
+        // Se não houver botão de produto, ignora
+        const addProductBtn = document.querySelector('.add-product-btn');
+        if (addProductBtn) {
+            addProductBtn.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+                alert('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
+            });
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Alt + M to toggle menu
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            }
+            // Alt + P to add product
+            if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                if (addProductBtn) addProductBtn.click();
+            }
+            // Escape to close menu
+            if (e.key === 'Escape') {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        });
+
+        // Smooth scroll and better mobile experience
+        document.addEventListener('touchstart', function() {}, { passive: true });
+
+        // Auto-close menu on window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        });
+    </script>
     <!-- Efeito Lava Lamp -->
     <div class="lava-lamp">
         <div class="blob"></div>
@@ -478,8 +795,8 @@
         const loginSection = document.getElementById('login-section');
         const registerSection = document.getElementById('register-section');
         // Corrige os seletores dos links
-        document.querySelectorAll('#show-register').forEach(el => el.onclick = function (e) { e.preventDefault(); showRegister(); });
-        document.querySelectorAll('#show-login').forEach(el => el.onclick = function (e) { e.preventDefault(); showLogin(); });
+        document.querySelectorAll('#show_register').forEach(el => el.onclick = function (e) { e.preventDefault(); showRegister(); });
+        document.querySelectorAll('#show_login').forEach(el => el.onclick = function (e) { e.preventDefault(); showLogin(); });
         function showLogin() {
             loginTab.classList.add('active');
             loginSection.classList.remove('hidden');
