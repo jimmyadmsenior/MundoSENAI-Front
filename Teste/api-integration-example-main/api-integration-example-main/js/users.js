@@ -72,49 +72,54 @@ document.addEventListener('DOMContentLoaded', () => {
     // Função para carregar a lista de usuários
     async function loadUsers() {
         try {
-            // Mostra mensagem de carregamento
             usersList.innerHTML = '<tr><td colspan="3" class="loading-cell">Carregando usuários...</td></tr>';
-            
-            // Busca os usuários na API
             const users = await apiService.get('/user');
-            
-            // Renderiza a tabela de usuários
-            if (!users || users.length === 0) {
+
+            // Obtém o ID do usuário logado a partir do token
+            const token = localStorage.getItem('token');
+            let loggedUserId = null;
+            if (token) {
+                try {
+                    const tokenParts = token.split('.');
+                    if (tokenParts.length === 3) {
+                        const base64Url = tokenParts[1];
+                        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                        }).join(''));
+                        const tokenData = JSON.parse(jsonPayload);
+                        loggedUserId = tokenData.id;
+                    }
+                } catch (e) { /* ignora erro */ }
+            }
+
+            // Filtra para não mostrar o usuário logado
+            const filteredUsers = users.filter(user => user.id !== loggedUserId);
+
+            if (!filteredUsers || filteredUsers.length === 0) {
                 usersList.innerHTML = '<tr><td colspan="3" class="empty-cell">Nenhum usuário encontrado</td></tr>';
                 return;
             }
-            
+
             let html = '';
-            
-            users.forEach(user => {
-                // Determina se o usuário é o usuário logado
-                const token = localStorage.getItem('token');
-                const tokenData = token ? JSON.parse(atob(token.split('.')[1])) : null;
-                const isCurrentUser = tokenData && tokenData.id === user.id;
-                
+            filteredUsers.forEach(user => {
                 html += `
-                    <tr data-id="${user.id}" ${isCurrentUser ? 'class="current-user-row"' : ''}>
-                        <td>
-                            ${user.image ? `<img src="${user.image}" alt="${user.name}" class="user-avatar">` : ''}
-                            ${user.name} ${isCurrentUser ? '<span class="current-user-badge">Você</span>' : ''}
-                        </td>
-                        <td>${user.email}</td>
-                        <td class="actions-cell">
-                            <a href="profile.html?id=${user.id}" class="btn btn-sm btn-primary">
-                                <i class="fas fa-user-edit"></i> ${isCurrentUser ? 'Editar Perfil' : 'Ver Perfil'}
-                            </a>
-                            ${!isCurrentUser ? 
-                                `<button class="btn btn-sm btn-danger delete-user" data-id="${user.id}">
-                                    <i class="fas fa-trash"></i>
-                                </button>` : ''
-                            }
-                        </td>
-                    </tr>
+                <tr data-id="${user.id}">
+                    <td>${user.name}</td>
+                    <td>${user.email}</td>
+                    <td class="actions-cell">
+                        <a href="profile.html?id=${user.id}" class="btn btn-sm btn-primary">
+                            <i class="fas fa-user-edit"></i> Ver Perfil
+                        </a>
+                        <button class="btn btn-sm btn-danger delete-user" data-id="${user.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
                 `;
             });
-            
             usersList.innerHTML = html;
-            
+
             // Adiciona eventos aos botões de ação
             document.querySelectorAll('.edit-user').forEach(button => {
                 button.addEventListener('click', (e) => {
