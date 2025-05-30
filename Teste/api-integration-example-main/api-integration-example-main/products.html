@@ -17,9 +17,9 @@
         }
         /* Estilo moderno para todos os input[type="text"] */
         input[type="text"] {
-            background: var(--bg-card);
+            background: #232b36; /* cinza mais claro */
             color: var(--primary-cyan);
-            border: 2px solid var(--primary-cyan);
+            border: 2px solid #112244;
             border-radius: 8px;
             padding: 0.7rem 1rem;
             font-size: 1.05rem;
@@ -29,14 +29,14 @@
             outline: none;
         }
         input[type="text"]:focus {
-            border-color: var(--primary-blue);
+            border-color: var(--primary-cyan);
             box-shadow: 0 0 8px var(--primary-cyan);
         }
         /* Estilo para textarea de descrição */
         #product-description {
-            background: var(--bg-card);
-           
-            border: 2px solid var(--primary-cyan);
+            background: #232b36; /* cinza mais claro */
+            color: var(--primary-cyan);
+            border: 2px solid #112244;
             border-radius: 8px;
             padding: 0.7rem 1rem;
             font-size: 1.1rem;
@@ -49,21 +49,15 @@
             resize: vertical;
         }
         #product-description:focus {
-            border-color: var(--primary-blue);
+            border-color: var(--primary-cyan);
             box-shadow: 0 0 8px var(--primary-cyan);
-        }
-        #product-description::placeholder {
-            color: var(--primary-cyan);
-            font-size: 1.1rem;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            opacity: 1;
         }
         /* Estilo para input de número (preço e estoque) */
         input[type="number"]#product-price,
         input[type="number"]#product-stock {
-            background: var(--bg-card);
+            background: #232b36; /* cinza mais claro */
             color: var(--primary-cyan);
-            border: 2px solid var(--primary-cyan);
+            border: 2px solid #112244;
             border-radius: 8px;
             padding: 0.7rem 1rem;
             font-size: 1.05rem;
@@ -75,7 +69,7 @@
         }
         input[type="number"]#product-price:focus,
         input[type="number"]#product-stock:focus {
-            border-color: var(--primary-blue);
+            border-color: var(--primary-cyan);
             box-shadow: 0 0 8px var(--primary-cyan);
         }
         /* Remove setas dos inputs number no Chrome/Safari */
@@ -191,29 +185,29 @@
         }
         .search-container {
             margin-bottom: 2rem;
-        }
-        .search-box {
             display: flex;
+            align-items: center;
             gap: 0.5rem;
-            background: var(--bg-card);
+            justify-content: flex-end;
+            width: 100%;
+        }
+        #category-search {
+            background: #232b36; /* cinza mais claro */
+            color: var(--primary-cyan);
+            border: 2px solid #112244;
             border-radius: 25px;
-            padding: 0.5rem 1rem;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-        .search-box:focus-within {
-            border-color: var(--primary-cyan);
-            box-shadow: 0 0 20px rgba(49, 213, 222, 0.3);
-        }
-        .search-box input {
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            padding: 0.5rem;
-            outline: none;
+            padding: 0.7rem 1.2rem;
+            font-size: 1.05rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
             width: 300px;
+            box-sizing: border-box;
+            outline: none;
         }
-        .search-box button {
+        #category-search:focus {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 8px var(--primary-cyan);
+        }
+        #search-btn {
             background: var(--primary-cyan);
             color: var(--bg-dark);
             border-radius: 8px;
@@ -221,6 +215,11 @@
             padding: 0.5rem 1rem;
             cursor: pointer;
             font-size: 1rem;
+            transition: background 0.3s;
+        }
+        #search-btn:hover {
+            background: var(--primary-blue);
+            color: #fff;
         }
         .filter-tags {
             margin-top: 0.5rem;
@@ -259,7 +258,7 @@
             margin-top: 2rem;
         }
         .table-container {
-            overflow-x: auto;
+            overflow-x: 7;
         }
         table {
             width: 100%;
@@ -312,6 +311,12 @@
             object-fit: cover;
             display: block;
             margin: 0 auto;
+        }
+        td.product-description-cell {
+            max-width: 220px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         @media (max-width: 900px) {
             .sidebar {
@@ -393,10 +398,8 @@
         
         <!-- Barra de pesquisa por categoria -->
         <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="category-search" placeholder="Buscar por categoria...">
-                <button id="search-btn" class="btn"><i class="fas fa-search"></i></button>
-            </div>
+            <input type="text" id="category-search" placeholder="Buscar por categoria...">
+            <button id="search-btn" class="btn"><i class="fas fa-search"></i></button>
             <div class="filter-tags" id="filter-tags">
                 <!-- Tags de filtro serão adicionadas aqui dinamicamente -->
             </div>
@@ -456,6 +459,7 @@
                     <tr>
                         <th>Foto</th>
                         <th>Nome</th>
+                        <th>Descrição</th>
                         <th>Categoria</th>
                         <th>Preço</th>
                         <th>Estoque</th>
@@ -463,15 +467,20 @@
                     </tr>
                 </thead>
                 <tbody id="products-list">
-                    <!-- Exemplo de linha de produto, ajuste seu JS para gerar assim: -->
+                    <!-- Exemplo correto de linha de produto, ajuste seu JS para gerar assim: -->
                     <!--
                     <tr>
-                        <td class="product-img-cell"><img src="URL_DA_IMAGEM" alt="Foto do produto" class="product-img-thumb"></td>
+                        <td class="product-img-cell">
+                            <img src="URL_DA_IMAGEM" alt="Foto do produto" class="product-img-thumb">
+                        </td>
                         <td>Nome do Produto</td>
                         <td>Categoria</td>
-                        <td>Preço</td>
-                        <td>Estoque</td>
-                        <td>Ações</td>
+                        <td>R$ 0,00</td>
+                        <td>0</td>
+                        <td>
+                            <button class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-secondary"><i class="fas fa-trash"></i></button>
+                        </td>
                     </tr>
                     -->
                     <tr>
@@ -481,7 +490,12 @@
             </table>
         </div>
         <footer>
-            <p>Exemplo didático de integração com API - Mundo SENAI</p>
+            <p>
+                Exemplo didático de integração com API - Mundo SENAI
+                <span style="float:right;">
+                    <i class="fas fa-compass"></i>
+                </span>
+            </p>
         </footer>
     </main>
     <!-- Scripts -->
