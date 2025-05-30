@@ -17,9 +17,9 @@
         }
         /* Estilo moderno para todos os input[type="text"] */
         input[type="text"] {
-            background: #2d3742; /* cinza */
-            color: #f5f3ee; /* texto claro */
-            border: 2px solid #444a54; /* cinza escuro */
+            background: #232b36; /* cinza mais claro */
+            color: var(--primary-cyan);
+            border: 2px solid #112244;
             border-radius: 8px;
             padding: 0.7rem 1rem;
             font-size: 1.05rem;
@@ -29,14 +29,14 @@
             outline: none;
         }
         input[type="text"]:focus {
-            border-color: #888fa1; /* cinza mais claro ao focar */
-            box-shadow: 0 0 8px #888fa1;
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 8px var(--primary-cyan);
         }
         /* Estilo para textarea de descrição */
         #product-description {
-            background: #2d3742; /* cinza */
-            color: #f5f3ee;
-            border: 2px solid #444a54;
+            background: #232b36; /* cinza mais claro */
+            color: var(--primary-cyan);
+            border: 2px solid #112244;
             border-radius: 8px;
             padding: 0.7rem 1rem;
             font-size: 1.1rem;
@@ -49,15 +49,15 @@
             resize: vertical;
         }
         #product-description:focus {
-            border-color: #888fa1;
-            box-shadow: 0 0 8px #888fa1;
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 8px var(--primary-cyan);
         }
         /* Estilo para input de número (preço e estoque) */
         input[type="number"]#product-price,
         input[type="number"]#product-stock {
-            background: #2d3742; /* cinza */
-            color: #f5f3ee;
-            border: 2px solid #444a54;
+            background: #232b36; /* cinza mais claro */
+            color: var(--primary-cyan);
+            border: 2px solid #112244;
             border-radius: 8px;
             padding: 0.7rem 1rem;
             font-size: 1.05rem;
@@ -69,8 +69,8 @@
         }
         input[type="number"]#product-price:focus,
         input[type="number"]#product-stock:focus {
-            border-color: #888fa1;
-            box-shadow: 0 0 8px #888fa1;
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 8px var(--primary-cyan);
         }
         /* Remove setas dos inputs number no Chrome/Safari */
         input[type="number"]::-webkit-inner-spin-button,
@@ -192,9 +192,9 @@
             width: 100%;
         }
         #category-search {
-            background: #2d3742; /* cinza */
-            color: #f5f3ee;
-            border: 2px solid #444a54;
+            background: #232b36; /* cinza mais claro */
+            color: var(--primary-cyan);
+            border: 2px solid #112244;
             border-radius: 25px;
             padding: 0.7rem 1.2rem;
             font-size: 1.05rem;
@@ -204,8 +204,8 @@
             outline: none;
         }
         #category-search:focus {
-            border-color: #888fa1;
-            box-shadow: 0 0 8px #888fa1;
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 8px var(--primary-cyan);
         }
         #search-btn {
             background: var(--primary-cyan);
@@ -258,7 +258,7 @@
             margin-top: 2rem;
         }
         .table-container {
-            overflow-x: auto;
+            overflow-x: 7;
         }
         table {
             width: 100%;
@@ -311,6 +311,12 @@
             object-fit: cover;
             display: block;
             margin: 0 auto;
+        }
+        td.product-description-cell {
+            max-width: 220px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         @media (max-width: 900px) {
             .sidebar {
@@ -453,6 +459,7 @@
                     <tr>
                         <th>Foto</th>
                         <th>Nome</th>
+                        <th>Descrição</th>
                         <th>Categoria</th>
                         <th>Preço</th>
                         <th>Estoque</th>
@@ -460,15 +467,20 @@
                     </tr>
                 </thead>
                 <tbody id="products-list">
-                    <!-- Exemplo de linha de produto, ajuste seu JS para gerar assim: -->
+                    <!-- Exemplo correto de linha de produto, ajuste seu JS para gerar assim: -->
                     <!--
                     <tr>
-                        <td class="product-img-cell"><img src="URL_DA_IMAGEM" alt="Foto do produto" class="product-img-thumb"></td>
+                        <td class="product-img-cell">
+                            <img src="URL_DA_IMAGEM" alt="Foto do produto" class="product-img-thumb">
+                        </td>
                         <td>Nome do Produto</td>
                         <td>Categoria</td>
-                        <td>Preço</td>
-                        <td>Estoque</td>
-                        <td>Ações</td>
+                        <td>R$ 0,00</td>
+                        <td>0</td>
+                        <td>
+                            <button class="btn btn-primary"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-secondary"><i class="fas fa-trash"></i></button>
+                        </td>
                     </tr>
                     -->
                     <tr>

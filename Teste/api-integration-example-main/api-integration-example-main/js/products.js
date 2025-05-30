@@ -311,8 +311,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 <tr data-id="${product.id}">
                     <td>
                         ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" class="product-thumbnail">` : ''}
-                        ${product.name}
                     </td>
+                    <td>${product.name}</td>
+                    <td>${product.description || ''}</td>
                     <td>${product.category || 'N/A'}</td>
                     <td>${formatCurrency(product.price)}</td>
                     <td class="${stockClass}">${product.stock}</td>
