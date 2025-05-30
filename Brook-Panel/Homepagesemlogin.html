@@ -574,10 +574,18 @@
             -webkit-text-fill-color: transparent;
             font-weight: bold;
         }
+
+        .logoimg{
+
+        }
         .logo p {
             color: var(--text-secondary);
             font-size: 0.9rem;
             margin-top: 0.5rem;
+        }
+
+        .logo img{
+            max-width: 150px;
         }
         .nav-menu {
             list-style: none;
@@ -734,30 +742,44 @@
                 display: block;
             }
         }
+
+        
     </style>
     <button class="menu-toggle" id="menuToggle">
         <i class="fas fa-bars"></i>
     </button>
     <nav class="sidebar" id="sidebar">
         <div class="logo">
-            <h1>Brooklyn Panel</h1>
+            <a ><img src="../Brook-Panel/Media/Identidade Visual.png" alt=""></a>
             <p>Gestão Inteligente</p>
         </div>
         <ul class="nav-menu">
             <li class="nav-item">
-                <a href="../MundoSENAI-Front/Brook-Panel/Homepage.html" class="nav-link" id="homeLink">
+                <a href="../Brook-Panel/Homepagesemlogin.html" class="nav-link active">
                     <i class="fas fa-home"></i>
                     Home
                 </a>
             </li>
             <li class="nav-item">
-                <a href="../Brook-Panel/Dashboard.html" class="nav-link" id="dashboardLink">
+                <a href="../Brook-Panel/loginteste.html" class="nav-link" id="dashboardLink">
                     <i class="fas fa-tachometer-alt"></i>
                     Dashboard
                 </a>
             </li>
             <li class="nav-item">
-                <a href="../Brook-Panel/Usuários.html" class="nav-link" id="perfilLink">
+                <a href="../Brook-Panel/loginteste.html" class="nav-link" id="produtosLink">
+                    <i class="fa-solid fa-box"></i>
+                    Produtos
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../Brook-Panel/loginteste.html" class="nav-link" id="clientesLink">
+                    <i class="fas fa-users"></i>
+                    Clientes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="../Brook-Panel/loginteste.html" class="nav-link" id="perfilLink">
                     <i class="fas fa-user"></i>
                     Perfil
                 </a>
@@ -769,7 +791,7 @@
                 Adicionar Produto
             </button>
             <div class="auth-section">
-                <a href="../MundoSENAI-Front/Brook-Panel/loginteste.html" class="auth-link" id="loginLink">
+                <a href="../Brook-Panel/loginteste.html" class="auth-link" id="loginLink">
                     <i class="fas fa-sign-in-alt"></i>
                     Cadastro / Logar
                 </a>
@@ -792,10 +814,8 @@
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
-                // Remove active de todos
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 this.classList.add('active');
-                // Ripple effect
                 const ripple = document.createElement('span');
                 ripple.style.cssText = `
                     position: absolute;
@@ -816,14 +836,8 @@
                     sidebar.classList.remove('open');
                     overlay.classList.remove('active');
                 }
-                // Redireciona corretamente
-                const href = this.getAttribute('href');
-                if (href && href !== '#') {
-                    window.location.href = href;
-                }
             });
         });
-
         document.querySelector('.auth-link').addEventListener('click', function(e) {
             e.preventDefault();
             const ripple = document.createElement('span');
@@ -846,14 +860,47 @@
                 sidebar.classList.remove('open');
                 overlay.classList.remove('active');
             }
-            // Redireciona corretamente
-            const href = this.getAttribute('href');
-            if (href && href !== '#') {
-                window.location.href = href;
+            window.location.href = '../Brook-Panel/loginteste.html';
+        });
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+        document.querySelector('.add-product-btn').addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 150);
+            alert('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.altKey && e.key === 'm') {
+                e.preventDefault();
+                sidebar.classList.toggle('open');
+                overlay.classList.toggle('active');
+            }
+            if (e.altKey && e.key === 'p') {
+                e.preventDefault();
+                document.querySelector('.add-product-btn').click();
+            }
+            if (e.key === 'Escape') {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
             }
         });
-
-        // ...existing code...
+        document.addEventListener('touchstart', function() {}, { passive: true });
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+            }
+        });
     </script>
     <!-- Fim do componente Sidebar Menu -->
 
@@ -868,13 +915,7 @@
                 <h2>Bem-vindo ao Brooklyn Panel</h2>
                 <p>Gerencie seu estoque com eficiência máxima</p>
             </div>
-            <div class="user-profile">
-                <div class="profile-avatar">BP</div>
-                <div>
-                    <div style="color: var(--accent-white); font-weight: bold;">Admin</div>
-                    <div style="color: var(--text-secondary); font-size: 0.9rem;">Online</div>
-                </div>
-            </div>
+            
         </header>
 
         <!-- Hero Section -->
@@ -1017,6 +1058,48 @@
             </div>
         </section>
     </main>
+
+    <!-- Modal de aviso para cadastro/login -->
+<div id="loginModal" style="display:none; position:fixed; z-index:20000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
+    <div style="background:#1a1a1a; color:#fff; border-radius:16px; max-width:350px; margin:auto; padding:2rem; box-shadow:0 8px 32px rgba(0,0,0,0.3); text-align:center; position:relative;">
+        <h2 style="margin-bottom:1rem;">Faça login ou cadastro</h2>
+        <p style="margin-bottom:2rem;">Você precisa estar cadastrado para acessar esta funcionalidade.</p>
+        <button id="goToLoginBtn" style="padding:0.75rem 2rem; background:linear-gradient(135deg,#31d5de,#1c31a5); color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer; font-size:1rem;">Login</button>
+        <button id="closeModalBtn" style="margin-left:1rem; padding:0.75rem 1.5rem; background:transparent; color:#fff; border:1px solid #31d5de; border-radius:8px; font-weight:bold; cursor:pointer; font-size:1rem;">Cancelar</button>
+    </div>
+</div>
+
+<script>
+    // Função para mostrar o modal de login/cadastro
+    function showLoginModal() {
+        document.getElementById('loginModal').style.display = 'flex';
+    }
+    function hideLoginModal() {
+        document.getElementById('loginModal').style.display = 'none';
+    }
+    document.getElementById('goToLoginBtn').onclick = function() {
+        window.location.href = '../Brook-Panel/loginteste.html';
+    };
+    document.getElementById('closeModalBtn').onclick = hideLoginModal;
+
+    // Adiciona evento nos links protegidos
+    document.getElementById('dashboardLink').onclick = function(e) {
+        e.preventDefault();
+        showLoginModal();
+    };
+    document.getElementById('produtosLink').onclick = function(e) {
+        e.preventDefault();
+        showLoginModal();
+    };
+    document.getElementById('perfilLink').onclick = function(e) {
+        e.preventDefault();
+        showLoginModal();
+    };
+    document.getElementById('clientesLink').onclick = function(e) {
+        e.preventDefault();
+        showLoginModal();
+    };
+</script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
