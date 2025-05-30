@@ -430,9 +430,9 @@
             <div id="register-section" class="hidden">
                 <form id="register-form" class="form-container">
                     <div class="form-group">
-                        <label for="register-name">Nome</label>
+                        <label for="register-name">Nome Fantasia</label>
                         <div class="input-container">
-                            <input type="text" id="register-name" name="register-name" placeholder="Seu nome completo"
+                            <input type="text" id="register-name" name="register-name" placeholder="Empresa Exemplo LTDA"
                                 required>
                         </div>
                     </div>
@@ -459,14 +459,12 @@
                     </div>
                     <button type="submit" id="register-btn" class="btn btn-primary">Cadastrar</button>
                     <div id="register-message" class="message"></div>
-                    <div class="form-footer">
-                        <p>Já tem uma conta? <a href="#" id="show-login">Faça login</a></p>
+                    <div class="form-footer" style="text-align: center;">
+                        <p style="color: #31d5de;">Já tem uma conta? <a href="#" id="show-login" style="color: #1c31a5;">Faça login</a></p>
                     </div>
                 </form>
             </div>
-            <div class="login-footer">
-                <p>Exemplo didático de integração com API - Mundo SENAI</p>
-            </div>
+
         </div>
     </div>
     <script src="js/api.js"></script>
@@ -478,8 +476,8 @@
         const loginSection = document.getElementById('login-section');
         const registerSection = document.getElementById('register-section');
         // Corrige os seletores dos links
-        document.querySelectorAll('#show-register').forEach(el => el.onclick = function (e) { e.preventDefault(); showRegister(); });
-        document.querySelectorAll('#show-login').forEach(el => el.onclick = function (e) { e.preventDefault(); showLogin(); });
+        document.querySelectorAll('#show_register').forEach(el => el.onclick = function (e) { e.preventDefault(); showRegister(); });
+        document.querySelectorAll('#show_login').forEach(el => el.onclick = function (e) { e.preventDefault(); showLogin(); });
         function showLogin() {
             loginTab.classList.add('active');
             loginSection.classList.remove('hidden');
