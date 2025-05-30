@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verifica se já está autenticado
     if (localStorage.getItem('token')) {
         // Se já estiver autenticado, redireciona para o dashboard
-        window.location.href = window.location.origin + '/Teste/api-integration-example-main/api-integration-example-main/dashboard.html';
+        window.location.href = "dashboard.html";
         return;
     }
     
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Redireciona para o dashboard
             setTimeout(() => {
-                window.location.href = window.location.origin + '/Teste/api-integration-example-main/api-integration-example-main/dashboard.html';
+                window.location.href = "dashboard.html";
             }, 1000);
             
         } catch (error) {

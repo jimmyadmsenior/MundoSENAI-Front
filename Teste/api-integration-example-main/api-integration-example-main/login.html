@@ -392,6 +392,7 @@
         <div class="blob"></div>
         <div class="blob"></div>
     </div>
+
     <div class="container">
         <div class="login-card">
             <div class="logo-container">
@@ -402,30 +403,26 @@
                 <h1>Bem-vindo!</h1>
                 <p>Acesse sua conta ou cadastre-se para continuar</p>
             </div>
+            
             <div class="auth-tabs">
-                <button id="login-tab" class="auth-tab active" type="button">Login</button>
-                <button id="register-tab" class="auth-tab" type="button">Cadastro</button>
+                <button id="login-tab" class="auth-tab active">Login</button>
+                <button id="register-tab" class="auth-tab">Cadastro</button>
             </div>
-            <div id="login-section">
-                <form id="login-form" class="form-container">
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <div class="input-container">
-                            <input type="email" id="email" name="email" placeholder="Seu email" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Senha</label>
-                        <div class="input-container">
-                            <input type="password" id="password" name="password" placeholder="Sua senha" required>
-                        </div>
-                    </div>
-                    <button type="submit" id="login-btn" class="btn btn-primary">Entrar</button>
-                    <div id="login-message" class="message"></div>
-                    <div class="form-footer">
-                        <p>Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a></p>
-                    </div>
-                </form>
+            <div id="login-form" class="form-container">
+                <h2>Login</h2>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" placeholder="Seu email">
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" placeholder="Sua senha">
+                </div>
+                <button id="login-btn" class="btn btn-block">Entrar</button>
+                <div id="login-message" class="message"></div>
+                <div class="form-footer">
+                    <p>Não tem uma conta? <a href="#" id="show-register">Cadastre-se</a></p>
+                </div>
             </div>
             <div id="register-section" class="hidden">
                 <form id="register-form" class="form-container">
@@ -464,11 +461,24 @@
                     </div>
                 </form>
             </div>
+            
             <div class="login-footer">
                 <p>Exemplo didático de integração com API - Mundo SENAI</p>
             </div>
         </div>
     </div>
+
+    <!-- Scripts -->
+    <script>
+      // Garante que o canvas das bubbles seja redimensionado e renderizado imediatamente
+      document.addEventListener('DOMContentLoaded', function() {
+        var canvas = document.getElementById('bubble');
+        if (canvas) {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+      });
+    </script>
     <script src="js/api.js"></script>
     <script src="js/login.js"></script>
     <script>
