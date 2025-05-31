@@ -30,6 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleProductForm(show = true, isEditing = false) {
         if (show) {
             productFormContainer.classList.remove('hidden');
+            productFormContainer.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s';
+            productFormContainer.style.transform = 'translateY(-30px) scale(1.03)';
+            productFormContainer.style.boxShadow = '0 8px 32px 0 rgba(49,213,222,0.15)';
+            setTimeout(() => {
+                productFormContainer.style.transform = 'translateY(0) scale(1)';
+                productFormContainer.style.boxShadow = '';
+            }, 400);
             productFormTitle.textContent = isEditing ? 'Editar Produto' : 'Adicionar Novo Produto';
             
             if (!isEditing) {
@@ -37,9 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Rola até o formulário
-            productFormContainer.scrollIntoView({ behavior: 'smooth' });
+            productFormContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         } else {
             productFormContainer.classList.add('hidden');
+            productFormContainer.style.transform = '';
+            productFormContainer.style.boxShadow = '';
         }
     }
     

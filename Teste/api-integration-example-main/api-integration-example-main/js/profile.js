@@ -211,13 +211,15 @@ document.addEventListener('DOMContentLoaded', () => {
             let passwordChanged = false;
             
             // Verifica se o usuário está tentando alterar a senha
-            const currentPassword = currentPasswordInput.value;
-            const newPassword = newPasswordInput.value;
-            const confirmPassword = confirmPasswordInput.value;
+            const currentPassword = currentPasswordInput.value.trim();
+            const newPassword = newPasswordInput.value.trim();
+            const confirmPassword = confirmPasswordInput.value.trim();
             
-            // Se algum dos campos de senha estiver preenchido, verifica todos
-            if (currentPassword || newPassword || confirmPassword) {
-                if (!currentPassword || !newPassword || !confirmPassword) {
+            // Só exige todos os campos de senha se algum deles for preenchido (ignorando espaços)
+            const algumCampoPreenchido = currentPassword !== '' || newPassword !== '' || confirmPassword !== '';
+            const todosCamposPreenchidos = currentPassword !== '' && newPassword !== '' && confirmPassword !== '';
+            if (algumCampoPreenchido) {
+                if (!todosCamposPreenchidos) {
                     showMessage('Para alterar a senha, preencha todos os campos de senha.', 'error');
                     return;
                 }
@@ -247,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
             
-            // Atualiza os dados do usuário
+            // Atualiza os dados do usuário SEM exigir senha
             await apiService.put(`/user/${userId}`, userData);
             
             // Mensagem diferente dependendo se a senha foi alterada ou não
