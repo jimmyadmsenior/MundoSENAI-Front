@@ -75,9 +75,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 html += `
                     <tr>
                         <td>
-                            ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" class="product-thumbnail">` : ''}
                             ${product.name}
-                        </td>
                         <td>${product.category || 'N/A'}</td>
                         <td>${formatCurrency(product.price)}</td>
                         <td class="${stockClass}">${product.stock}</td>
