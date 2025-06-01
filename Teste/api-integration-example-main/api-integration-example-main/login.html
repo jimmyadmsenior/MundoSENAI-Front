@@ -7,6 +7,16 @@
     <title>Login - Mundo SENAI</title>
     <link rel="icon" type="image/png" href="../api-integration-example-main/Brooklyn-Favicon.png">
     <style>
+        :root {
+            --primary-cyan: #31d5de;
+            --primary-blue: #1c31a5;
+            --accent-white: #f5f3ee;
+            --bg-dark: #0f0f0f;
+            --bg-card: #1a1a1a;
+            --text-primary: #f5f3ee;
+            --text-secondary: #b0b0b0;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,8 +24,10 @@
         }
 
         body {
-            font-family: 'Poppins', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            margin: 0;
             min-height: 100vh;
             overflow: auto;
             position: relative;
@@ -422,6 +434,153 @@
                 font-size: 1rem;
             }
         }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+            flex: unset;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-cyan) 20, var(--primary-blue) 20);
+            color: var(--accent-white);
+            transform: translateX(5px);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before,
+        .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .logout-link-custom {
+            color: #fff !important;
+            background: none !important;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .nav-menu {
+            flex: unset;
+        }
+
+        .sidebar-divider {
+            border: none;
+            border-top: 1.5px solid #333;
+            margin: 30px 16px 20px 16px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 70px;
+                padding: 1rem 0;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                padding: 1rem;
+            }
+
+            .logo-img {
+                width: 40px;
+            }
+
+            .logo p,
+            .nav-link span {
+                display: none;
+            }
+
+            .nav-link {
+                justify-content: center;
+                padding: 1rem 0.5rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-content {
+                margin-left: 0;
+                padding: 0.5rem;
+            }
+
+            .sidebar {
+                display: none;
+            }
+        }
     </style>
 </head>
 
@@ -434,6 +593,26 @@
         <div class="blob"></div>
         <div class="blob"></div>
     </div>
+    <nav class="sidebar">
+        <div class="logo">
+            <img src="../api-integration-example-main/Brooklyn_original.png" alt="Logo Brooklyn" class="logo-img">
+            <p>Gestão Inteligente</p>
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a>
+            </li>
+            <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a>
+            </li>
+            <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a>
+            </li>
+            <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a>
+            </li>
+        </ul>
+        <hr class="sidebar-divider">
+        <div style="padding: 0 1rem 1rem 1rem;">
+            <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
+        </div>
+    </nav>
     <div class="container">
         <div class="login-card">
             <div class="logo-container">

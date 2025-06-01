@@ -35,6 +35,7 @@
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
+            justify-content: flex-start;
         }
         .logo {
             text-align: center;
@@ -55,7 +56,7 @@
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
-            flex: 1;
+            flex: unset;
         }
         .nav-item {
             margin-bottom: 0.5rem;
@@ -95,11 +96,29 @@
             font-size: 1.2rem;
             width: 20px;
         }
+        .logout-link-custom {
+            color: #fff !important;
+            background: none !important;
+        }
         .main-content {
             margin-left: 260px;
             padding: 2rem;
             min-height: 100vh;
             background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .nav-menu {
+            flex: unset;
+        }
+        .sidebar-divider {
+            border: none;
+            border-top: 1.5px solid #333;
+            margin: 30px 16px 20px 16px;
+            opacity: 0.5;
         }
         .page-header {
             margin-bottom: 2rem;
@@ -299,8 +318,11 @@
             <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
             <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
             <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
-            <li class="nav-item"><a href="#" id="logout-link" class="nav-link"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a></li>
         </ul>
+        <hr class="sidebar-divider">
+        <div style="padding: 0 1rem 1rem 1rem;">
+            <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
+        </div>
     </nav>
     <main class="main-content">
         <section class="page-header">
