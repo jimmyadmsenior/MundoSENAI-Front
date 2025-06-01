@@ -26,19 +26,23 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 260px;
+            width: 280px;
             height: 100vh;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
             padding: 2rem 0;
             z-index: 1000;
-            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
         }
         .logo {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
         }
         .logo-img {
-            width: 120px;
+            width: 150px;
             height: auto;
             display: block;
             margin: 0 auto 0.5rem auto;
@@ -51,6 +55,7 @@
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
+            flex: 1;
         }
         .nav-item {
             margin-bottom: 0.5rem;
@@ -64,11 +69,26 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
         .nav-link:hover, .nav-link.active {
             background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
             color: var(--accent-white);
             transform: translateX(5px);
+        }
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        .nav-link:hover::before, .nav-link.active::before {
+            transform: scaleY(1);
         }
         .nav-link i {
             margin-right: 1rem;
