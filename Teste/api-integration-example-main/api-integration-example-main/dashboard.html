@@ -64,6 +64,21 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
+        }
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        .nav-link:hover::before, .nav-link.active::before {
+            transform: scaleY(1);
         }
         .nav-link:hover, .nav-link.active {
             background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
