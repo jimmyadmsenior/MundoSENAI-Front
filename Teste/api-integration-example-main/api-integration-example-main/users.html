@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Usuários - Mundo SENAI</title>
+    <title>Clientes - Mundo SENAI</title>
     <link rel="icon" type="image/png" href="../api-integration-example-main/Brooklyn-Favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -314,7 +314,7 @@
         <ul class="nav-menu">
             <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
             <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
-            <li class="nav-item"><a href="users.html" class="nav-link active"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
+            <li class="nav-item"><a href="users.html" class="nav-link active"><i class="fas fa-users"></i> <span>Clientes</span></a></li>
             <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
         </ul>
         <div style="height: 320px;"></div>
@@ -325,14 +325,14 @@
     </nav>
     <main class="main-content">
         <section class="page-header">
-            <h2>Usuários</h2>
+            <h2>Clientes</h2>
             <div class="actions">
                 <button id="refresh-users" class="btn btn-secondary"><i class="fas fa-sync-alt"></i> Atualizar</button>
-                <button id="add-user-btn" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Usuário</button>
+                <button id="add-user-btn" class="btn btn-primary"><i class="fas fa-plus"></i> Adicionar Cliente</button>
             </div>
         </section>
         <div id="user-form-container" class="form-container hidden">
-            <h3 id="user-form-title">Adicionar Novo Usuário</h3>
+            <h3 id="user-form-title">Adicionar Novo Cliente</h3>
             <form id="user-form">
                 <input type="hidden" id="user-id">
                 <div class="form-group">
@@ -394,7 +394,7 @@
                 background-clip: text;
                 margin:0 auto 0.5rem auto;
                 display:inline-block;">
-                USUÁRIOS
+                CLIENTES
             </h1>
             <div style="height:4px;width:80px;background:linear-gradient(90deg,var(--primary-cyan),var(--primary-blue));border-radius:2px;margin:0.5rem auto 0 auto;"></div>
         </div>
@@ -409,7 +409,7 @@
                 </thead>
                 <tbody id="users-list">
                     <tr>
-                        <td colspan="3" class="loading-cell">Carregando usuários...</td>
+                        <td colspan="3" class="loading-cell">Carregando clientes...</td>
                     </tr>
                 </tbody>
             </table>
