@@ -593,22 +593,33 @@
             margin: 0 auto 0.5rem auto;
         }
 
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
         .logo p {
             color: var(--text-secondary);
             font-size: 0.9rem;
             margin-top: 0.5rem;
         }
 
+        .logo img{
+            max-width: 150px;
+        }
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
-            flex: unset;
+            flex: 1;
+            margin-top: 40px; /* Adicionado para mover os botões para baixo */
         }
-
         .nav-item {
             margin-bottom: 0.5rem;
         }
-
         .nav-link {
             display: flex;
             align-items: center;
@@ -620,7 +631,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .nav-link::before {
             content: '';
             position: absolute;
@@ -632,22 +642,18 @@
             transform: scaleY(0);
             transition: transform 0.3s ease;
         }
-
         .nav-link:hover::before, .nav-link.active::before {
             transform: scaleY(1);
         }
-
         .nav-link i {
             margin-right: 1rem;
             font-size: 1.2rem;
             width: 20px;
         }
-
         .logout-link-custom {
             color: #fff !important;
             background: none !important;
         }
-
         .sidebar-divider {
             border: none;
             border-top: 1.5px solid #333;
@@ -698,6 +704,7 @@
         .logo h1 {
             font-size: 1.8rem;
             background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: bold;
@@ -719,6 +726,7 @@
             list-style: none;
             padding: 0 1rem;
             flex: 1;
+            margin-top: 40px; /* Adicionado para mover os botões para baixo */
         }
         .nav-item {
             margin-bottom: 0.5rem;
@@ -829,21 +837,23 @@
             <p>Gestão Inteligente</p>
         </div>
         <ul class="nav-menu">
+            <li class="nav-item"><a href="home.html" class="nav-link active"><i class="fas fa-home"></i> <span>Home</span></a></li>
             <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
             <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
             <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Clientes</span></a></li>
-            <li class="nav-item"><a href="profile.html" class="nav-link active"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
+            <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
         </ul>
+        <div style="height: 320px;"></div>
         <hr class="sidebar-divider">
-        <div class="sidebar-footer">
+        <div style="padding: 0 1rem 1.5rem 1rem; margin-top: 10px;">
             <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
         </div>
     </nav>
     <div class="overlay" id="overlay"></div>
     <script>
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('overlay');
+        // Remover todas as declarações duplicadas de menuToggle e sidebar, mantendo apenas uma de cada
+const menuToggle = document.getElementById('menuToggle');
+const sidebar = document.getElementById('sidebar');
         menuToggle.addEventListener('click', () => {
             sidebar.classList.toggle('open');
             overlay.classList.toggle('active');
