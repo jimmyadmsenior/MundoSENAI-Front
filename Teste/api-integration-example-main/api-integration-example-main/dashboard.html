@@ -31,14 +31,18 @@
             background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
             padding: 2rem 0;
             z-index: 1000;
-            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
         .logo {
             text-align: center;
             margin-bottom: 2rem;
         }
         .logo-img {
-            width: 210px;
+            width: 120px;
             height: auto;
             display: block;
             margin: 0 auto 0.5rem auto;
@@ -51,6 +55,7 @@
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
+            flex: unset;
         }
         .nav-item {
             margin-bottom: 0.5rem;
@@ -79,11 +84,6 @@
         }
         .nav-link:hover::before, .nav-link.active::before {
             transform: scaleY(1);
-        }
-        .nav-link:hover, .nav-link.active {
-            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
-            color: var(--accent-white);
-            transform: translateX(5px);
         }
         .nav-link i {
             margin-right: 1rem;
@@ -234,8 +234,12 @@
         .sidebar-divider {
             border: none;
             border-top: 1.5px solid #333;
-            margin: 60px 16px 30px 16px; /* aumentou o espaço acima e abaixo */
+            margin: 48px 16px 16px 16px;
             opacity: 0.5;
+        }
+        .sidebar-footer {
+            margin-top: 16px;
+            padding: 0 1rem 1.5rem 1rem;
         }
         @media (max-width: 900px) {
             .sidebar {
@@ -275,14 +279,13 @@
             <p>Gestão Inteligente</p>
         </div>
         <ul class="nav-menu">
-            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="dashboard.html" class="nav-link active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
             <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
             <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
             <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
         </ul>
-        <div style="height: 290px;"></div>
         <hr class="sidebar-divider">
-        <div style="padding: 0 1rem 1.5rem 1rem;">
+        <div class="sidebar-footer">
             <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
         </div>
     </nav>
@@ -290,7 +293,7 @@
         <!-- Cabeçalho comum -->
         <header class="dashboard-header">
             <h2>Bem-vindo ao Painel de Controle</h2>
-            <p>Aqui você pode visualizar informações gerais sobre produtos e usuários.teste</p>
+            <p>Aqui você pode visualizar informações gerais sobre produtos e usuários.</p>
         </header>
 
         <div class="dashboard-cards">
