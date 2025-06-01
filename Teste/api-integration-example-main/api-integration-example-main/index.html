@@ -26,14 +26,15 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-dark);
             color: var(--text-primary);
-            overflow-x: hidden;
+            margin: 0;
         }
 
         /* Main Content */
         .main-content {
-            margin-left: 280px;
+            margin-left: 260px;
+            padding: 2rem;
             min-height: 100vh;
-            background: var(--bg-dark);
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
         }
 
         .header {
@@ -533,6 +534,133 @@
                 display: block;
             }
         }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                width: 70px;
+                padding: 1rem 0;
+            }
+            .main-content {
+                margin-left: 70px;
+                padding: 1rem;
+            }
+            .logo-img {
+                width: 40px;
+            }
+            .logo p, .nav-link span {
+                display: none;
+            }
+            .nav-link {
+                justify-content: center;
+                padding: 1rem 0.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .main-content {
+                margin-left: 0;
+                padding: 0.5rem;
+            }
+            .sidebar {
+                display: none;
+            }
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
+            padding: 2rem 0;
+            z-index: 1000;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
+        }
+
+        .logo-img {
+            width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto 0.5rem auto;
+        }
+
+        .logo p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0 1rem;
+            flex: unset;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
+            color: var(--accent-white);
+            transform: translateX(5px);
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .nav-link:hover::before, .nav-link.active::before {
+            transform: scaleY(1);
+        }
+
+        .nav-link i {
+            margin-right: 1rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        .logout-link-custom {
+            color: #fff !important;
+            background: none !important;
+        }
+
+        .sidebar-divider {
+            border: none;
+            border-top: 1.5px solid #333;
+            margin: 60px 16px 30px 16px;
+            opacity: 0.5;
+        }
     </style>
 </head>
 <body>
@@ -630,83 +758,31 @@
             font-size: 1.2rem;
             width: 20px;
         }
-        .sidebar-footer {
-            padding: 0 1rem 1rem;
-            margin-top: auto;
+        .logout-link-custom {
+            color: #fff !important;
+            background: none !important;
         }
-        .add-product-btn {
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+        }
+        .sidebar {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            width: 100%;
+            flex-direction: column;
+            height: 100vh;
         }
-        .add-product-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        .nav-menu {
+            flex: unset;
         }
-        .auth-section {
-            border-top: 1px solid #333;
-            padding-top: 1rem;
-        }
-        .auth-link {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            color: var(--accent-white) !important;
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-            margin-bottom: 0.5rem;
-        }
-        .auth-link:hover {
-            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
-            color: var(--accent-white) !important;
-            transform: translateX(5px);
-        }
-        .auth-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-        .auth-link:hover::before {
-            transform: scaleY(1);
-        }
-        .auth-link i {
-            margin-right: 1rem;
-            font-size: 1.2rem;
-            width: 20px;
-        }
-        .menu-toggle {
-            display: none;
-            background: none;
+        .sidebar-divider {
             border: none;
-            color: var(--accent-white);
-            font-size: 1.5rem;
-            cursor: pointer;
-            position: fixed;
-            top: 1.5rem;
-            left: 1.5rem;
-            z-index: 1100;
+            border-top: 1.5px solid #333;
+            margin: 60px 16px 30px 16px;
+            opacity: 0.5;
         }
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .sidebar {
                 transform: translateX(-100%);
             }
@@ -748,51 +824,21 @@
     <button class="menu-toggle" id="menuToggle">
         <i class="fas fa-bars"></i>
     </button>
-    <nav class="sidebar" id="sidebar">
+    <nav class="sidebar">
         <div class="logo">
-            <a ><img src="../api-integration-example-main/Brooklyn-logo.png" alt=""></a>
+            <img src="../api-integration-example-main/Brooklyn_original.png" alt="Logo Brooklyn" class="logo-img">
             <p>Gestão Inteligente</p>
         </div>
         <ul class="nav-menu">
-            <li class="nav-item">
-                <a href="../api-integration-example-main/index.html" class="nav-link active">
-                    <i class="fas fa-home"></i>
-                    Home
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../api-integration-example-main/dashboard.html" class="nav-link" id="dashboardLink">
-                    <i class="fas fa-tachometer-alt"></i>
-                    Dashboard
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../api-integration-example-main/products.html" class="nav-link" id="produtosLink">
-                    <i class="fa-solid fa-box"></i>
-                    Produtos
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../api-integration-example-main/users.html" class="nav-link" id="clientesLink">
-                    <i class="fas fa-users"></i>
-                    Clientes
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="../api-integration-example-main/" class="nav-link" id="perfilLink">
-                    <i class="fas fa-user"></i>
-                    Perfil
-                </a>
-            </li>
+            <li class="nav-item"><a href="dashboard.html" class="nav-link active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
+            <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
+            <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
         </ul>
-        <div class="sidebar-footer">
-           
-            <div class="auth-section">
-                <a href="../api-integration-example-main/login.html" class="auth-link" id="loginLink">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Cadastro / Logar
-                </a>
-            </div>
+        <div style="height: 290px;"></div>
+        <hr class="sidebar-divider">
+        <div style="padding: 0 1rem 1.5rem 1rem;">
+            <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
         </div>
     </nav>
     <div class="overlay" id="overlay"></div>

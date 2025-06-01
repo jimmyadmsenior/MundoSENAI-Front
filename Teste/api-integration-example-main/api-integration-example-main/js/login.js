@@ -93,38 +93,29 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const email = emailInput.value.trim();
             const password = passwordInput.value;
-            
             if (!email || !password) {
                 showLoginMessage('Preencha todos os campos', 'error');
                 return;
             }
-            
-            // Desabilita o botão durante o login
             loginBtn.disabled = true;
             loginBtn.textContent = 'Entrando...';
-            
-            // Faz a requisição de login
             const response = await apiService.post('/login', { email, password }, false);
-            
-            // Armazena o token
-            localStorage.setItem('token', response.token);
-            
-            // Limpa os campos
+            if (!response.token) {
+                showLoginMessage('Erro: o backend não retornou um token. Verifique as credenciais ou o servidor.', 'error');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Entrar';
+                return;
+            }
+            apiService.setToken(response.token);
             emailInput.value = '';
             passwordInput.value = '';
-            
-            // Mostra mensagem de sucesso
             showLoginMessage('Login realizado com sucesso!', 'success');
-            
-            // Redireciona para o dashboard
             setTimeout(() => {
                 window.location.href = "dashboard.html";
             }, 1000);
-            
         } catch (error) {
             showLoginMessage(error.message || 'Erro ao fazer login. Verifique suas credenciais.', 'error');
         } finally {
-            // Reabilita o botão
             loginBtn.disabled = false;
             loginBtn.textContent = 'Entrar';
         }

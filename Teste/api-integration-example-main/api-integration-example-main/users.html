@@ -31,7 +31,11 @@
             background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
             padding: 2rem 0;
             z-index: 1000;
-            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
         .logo {
             text-align: center;
@@ -51,6 +55,7 @@
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
+            flex: unset;
         }
         .nav-item {
             margin-bottom: 0.5rem;
@@ -75,11 +80,29 @@
             font-size: 1.2rem;
             width: 20px;
         }
+        .logout-link-custom {
+            color: #fff !important;
+            background: none !important;
+        }
         .main-content {
             margin-left: 260px;
             padding: 2rem;
             min-height: 100vh;
             background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .nav-menu {
+            flex: unset;
+        }
+        .sidebar-divider {
+            border: none;
+            border-top: 1.5px solid #333;
+            margin: 60px 16px 30px 16px;
+            opacity: 0.5;
         }
         .page-header {
             margin-bottom: 2rem;
@@ -277,10 +300,14 @@
         <ul class="nav-menu">
             <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
             <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
-            <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
+            <li class="nav-item"><a href="users.html" class="nav-link active"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
             <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
-            <li class="nav-item"><a href="#" id="logout-link" class="nav-link"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a></li>
         </ul>
+        <div style="height: 290px;"></div>
+        <hr class="sidebar-divider">
+        <div style="padding: 0 1rem 1.5rem 1rem;">
+            <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
+        </div>
     </nav>
     <main class="main-content">
         <section class="page-header">

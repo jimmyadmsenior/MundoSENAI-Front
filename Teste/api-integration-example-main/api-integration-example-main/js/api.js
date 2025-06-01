@@ -30,6 +30,8 @@ class ApiService {
      * @returns {boolean}
      */
     isAuthenticated() {
+        // Sempre pega o token atualizado do localStorage
+        this.token = localStorage.getItem('token');
         return !!this.token;
     }
 
@@ -183,4 +185,5 @@ class ApiService {
 }
 
 // Exporta uma instância única do serviço de API
-const apiService = new ApiService();
+window.apiService = new ApiService();
+var apiService = window.apiService;
