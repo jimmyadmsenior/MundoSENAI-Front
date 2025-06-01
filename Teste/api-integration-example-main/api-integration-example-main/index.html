@@ -569,9 +569,9 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 280px;
+            width: 260px;
             height: 100vh;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
             padding: 2rem 0;
             z-index: 1000;
             box-shadow: 4px 0 20px rgba(0,0,0,0.3);
@@ -583,12 +583,11 @@
 
         .logo {
             text-align: center;
-            margin-bottom: 3rem;
-            padding: 0 2rem;
+            margin-bottom: 2rem;
         }
 
         .logo-img {
-            width: 150px;
+            width: 120px;
             height: auto;
             display: block;
             margin: 0 auto 0.5rem auto;
@@ -622,12 +621,6 @@
             overflow: hidden;
         }
 
-        .nav-link:hover, .nav-link.active {
-            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
-            color: var(--accent-white);
-            transform: translateX(5px);
-        }
-
         .nav-link::before {
             content: '';
             position: absolute;
@@ -658,9 +651,17 @@
         .sidebar-divider {
             border: none;
             border-top: 1.5px solid #333;
-            margin: 60px 16px 30px 16px;
+            margin: 48px 16px 16px 16px;
             opacity: 0.5;
         }
+        .sidebar-footer {
+            margin-top: 16px;
+            padding: 0 1rem 1.5rem 1rem;
+        }
+        /* Fim do estilo da Sidebar Menu */
+
+        /* Estilos Específicos da Página */
+        /* Adicione aqui os estilos específicos para cada página, se necessário */
     </style>
 </head>
 <body>
@@ -680,9 +681,9 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 280px;
+            width: 260px;
             height: 100vh;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
             padding: 2rem 0;
             z-index: 1000;
             box-shadow: 4px 0 20px rgba(0,0,0,0.3);
@@ -692,19 +693,27 @@
         }
         .logo {
             text-align: center;
-            margin-bottom: 3rem;
-            padding: 0 2rem;
+            margin-bottom: 2rem;
         }
-        .logo-img {
-            width: 150px;
-            height: auto;
-            display: block;
-            margin: 0 auto 0.5rem auto;
+        .logo h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+
+        
+
         }
         .logo p {
             color: var(--text-secondary);
             font-size: 0.9rem;
             margin-top: 0.5rem;
+        }
+
+        .logo img{
+            max-width: 150px;
         }
         .nav-menu {
             list-style: none;
@@ -724,11 +733,6 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-        .nav-link:hover, .nav-link.active {
-            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
-            color: var(--accent-white);
-            transform: translateX(5px);
         }
         .nav-link::before {
             content: '';
@@ -770,38 +774,51 @@
         .sidebar-divider {
             border: none;
             border-top: 1.5px solid #333;
-            margin: 60px 16px 30px 16px;
+            margin: 48px 16px 16px 16px;
             opacity: 0.5;
+        }
+        .sidebar-footer {
+            margin-top: 16px;
+            padding: 0 1rem 1.5rem 1rem;
         }
         @media (max-width: 900px) {
             .sidebar {
-                width: 70px;
-                padding: 1rem 0;
+                transform: translateX(-100%);
+            }
+            .sidebar.open {
+                transform: translateX(0);
+            }
+            .menu-toggle {
+                display: block;
             }
             .main-content {
-                margin-left: 70px;
-                padding: 1rem;
-            }
-            .logo-img {
-                width: 40px;
-            }
-            .logo p, .nav-link span {
-                display: none;
-            }
-            .nav-link {
-                justify-content: center;
-                padding: 1rem 0.5rem;
+                margin-left: 0 !important;
             }
         }
-        @media (max-width: 600px) {
-            .main-content {
-                margin-left: 0;
-                padding: 0.5rem;
-            }
-            .sidebar {
-                display: none;
+        .main-content {
+            margin-left: 280px;
+        }
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+        .overlay.active {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .sidebar.open ~ .overlay {
+                display: block;
             }
         }
+
+        
     </style>
     <button class="menu-toggle" id="menuToggle">
         <i class="fas fa-bars"></i>
@@ -812,14 +829,13 @@
             <p>Gestão Inteligente</p>
         </div>
         <ul class="nav-menu">
-            <li class="nav-item"><a href="dashboard.html" class="nav-link active"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
             <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
             <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
-            <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
+            <li class="nav-item"><a href="profile.html" class="nav-link active"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
         </ul>
-        <div style="height: 290px;"></div>
         <hr class="sidebar-divider">
-        <div style="padding: 0 1rem 1.5rem 1rem;">
+        <div class="sidebar-footer">
             <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
         </div>
     </nav>

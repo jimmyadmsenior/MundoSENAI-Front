@@ -25,9 +25,9 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 280px;
+            width: 260px;
             height: 100vh;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
             padding: 2rem 0;
             z-index: 1000;
             box-shadow: 4px 0 20px rgba(0,0,0,0.3);
@@ -38,11 +38,10 @@
         }
         .logo {
             text-align: center;
-            margin-bottom: 3rem;
-            padding: 0 2rem;
+            margin-bottom: 2rem;
         }
         .logo-img {
-            width: 150px;
+            width: 120px;
             height: auto;
             display: block;
             margin: 0 auto 0.5rem auto;
@@ -70,11 +69,6 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
-        }
-        .nav-link:hover, .nav-link.active {
-            background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
-            color: var(--accent-white);
-            transform: translateX(5px);
         }
         .nav-link::before {
             content: '';
@@ -116,8 +110,12 @@
         .sidebar-divider {
             border: none;
             border-top: 1.5px solid #333;
-            margin: 30px 16px 20px 16px;
+            margin: 48px 16px 16px 16px;
             opacity: 0.5;
+        }
+        .sidebar-footer {
+            margin-top: 16px;
+            padding: 0 1rem 1.5rem 1rem;
         }
         /* Estilo moderno para todos os input[type="text"] */
         input[type="text"] {
