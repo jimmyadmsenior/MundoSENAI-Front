@@ -26,19 +26,24 @@
             position: fixed;
             left: 0;
             top: 0;
-            width: 260px;
+            width: 280px;
             height: 100vh;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
+            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
             padding: 2rem 0;
             z-index: 1000;
-            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
+            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
         }
         .logo {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
+            padding: 0 2rem;
         }
         .logo-img {
-            width: 210px;
+            width: 150px;
             height: auto;
             display: block;
             margin: 0 auto 0.5rem auto;
@@ -51,6 +56,7 @@
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
+            flex: unset;
         }
         .nav-item {
             margin-bottom: 0.5rem;
@@ -64,11 +70,26 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
         .nav-link:hover, .nav-link.active {
             background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
             color: var(--accent-white);
             transform: translateX(5px);
+        }
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        .nav-link:hover::before, .nav-link.active::before {
+            transform: scaleY(1);
         }
         .nav-link i {
             margin-right: 1rem;
@@ -204,6 +225,24 @@
             text-align: center;
             color: var(--text-secondary);
         }
+        .logout-link-custom {
+            color: #fff !important;
+            background: none !important;
+        }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .nav-menu {
+            flex: unset;
+        }
+        .sidebar-divider {
+            border: none;
+            border-top: 1.5px solid #333;
+            margin: 30px 0 20px 0;
+            opacity: 0.5;
+        }
         @media (max-width: 900px) {
             .sidebar {
                 width: 70px;
@@ -246,8 +285,11 @@
             <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
             <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Usuários</span></a></li>
             <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
-            <li class="nav-item"><a href="#" id="logout-link" class="nav-link"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a></li>
         </ul>
+        <hr class="sidebar-divider">
+        <div style="padding: 0 1rem 1rem 1rem;">
+            <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
+        </div>
     </nav>
     <main class="main-content">
         <!-- Cabeçalho comum -->
