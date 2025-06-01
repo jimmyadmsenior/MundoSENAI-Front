@@ -16,27 +16,59 @@
             --text-primary: #f5f3ee;
             --text-secondary: #b0b0b0;
         }
+        /* Estilo moderno para todos os campos de input */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            background: #2d3742; /* cinza */
+            color: #f5f3ee; /* texto claro */
+            border: 2px solid #444a54; /* cinza escuro */
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            font-size: 1.05rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-color: #888fa1; /* cinza mais claro ao focar */
+            box-shadow: 0 0 8px #888fa1;
+        }
+        input[type="text"]::placeholder,
+        input[type="email"]::placeholder,
+        input[type="password"]::placeholder {
+            color: #b0b0b0; /* cinza placeholder */
+            opacity: 1;
+            font-size: 1.05rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            margin: 0;
+        }
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
-            width: 280px;
+            width: 260px;
             height: 100vh;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #252525 100%);
+            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
             padding: 2rem 0;
             z-index: 1000;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
+            box-shadow: 4px 0 20px rgba(62, 62, 62, 0.3);
         }
         .logo {
             text-align: center;
-            margin-bottom: 3rem;
-            padding: 0 2rem;
+            margin-bottom: 2rem;
         }
         .logo-img {
-            width: 150px;
+            width: 120px;
             height: auto;
             display: block;
             margin: 0 auto 0.5rem auto;
@@ -49,7 +81,6 @@
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
-            flex: 1;
         }
         .nav-item {
             margin-bottom: 0.5rem;
@@ -63,26 +94,11 @@
             border-radius: 12px;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
         }
         .nav-link:hover, .nav-link.active {
             background: linear-gradient(135deg, var(--primary-cyan)20, var(--primary-blue)20);
             color: var(--accent-white);
             transform: translateX(5px);
-        }
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-        .nav-link:hover::before, .nav-link.active::before {
-            transform: scaleY(1);
         }
         .nav-link i {
             margin-right: 1rem;
