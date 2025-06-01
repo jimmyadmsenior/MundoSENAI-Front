@@ -29,17 +29,17 @@ Página de detalhes de cada periférico
   <tr>
     <td align="center">
       <a href="#" title="defina o título do link">
-        <img src="https://avatars.githubusercontent.com/u/184536316?v=4" width="100px;" alt="Foto do Miguel Zacharias no GitHub"/><br>
+        <img src="https://avatars.githubusercontent.com/u/142106079?v=4" width="100px;" alt="Foto de Jimmy Castilho no GitHub"/><br>
         <sub>
-          <b>Miguel Zacharias</b>
+          <b>Jimmy Castilho</b>
         </sub>
       </a>
     </td>
     <td align="center">
       <a href="#" title="defina o título do link">
-        <img src="https://avatars.githubusercontent.com/u/142106079?v=4" width="100px;" alt="Foto de Jimmy Castilho no GitHub"/><br>
+        <img src="https://avatars.githubusercontent.com/u/184536316?v=4" width="100px;" alt="Foto do Miguel Zacharias no GitHub"/><br>
         <sub>
-          <b>Jimmy Castilho</b>
+          <b>Miguel Zacharias</b>
         </sub>
       </a>
     </td>
