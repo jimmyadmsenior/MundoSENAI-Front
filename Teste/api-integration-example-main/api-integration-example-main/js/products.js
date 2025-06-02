@@ -18,6 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Armazena a categoria atual de busca
     let currentCategory = '';
     
+    // Função de inicialização - executada imediatamente
+    function initializeFormElements() {
+        console.log('Inicializando elementos do formulário de produtos...');
+        
+        // Garantir que o formulário esteja oculto inicialmente
+        if (productFormContainer) {
+            productFormContainer.classList.add('hidden');
+            productFormContainer.style.display = 'none';
+            console.log('Formulário de produtos ocultado na inicialização');
+        }
+    }
+    
+    // Executa a inicialização imediatamente
+    initializeFormElements();
+    
     // Função para formatar valores monetários
     function formatCurrency(value) {
         return new Intl.NumberFormat('pt-BR', {
@@ -30,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleProductForm(show = true, isEditing = false) {
         if (show) {
             productFormContainer.classList.remove('hidden');
+            productFormContainer.style.display = 'block';
             productFormContainer.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s';
             productFormContainer.style.transform = 'translateY(-30px) scale(1.03)';
             productFormContainer.style.boxShadow = '0 8px 32px 0 rgba(49,213,222,0.15)';
@@ -45,10 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Rola até o formulário
             productFormContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            console.log('Formulário de produto exibido - modo:', isEditing ? 'edição' : 'adição');
         } else {
             productFormContainer.classList.add('hidden');
+            productFormContainer.style.display = 'none';
             productFormContainer.style.transform = '';
             productFormContainer.style.boxShadow = '';
+            
+            console.log('Formulário de produto ocultado');
         }
     }
     
@@ -325,12 +346,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${formatCurrency(product.price)}</td>
                     <td class="${stockClass}">${product.stock}</td>
                     <td class="actions-cell">
-                        <button class="btn btn-sm edit-product" data-id="${product.id}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-product" data-id="${product.id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-primary edit-product" data-id="${product.id}" style="white-space: nowrap; min-width: 90px;">
+                                <i class="fas fa-user-edit"></i> <span class="btn-text">Editar</span>
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-product" data-id="${product.id}" style="white-space: nowrap; min-width: 90px;">
+                                <i class="fas fa-trash"></i> <span class="btn-text">Deletar</span>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
