@@ -7,6 +7,53 @@
     <link rel="icon" type="image/png" href="../api-integration-example-main/Brooklyn-Favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        .hidden {
+            display: none;
+        }
+
+        /* Estilos para os botões de ação */
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem; /* Espaçamento padrão entre os botões */
+            align-items: center; /* Alinha os botões verticalmente se tiverem alturas diferentes */
+        }
+
+        .action-buttons .btn {
+            padding: 0.4rem 0.6rem; /* Aumentado para deixar menos estreito */
+            font-size: 0.8rem; /* Mantendo o mesmo tamanho de fonte */
+            display: inline-flex; /* Ensure icon and text are on the same line */
+            align-items: center; /* Vertically align icon and text */
+            justify-content: center; /* Center content if button is wider */
+            vertical-align: middle; /* Align button itself with other elements if needed */
+        }
+
+        /* Estilos responsivos para os botões de ação */
+        @media (max-width: 767px) {
+            .action-buttons {
+                /* display: flex; é herdado */
+                flex-direction: row;
+                /* gap: 0.5rem; é herdado e pode ser ajustado se necessário, 5px é similar */
+            }
+            /* Padding and font-size are now default for .action-buttons .btn */
+            .action-buttons .btn .btn-text {
+                display: none; /* Esconde o texto do botão */
+            }
+            .action-buttons .btn i {
+                margin-right: 0; /* Remove a margem do ícone quando o texto está escondido */
+            }
+        }
+
+        @media (min-width: 768px) {
+            .action-buttons .btn .btn-text {
+                display: inline; /* Mostra o texto do botão */
+            }
+            .action-buttons .btn i {
+                margin-right: 0.35rem; /* Add space between icon and text on larger screens */
+            }
+            .action-buttons .btn i {
+                margin-right: 0.35rem; /* Add space between icon and text on larger screens */
+            }
+        }
         :root {
             --primary-cyan: #31d5de;
             --primary-blue: #1c31a5;
@@ -58,7 +105,7 @@
             flex: unset;
         }
         .nav-item {
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.8rem;
         }
         .nav-link {
             display: flex;
@@ -86,9 +133,10 @@
             transform: scaleY(1);
         }
         .nav-link i {
-            margin-right: 1rem;
+            margin-right: 1.5rem;
             font-size: 1.2rem;
-            width: 20px;
+            width: 40px;
+            text-align: center;
         }
         .logout-link-custom {
             color: #fff !important;
@@ -274,10 +322,47 @@
             font-size: 1.05rem;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+        /* Mobile menu trigger */
+        .mobile-menu-trigger {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            z-index: 2000;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Overlay for mobile menu */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1100;
+            pointer-events: auto;
+        }
+        .overlay.active {
+            display: block;
+        }
+        
         @media (max-width: 900px) {
             .sidebar {
                 width: 70px;
                 padding: 1rem 0;
+                transition: transform 0.3s ease, width 0.3s ease;
             }
             .main-content {
                 margin-left: 70px;
@@ -286,27 +371,85 @@
             .logo-img {
                 width: 40px;
             }
-            .logo p, .nav-link span {
+            .logo p,
+            .nav-link span {
                 display: none;
             }
             .nav-link {
                 justify-content: center;
-                padding: 1rem 0.5rem;
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .nav-link i {
+                margin-right: 0;
             }
         }
+        
         @media (max-width: 600px) {
             .main-content {
                 margin-left: 0;
-                padding: 0.5rem;
+                padding: 0.8rem;
+                transition: margin-left 0.3s ease;
             }
             .sidebar {
-                display: none;
+                transform: translateX(-100%);
+                width: 200px;
+                z-index: 1600;
+                display: block !important;
+            }
+            .mobile-menu-trigger {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .sidebar.active {
+                transform: translateX(0) !important;
+            }
+            .logo p, .nav-link span {
+                display: block;
+            }
+            .nav-link {
+                justify-content: flex-start;
+                padding: 1rem 1.5rem;
+                margin-bottom: 0.8rem;
+            }
+            /* Adjust table for mobile */
+            table {
+                font-size: 0.85rem;
+            }
+            th, td {
+                padding: 0.5rem 0.3rem;
+            }
+            /* Ajusta a responsividade do formulário em telas pequenas */
+            .form-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .form-actions button {
+                width: 100%;
+            }
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            .actions {
+                width: 100%;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body>
-    <nav class="sidebar">
+    <!-- Mobile menu trigger button -->
+    <button class="mobile-menu-trigger" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="sidebar-overlay"></div>
+    
+    <nav class="sidebar" id="sidebar">
         <div class="logo">
             <img src="../api-integration-example-main/Brooklyn_original.png" alt="Logo Brooklyn" class="logo-img">
             <p>Gestão Inteligente</p>
@@ -344,14 +487,22 @@
                     <label for="user-email">Email:</label>
                     <input type="email" id="user-email" placeholder="Email" required>
                 </div>
-                <div id="password-fields">
+                <div id="password-fields" class="hidden" style="display: none;">
                     <div class="form-group">
                         <label for="user-password">Senha:</label>
                         <input type="password" id="user-password" placeholder="Senha">
-                        <small class="form-hint">Senha para novo usuário</small>
                     </div>
                 </div>
-                <div id="password-change-fields" class="hidden">
+
+                <!-- Botão para alterar senha (exibido apenas na edição) -->
+                <div id="password-change-toggle" class="hidden" style="display: none; margin-bottom: 1rem;">
+                    <button type="button" id="show-password-change" class="btn btn-secondary">
+                        <i class="fas fa-key"></i> Alterar Senha
+                    </button>
+                </div>
+
+                <!-- Campos para alteração de senha (inicialmente ocultos) -->
+                <div id="password-change-fields" class="hidden" style="display: none;">
                     <div class="form-group">
                         <label for="current-password">Senha Atual:</label>
                         <input type="password" id="current-password" placeholder="Senha atual">
@@ -360,24 +511,8 @@
                         <label for="new-password">Nova Senha:</label>
                         <input type="password" id="new-password" placeholder="Nova senha">
                     </div>
-                    <div class="form-actions password-actions">
-                        <button type="button" id="change-password-btn" class="btn btn-primary">Alterar Senha</button>
-                        <button type="button" id="cancel-password-change" class="btn btn-secondary">Cancelar</button>
-                    </div>
                 </div>
-                <div id="password-change-toggle" class="hidden">
-                    <button type="button" id="show-password-change" class="btn btn-secondary btn-sm">
-                        <i class="fas fa-key"></i> Alterar Senha
-                    </button>
-                </div>
-                <div class="form-group">
-                    <label for="user-image">Imagem de Perfil:</label>
-                    <div class="image-upload-container">
-                        <input type="file" id="user-image" accept="image/*">
-                        <div id="image-preview" class="image-preview"></div>
-                    </div>
-                    <small class="form-hint">Selecione uma imagem para o perfil do usuário (opcional)</small>
-                </div>
+
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Salvar</button>
                     <button type="button" id="cancel-user" class="btn btn-secondary">Cancelar</button>
@@ -415,12 +550,90 @@
                 </tbody>
             </table>
         </div>
-        <footer>
-            <p>Exemplo didático de integração com API - Mundo SENAI</p>
-        </footer>
+       
     </main>
     <script src="js/api.js"></script>
     <script src="js/auth-check.js"></script>
     <script src="js/users.js"></script>
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (!mobileMenuBtn || !sidebar || !overlay) {
+                console.error('Um ou mais elementos não foram encontrados.');
+                return;
+            }
+            
+            // Toggle menu when button is clicked
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                // Change icon based on menu state
+                const icon = this.querySelector('i');
+                if (sidebar.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Close menu when overlay is clicked
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+            
+            // Close menu when a link is clicked (mobile)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 600) {
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            });
+            
+            // Garante que o menu seja visível em telas móveis quando aberto
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 600) {
+                    if (!sidebar.classList.contains('active')) {
+                        sidebar.style.transform = 'translateX(-100%)';
+                    } else {
+                        sidebar.style.transform = 'translateX(0)';
+                    }
+                } else if (window.innerWidth <= 900) {
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebar.style.width = '70px';
+                } else {
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebar.style.width = '260px';
+                }
+            });
+            
+            // Ajusta os itens da tabela para telas pequenas
+            function adjustTableForMobile() {
+                const table = document.getElementById('users-table');
+                if (table && window.innerWidth <= 600) {
+                    // Caso necessário ajustar a tabela
+                }
+            }
+            
+            window.addEventListener('resize', adjustTableForMobile);
+            adjustTableForMobile();
+        });
+    </script>
 </body>
 </html>
