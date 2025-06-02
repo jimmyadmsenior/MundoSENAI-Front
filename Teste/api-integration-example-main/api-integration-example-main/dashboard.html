@@ -474,7 +474,7 @@
     <script src="js/auth-check.js"></script>
     <script src="js/dashboard.js"></script>
     <script>
-        // Mobile menu functionality
+       
         document.addEventListener('DOMContentLoaded', function() {
             const mobileMenuBtn = document.getElementById('mobile-menu-btn');
             const sidebar = document.getElementById('sidebar');
@@ -484,13 +484,12 @@
                 console.error('Um ou mais elementos não foram encontrados.');
                 return;
             }
-            
-            // Toggle menu when button is clicked
+      
             mobileMenuBtn.addEventListener('click', function() {
                 sidebar.classList.toggle('active');
                 overlay.classList.toggle('active');
                 
-                // Change icon based on menu state
+               
                 const icon = this.querySelector('i');
                 if (sidebar.classList.contains('active')) {
                     icon.classList.remove('fa-bars');
@@ -501,7 +500,7 @@
                 }
             });
             
-            // Close menu when overlay is clicked
+        
             overlay.addEventListener('click', function() {
                 sidebar.classList.remove('active');
                 overlay.classList.remove('active');
@@ -510,7 +509,7 @@
                 icon.classList.add('fa-bars');
             });
             
-            // Close menu when a link is clicked (mobile)
+        
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => {
                 link.addEventListener('click', function() {
@@ -524,7 +523,7 @@
                 });
             });
             
-            // Garante que o menu seja visível em telas móveis quando aberto
+            
             window.addEventListener('resize', function() {
                 if (window.innerWidth <= 600) {
                     if (!sidebar.classList.contains('active')) {

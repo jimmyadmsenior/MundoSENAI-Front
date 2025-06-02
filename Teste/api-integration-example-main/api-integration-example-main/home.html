@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,7 +44,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
         }
 
         .welcome-text h2 {
@@ -124,7 +125,8 @@
             animation: fadeInUp 1s ease 0.4s both;
         }
 
-        .btn-primary, .btn-secondary {
+        .btn-primary,
+        .btn-secondary {
             padding: 1rem 2rem;
             border: none;
             border-radius: 12px;
@@ -204,7 +206,7 @@
 
         .stat-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
         .stat-icon {
@@ -337,7 +339,7 @@
 
         .testimonial-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
         }
 
         .testimonial-quote {
@@ -413,7 +415,7 @@
 
         .cta-section p {
             font-size: 1.2rem;
-            color: rgba(255,255,255,0.9);
+            color: rgba(255, 255, 255, 0.9);
             margin-bottom: 2rem;
         }
 
@@ -430,15 +432,15 @@
             padding: 1rem;
             border: none;
             border-radius: 12px;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
             color: white;
-            placeholder-color: rgba(255,255,255,0.7);
+            placeholder-color: rgba(255, 255, 255, 0.7);
             backdrop-filter: blur(10px);
             min-width: 200px;
         }
 
         .signup-input::placeholder {
-            color: rgba(255,255,255,0.7);
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .signup-btn {
@@ -454,7 +456,7 @@
 
         .signup-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(255,255,255,0.3);
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.3);
         }
 
         /* Animations */
@@ -463,6 +465,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -473,14 +476,22 @@
             from {
                 height: 0;
             }
+
             to {
                 height: var(--height);
             }
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
         }
 
         .floating {
@@ -520,19 +531,24 @@
             }
         }
 
-        .menu-toggle {
+        /* Mobile menu trigger */
+        .mobile-menu-trigger {
             display: none;
-            background: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            color: white;
             border: none;
-            color: var(--accent-white);
+            border-radius: 5px;
+            width: 40px;
+            height: 40px;
             font-size: 1.5rem;
+            z-index: 2000;
             cursor: pointer;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: block;
-            }
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            align-items: center;
+            justify-content: center;
         }
 
         @media (max-width: 900px) {
@@ -540,28 +556,67 @@
                 width: 70px;
                 padding: 1rem 0;
             }
+
             .main-content {
                 margin-left: 70px;
                 padding: 1rem;
             }
+
             .logo-img {
                 width: 40px;
             }
-            .logo p, .nav-link span {
+
+            .logo p,
+            .nav-link span {
                 display: none;
             }
+
             .nav-link {
                 justify-content: center;
                 padding: 1rem 0.5rem;
             }
         }
+
         @media (max-width: 600px) {
             .main-content {
                 margin-left: 0;
-                padding: 0.5rem;
+                padding: 0.8rem;
+                transition: margin-left 0.3s ease;
             }
             .sidebar {
+                transform: translateX(-100%);
+                width: 200px;
+                z-index: 1600;
+                display: block !important;
+            }
+            .mobile-menu-trigger {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .sidebar.active {
+                transform: translateX(0) !important;
+            }
+            .logo p, .nav-link span {
+                display: block;
+            }
+            .nav-link {
+                justify-content: flex-start;
+                padding: 1rem 1.5rem;
+            }
+            .overlay {
                 display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1100;
+                pointer-events: auto;
+            }
+            .overlay.active {
+                display: block;
             }
         }
 
@@ -573,24 +628,16 @@
             height: 100vh;
             background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
             padding: 2rem 0;
-            z-index: 1000;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
+            z-index: 1600;
+            box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
             transition: transform 0.3s ease;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
         }
 
         .logo {
             text-align: center;
             margin-bottom: 2rem;
-        }
-
-        .logo-img {
-            width: 120px;
-            height: auto;
-            display: block;
-            margin: 0 auto 0.5rem auto;
         }
 
         .logo h1 {
@@ -608,18 +655,22 @@
             margin-top: 0.5rem;
         }
 
-        .logo img{
+        .logo img {
             max-width: 150px;
         }
+
         .nav-menu {
             list-style: none;
             padding: 0 1rem;
             flex: 1;
-            margin-top: 40px; /* Adicionado para mover os botões para baixo */
+            margin-top: 40px;
+            /* Adicionado para mover os botões para baixo */
         }
+
         .nav-item {
             margin-bottom: 0.5rem;
         }
+
         .nav-link {
             display: flex;
             align-items: center;
@@ -631,6 +682,7 @@
             position: relative;
             overflow: hidden;
         }
+
         .nav-link::before {
             content: '';
             position: absolute;
@@ -642,344 +694,101 @@
             transform: scaleY(0);
             transition: transform 0.3s ease;
         }
-        .nav-link:hover::before, .nav-link.active::before {
+
+        .nav-link:hover::before,
+        .nav-link.active::before {
             transform: scaleY(1);
         }
+
         .nav-link i {
             margin-right: 1rem;
             font-size: 1.2rem;
             width: 20px;
         }
+
         .logout-link-custom {
             color: #fff !important;
             background: none !important;
         }
+
         .sidebar-divider {
             border: none;
             border-top: 1.5px solid #333;
             margin: 48px 16px 16px 16px;
             opacity: 0.5;
         }
+
         .sidebar-footer {
             margin-top: 16px;
             padding: 0 1rem 1.5rem 1rem;
         }
+
         /* Fim do estilo da Sidebar Menu */
 
         /* Estilos Específicos da Página */
         /* Adicione aqui os estilos específicos para cada página, se necessário */
     </style>
 </head>
+
 <body>
-    <!-- Sidebar Menu Component - Copie este bloco para outras páginas -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary-cyan: #31d5de;
-            --primary-blue: #1c31a5;
-            --accent-white: #f5f3ee;
-            --bg-dark: #0f0f0f;
-            --bg-card: #1a1a1a;
-            --text-primary: #f5f3ee;
-            --text-secondary: #b0b0b0;
-        }
-        .sidebar {
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 260px;
-            height: 100vh;
-            background: linear-gradient(135deg, var(--bg-card) 0%, #012239 100%);
-            padding: 2rem 0;
-            z-index: 1000;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.3);
-            transition: transform 0.3s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        .logo {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-        .logo h1 {
-            font-size: 1.8rem;
-            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-blue));
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: bold;
-        }
-
-        
-
-        }
-        .logo p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-        }
-
-        .logo img{
-            max-width: 150px;
-        }
-        .nav-menu {
-            list-style: none;
-            padding: 0 1rem;
-            flex: 1;
-            margin-top: 40px; /* Adicionado para mover os botões para baixo */
-        }
-        .nav-item {
-            margin-bottom: 0.5rem;
-        }
-        .nav-link {
-            display: flex;
-            align-items: center;
-            padding: 1rem 1.5rem;
-            color: var(--text-secondary);
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .nav-link::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
-            width: 3px;
-            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-        .nav-link:hover::before, .nav-link.active::before {
-            transform: scaleY(1);
-        }
-        .nav-link i {
-            margin-right: 1rem;
-            font-size: 1.2rem;
-            width: 20px;
-        }
-        .logout-link-custom {
-            color: #fff !important;
-            background: none !important;
-        }
-        .main-content {
-            margin-left: 260px;
-            padding: 2rem;
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1a2e 100%);
-        }
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        .nav-menu {
-            flex: unset;
-        }
-        .sidebar-divider {
-            border: none;
-            border-top: 1.5px solid #333;
-            margin: 48px 16px 16px 16px;
-            opacity: 0.5;
-        }
-        .sidebar-footer {
-            margin-top: 16px;
-            padding: 0 1rem 1.5rem 1rem;
-        }
-        @media (max-width: 900px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-            .sidebar.open {
-                transform: translateX(0);
-            }
-            .menu-toggle {
-                display: block;
-            }
-            .main-content {
-                margin-left: 0 !important;
-            }
-        }
-        .main-content {
-            margin-left: 280px;
-        }
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-            backdrop-filter: blur(2px);
-        }
-        .overlay.active {
-            display: block;
-        }
-        @media (max-width: 768px) {
-            .sidebar.open ~ .overlay {
-                display: block;
-            }
-        }
-
-        
-    </style>
-    <button class="menu-toggle" id="menuToggle">
+    <!-- Mobile menu trigger button -->
+    <button class="mobile-menu-trigger" id="mobile-menu-btn">
         <i class="fas fa-bars"></i>
     </button>
-    <nav class="sidebar">
+    
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="sidebar-overlay"></div>
+    
+    <nav class="sidebar" id="sidebar">
         <div class="logo">
             <img src="../api-integration-example-main/Brooklyn_original.png" alt="Logo Brooklyn" class="logo-img">
             <p>Gestão Inteligente</p>
         </div>
         <ul class="nav-menu">
-            <li class="nav-item"><a href="home.html" class="nav-link active"><i class="fas fa-home"></i> <span>Home</span></a></li>
-            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
-            <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i> <span>Produtos</span></a></li>
-            <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i> <span>Clientes</span></a></li>
-            <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu Perfil</span></a></li>
+            <li class="nav-item"><a href="home.html" class="nav-link active"><i class="fas fa-home"></i>
+                    <span>Home</span></a></li>
+            <li class="nav-item"><a href="dashboard.html" class="nav-link"><i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html" class="nav-link"><i class="fas fa-box"></i>
+                    <span>Produtos</span></a></li>
+            <li class="nav-item"><a href="users.html" class="nav-link"><i class="fas fa-users"></i>
+                    <span>Clientes</span></a></li>
+            <li class="nav-item"><a href="profile.html" class="nav-link"><i class="fas fa-user-circle"></i> <span>Meu
+                        Perfil</span></a></li>
         </ul>
         <div style="height: 320px;"></div>
         <hr class="sidebar-divider">
         <div style="padding: 0 1rem 1.5rem 1rem; margin-top: 10px;">
-            <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></a>
+            <a href="#" id="logout-link" class="nav-link logout-link-custom"><i class="fas fa-sign-out-alt"></i>
+                <span>Sair</span></a>
         </div>
     </nav>
-    <div class="overlay" id="overlay"></div>
-    <script>
-        // Remover todas as declarações duplicadas de menuToggle e sidebar, mantendo apenas uma de cada
-const menuToggle = document.getElementById('menuToggle');
-const sidebar = document.getElementById('sidebar');
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('active');
-        });
-        overlay.addEventListener('click', () => {
-            sidebar.classList.remove('open');
-            overlay.classList.remove('active');
-        });
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-                const ripple = document.createElement('span');
-                ripple.style.cssText = `
-                    position: absolute;
-                    border-radius: 50%;
-                    background: rgba(49, 213, 222, 0.3);
-                    transform: scale(0);
-                    animation: ripple 0.6s linear;
-                    pointer-events: none;
-                `;
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-                this.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-                if (window.innerWidth <= 768) {
-                    sidebar.classList.remove('open');
-                    overlay.classList.remove('active');
-                }
-            });
-        });
-        document.querySelector('.auth-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            const ripple = document.createElement('span');
-            ripple.style.cssText = `
-                position: absolute;
-                border-radius: 50%;
-                background: rgba(49, 213, 222, 0.3);
-                transform: scale(0);
-                animation: ripple 0.6s linear;
-                pointer-events: none;
-            `;
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            ripple.style.width = ripple.style.height = size + 'px';
-            ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-            ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-            this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            }
-            window.location.href = '../api-integration-example-main/login.html';
-        });
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to {
-                    transform: scale(4);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-        document.querySelector('.add-product-btn').addEventListener('click', function() {
-            this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 150);
-            alert('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.');
-        });
-        document.addEventListener('keydown', function(e) {
-            if (e.altKey && e.key === 'm') {
-                e.preventDefault();
-                sidebar.classList.toggle('open');
-                overlay.classList.toggle('active');
-            }
-            if (e.altKey && e.key === 'p') {
-                e.preventDefault();
-                document.querySelector('.add-product-btn').click();
-            }
-            if (e.key === 'Escape') {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            }
-        });
-        document.addEventListener('touchstart', function() {}, { passive: true });
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('open');
-                overlay.classList.remove('active');
-            }
-        });
-    </script>
     <!-- Fim do componente Sidebar Menu -->
 
     <!-- Main Content -->
     <main class="main-content">
         <!-- Header -->
         <header class="header">
-            <button class="menu-toggle" id="menuToggle">
-                <i class="fas fa-bars"></i>
-            </button>
+            <!-- Botão de menu removido daqui pois já existe um botão principal fora do main-content -->
             <div class="welcome-text">
                 <h2>Bem-vindo ao Brooklyn Panel</h2>
                 <p>Gerencie seu estoque com eficiência máxima</p>
             </div>
-            
+
         </header>
 
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-content">
                 <h1 class="floating">Brooklyn Panel</h1>
-                <p>A solução definitiva para gerenciamento de estoque de periféricos. Controle total, relatórios inteligentes e análises em tempo real.</p>
+                <p>A solução definitiva para gerenciamento de estoque de periféricos. Controle total, relatórios
+                    inteligentes e análises em tempo real.</p>
                 <div class="cta-buttons">
                     <a href="../api-integration-example-main/" class="btn-primary">
                         <i class="fas fa-rocket"></i>
                         Iniciar Agora
                     </a>
-                    
+
                 </div>
             </div>
         </section>
@@ -1020,7 +829,7 @@ const sidebar = document.getElementById('sidebar');
             </div>
         </section>
 
-        
+
 
         <!-- Testimonials -->
         <section class="testimonials">
@@ -1029,11 +838,12 @@ const sidebar = document.getElementById('sidebar');
                     <h2>O que nossos clientes dizem</h2>
                     <p>Feedbacks de empresas que confiam no Brooklyn Panel</p>
                 </div>
-                
+
                 <div class="testimonials-grid">
                     <div class="testimonial-card">
                         <p class="testimonial-quote">
-                            "O Brooklyn Panel revolucionou nosso controle de estoque. Reduzimos perdas em 40% e aumentamos nossa eficiência operacional significativamente."
+                            "O Brooklyn Panel revolucionou nosso controle de estoque. Reduzimos perdas em 40% e
+                            aumentamos nossa eficiência operacional significativamente."
                         </p>
                         <div class="testimonial-author">
                             <div class="author-avatar">TC</div>
@@ -1046,14 +856,15 @@ const sidebar = document.getElementById('sidebar');
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
-                                
+
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="testimonial-card">
                         <p class="testimonial-quote">
-                            "Interface intuitiva e relatórios detalhados. Conseguimos tomar decisões mais assertivas e otimizar nossos processos de compra."
+                            "Interface intuitiva e relatórios detalhados. Conseguimos tomar decisões mais assertivas e
+                            otimizar nossos processos de compra."
                         </p>
                         <div class="testimonial-author">
                             <div class="author-avatar">DG</div>
@@ -1070,10 +881,11 @@ const sidebar = document.getElementById('sidebar');
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="testimonial-card">
                         <p class="testimonial-quote">
-                            "Suporte excepcional e funcionalidades que realmente fazem a diferença. Recomendo para qualquer empresa que precise de controle de estoque profissional."
+                            "Suporte excepcional e funcionalidades que realmente fazem a diferença. Recomendo para
+                            qualquer empresa que precise de controle de estoque profissional."
                         </p>
                         <div class="testimonial-author">
                             <div class="author-avatar">ME</div>
@@ -1086,7 +898,7 @@ const sidebar = document.getElementById('sidebar');
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
-                                
+
                             </div>
                         </div>
                     </div>
@@ -1098,7 +910,8 @@ const sidebar = document.getElementById('sidebar');
         <section class="cta-section">
             <div class="cta-content">
                 <h2>Pronto para transformar seu estoque?</h2>
-                <p>Junte-se a centenas de empresas que já utilizam o Brooklyn Panel para otimizar sua gestão de estoque</p>
+                <p>Junte-se a centenas de empresas que já utilizam o Brooklyn Panel para otimizar sua gestão de estoque
+                </p>
                 <form class="signup-form" id="signupForm">
                     <input type="email" class="signup-input" placeholder="Seu melhor e-mail" required>
                     <button type="submit" class="signup-btn">
@@ -1111,67 +924,136 @@ const sidebar = document.getElementById('sidebar');
     </main>
 
     <!-- Modal de aviso para cadastro/login -->
-<div id="loginModal" style="display:none; position:fixed; z-index:20000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
-    <div style="background:#1a1a1a; color:#fff; border-radius:16px; max-width:350px; margin:auto; padding:2rem; box-shadow:0 8px 32px rgba(0,0,0,0.3); text-align:center; position:relative;">
-        <h2 style="margin-bottom:1rem;">Faça login ou cadastro</h2>
-        <p style="margin-bottom:2rem;">Você precisa estar cadastrado para acessar esta funcionalidade.</p>
-        <button id="goToLoginBtn" style="padding:0.75rem 2rem; background:linear-gradient(135deg,#31d5de,#1c31a5); color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer; font-size:1rem;">Login</button>
-        <button id="closeModalBtn" style="margin-left:1rem; padding:0.75rem 1.5rem; background:transparent; color:#fff; border:1px solid #31d5de; border-radius:8px; font-weight:bold; cursor:pointer; font-size:1rem;">Cancelar</button>
+    <div id="loginModal"
+        style="display:none; position:fixed; z-index:20000; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.7); align-items:center; justify-content:center;">
+        <div
+            style="background:#1a1a1a; color:#fff; border-radius:16px; max-width:350px; margin:auto; padding:2rem; box-shadow:0 8px 32px rgba(0,0,0,0.3); text-align:center; position:relative;">
+            <h2 style="margin-bottom:1rem;">Faça login ou cadastro</h2>
+            <p style="margin-bottom:2rem;">Você precisa estar cadastrado para acessar esta funcionalidade.</p>
+            <button id="goToLoginBtn"
+                style="padding:0.75rem 2rem; background:linear-gradient(135deg,#31d5de,#1c31a5); color:#fff; border:none; border-radius:8px; font-weight:bold; cursor:pointer; font-size:1rem;">Login</button>
+            <button id="closeModalBtn"
+                style="margin-left:1rem; padding:0.75rem 1.5rem; background:transparent; color:#fff; border:1px solid #31d5de; border-radius:8px; font-weight:bold; cursor:pointer; font-size:1rem;">Cancelar</button>
+        </div>
     </div>
-</div>
 
-<script>
-    // Função para mostrar o modal de login/cadastro
-    function showLoginModal() {
-        document.getElementById('loginModal').style.display = 'flex';
-    }
-    function hideLoginModal() {
-        document.getElementById('loginModal').style.display = 'none';
-    }
-    document.getElementById('goToLoginBtn').onclick = function() {
-        window.location.href = '../api-integration-example-main/login.html';
-    };
-    document.getElementById('closeModalBtn').onclick = hideLoginModal;
+    <script>
+        // Função para mostrar o modal de login/cadastro
+        function showLoginModal() {
+            document.getElementById('loginModal').style.display = 'flex';
+        }
+        function hideLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+        document.getElementById('goToLoginBtn').onclick = function () {
+            window.location.href = '../api-integration-example-main/login.html';
+        };
+        document.getElementById('closeModalBtn').onclick = hideLoginModal;
 
-    // Adiciona evento nos links protegidos
-    document.getElementById('dashboardLink').onclick = function(e) {
-        e.preventDefault();
-        showLoginModal();
-    };
-    document.getElementById('produtosLink').onclick = function(e) {
-        e.preventDefault();
-        showLoginModal();
-    };
-    document.getElementById('perfilLink').onclick = function(e) {
-        e.preventDefault();
-        showLoginModal();
-    };
-    document.getElementById('clientesLink').onclick = function(e) {
-        e.preventDefault();
-        showLoginModal();
-    };
-</script>
+        // Adiciona evento nos links protegidos
+        document.getElementById('dashboardLink').onclick = function (e) {
+            e.preventDefault();
+            showLoginModal();
+        };
+        document.getElementById('produtosLink').onclick = function (e) {
+            e.preventDefault();
+            showLoginModal();
+        };
+        document.getElementById('perfilLink').onclick = function (e) {
+            e.preventDefault();
+            showLoginModal();
+        };
+        document.getElementById('clientesLink').onclick = function (e) {
+            e.preventDefault();
+            showLoginModal();
+        };
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script>
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const sidebar = document.getElementById('sidebar');
-
-        menuToggle.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
-        });
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (!mobileMenuBtn || !sidebar || !overlay) {
+                console.error('Um ou mais elementos não foram encontrados.');
+                return;
+            }
+            
+            // Toggle menu when button is clicked
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+                // Change icon based on menu state
+                const icon = this.querySelector('i');
+                if (sidebar.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+            // Close menu when overlay is clicked
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+            
+            // Close menu when a link is clicked (mobile)
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 600) {
+                        // Evita que o overlay bloqueie a navegação
+                        if (e.target.tagName === 'A' || e.target.parentElement.tagName === 'A') {
+                            // Permite que o clique continue para a navegação
+                            setTimeout(() => {
+                                sidebar.classList.remove('active');
+                                overlay.classList.remove('active');
+                                const icon = mobileMenuBtn.querySelector('i');
+                                icon.classList.remove('fa-times');
+                                icon.classList.add('fa-bars');
+                            }, 10);
+                        }
+                    }
+                });
+            });
+            
+            // Garante que o menu seja visível em telas móveis quando aberto
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 600) {
+                    if (!sidebar.classList.contains('active')) {
+                        sidebar.style.transform = 'translateX(-100%)';
+                    } else {
+                        sidebar.style.transform = 'translateX(0)';
+                    }
+                } else if (window.innerWidth <= 900) {
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebar.style.width = '70px';
+                } else {
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebar.style.width = '260px';
+                }
+            });
 
         // Counter animation
         function animateCounters() {
             const counters = document.querySelectorAll('.stat-number');
-            
+
             counters.forEach(counter => {
                 const target = parseInt(counter.getAttribute('data-target'));
                 const duration = 2000;
                 const step = target / (duration / 16);
                 let current = 0;
-                
+
                 const timer = setInterval(() => {
                     current += step;
                     if (current >= target) {
@@ -1213,7 +1095,7 @@ const sidebar = document.getElementById('sidebar');
         // Chart interaction
         const chartBars = document.querySelectorAll('.chart-bar');
         chartBars.forEach(bar => {
-            bar.addEventListener('mouseenter', function() {
+            bar.addEventListener('mouseenter', function () {
                 const tooltip = document.createElement('div');
                 tooltip.className = 'chart-tooltip';
                 tooltip.textContent = `Vendas: ${this.getAttribute('data-value')} unidades`;
@@ -1234,7 +1116,7 @@ const sidebar = document.getElementById('sidebar');
                 this.appendChild(tooltip);
             });
 
-            bar.addEventListener('mouseleave', function() {
+            bar.addEventListener('mouseleave', function () {
                 const tooltip = this.querySelector('.chart-tooltip');
                 if (tooltip) {
                     tooltip.remove();
@@ -1244,12 +1126,12 @@ const sidebar = document.getElementById('sidebar');
 
         // Smooth scrolling for navigation
         document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 // Remove active class from all links
                 document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
                 // Add active class to clicked link
                 this.classList.add('active');
-                
+
                 // Add ripple effect
                 const ripple = document.createElement('span');
                 ripple.style.cssText = `
@@ -1260,13 +1142,13 @@ const sidebar = document.getElementById('sidebar');
                     animation: ripple 0.6s linear;
                     pointer-events: none;
                 `;
-                
+
                 const rect = this.getBoundingClientRect();
                 const size = Math.max(rect.width, rect.height);
                 ripple.style.width = ripple.style.height = size + 'px';
                 ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
                 ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-                
+
                 this.appendChild(ripple);
                 setTimeout(() => ripple.remove(), 600);
             });
@@ -1285,27 +1167,27 @@ const sidebar = document.getElementById('sidebar');
         document.head.appendChild(style);
 
         // Form submission
-        document.getElementById('signupForm').addEventListener('submit', function(e) {
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const email = this.querySelector('.signup-input').value;
-            
+
             // Simulate form submission
             const btn = this.querySelector('.signup-btn');
             const originalText = btn.innerHTML;
-            
+
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processando...';
             btn.disabled = true;
-            
+
             setTimeout(() => {
                 btn.innerHTML = '<i class="fas fa-check"></i> Sucesso!';
                 btn.style.background = '#28a745';
-                
+
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                     btn.style.background = 'white';
                     this.reset();
-                    
+
                     // Show success message
                     showNotification('Cadastro realizado com sucesso! Em breve entraremos em contato.', 'success');
                 }, 2000);
@@ -1313,7 +1195,7 @@ const sidebar = document.getElementById('sidebar');
         });
 
         // Add product button interaction
-        document.querySelector('.add-product-btn').addEventListener('click', function() {
+        document.querySelector('.add-product-btn').addEventListener('click', function () {
             showNotification('Funcionalidade em desenvolvimento! Em breve você poderá adicionar produtos.', 'info');
         });
 
@@ -1337,13 +1219,13 @@ const sidebar = document.getElementById('sidebar');
                 font-weight: 500;
             `;
             notification.textContent = message;
-            
+
             document.body.appendChild(notification);
-            
+
             setTimeout(() => {
                 notification.style.transform = 'translateX(0)';
             }, 100);
-            
+
             setTimeout(() => {
                 notification.style.transform = 'translateX(100%)';
                 setTimeout(() => notification.remove(), 300);
@@ -1355,7 +1237,7 @@ const sidebar = document.getElementById('sidebar');
             const scrolled = window.pageYOffset;
             const hero = document.querySelector('.hero');
             const heroContent = document.querySelector('.hero-content');
-            
+
             if (hero && heroContent) {
                 heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
             }
@@ -1365,7 +1247,7 @@ const sidebar = document.getElementById('sidebar');
         function createFloatingElements() {
             const container = document.querySelector('.hero');
             const colors = ['var(--primary-cyan)', 'var(--primary-blue)'];
-            
+
             for (let i = 0; i < 5; i++) {
                 const element = document.createElement('div');
                 element.style.cssText = `
@@ -1392,7 +1274,7 @@ const sidebar = document.getElementById('sidebar');
                 const variation = Math.floor(Math.random() * 200) - 100; // -100 to +100
                 const newValue = Math.max(100, currentValue + variation);
                 const newHeight = (newValue / 1500) * 220; // Scale to max height
-                
+
                 bar.setAttribute('data-value', newValue);
                 bar.style.height = `${newHeight}px`;
             });
@@ -1402,9 +1284,9 @@ const sidebar = document.getElementById('sidebar');
         setInterval(updateChartData, 30000);
 
         // Initialize animations and effects
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             createFloatingElements();
-            
+
             // Animate elements on load
             setTimeout(() => {
                 document.querySelectorAll('.hero-content > *').forEach((el, index) => {
@@ -1414,13 +1296,13 @@ const sidebar = document.getElementById('sidebar');
         });
 
         // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             // Alt + M to toggle menu
             if (e.altKey && e.key === 'm') {
                 e.preventDefault();
                 sidebar.classList.toggle('open');
             }
-            
+
             // Alt + P to add product
             if (e.altKey && e.key === 'p') {
                 e.preventDefault();
@@ -1445,16 +1327,16 @@ const sidebar = document.getElementById('sidebar');
             const currentValue = parseInt(randomStat.textContent);
             const change = Math.floor(Math.random() * 10) - 5; // -5 to +5
             const newValue = Math.max(0, currentValue + change);
-            
+
             // Animate the change
             randomStat.style.transform = 'scale(1.1)';
             randomStat.style.color = change > 0 ? 'var(--primary-cyan)' : change < 0 ? '#ff6b6b' : 'var(--accent-white)';
-            
+
             setTimeout(() => {
                 randomStat.textContent = newValue;
                 randomStat.setAttribute('data-target', newValue);
             }, 200);
-            
+
             setTimeout(() => {
                 randomStat.style.transform = 'scale(1)';
                 randomStat.style.color = 'var(--accent-white)';
@@ -1468,13 +1350,13 @@ const sidebar = document.getElementById('sidebar');
         observer.observe(document.querySelector('.stats'));
 
         // Add loading state
-        window.addEventListener('load', function() {
+        window.addEventListener('load', function () {
             document.body.classList.add('loaded');
             showNotification('Brooklyn Panel carregado com sucesso!', 'success');
         });
 
         // Gráfico de Performance
-        (function(){
+        (function () {
             const canvas = document.getElementById('performanceChart');
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
@@ -1555,6 +1437,8 @@ const sidebar = document.getElementById('sidebar');
                 }
             });
         })();
+    })
     </script>
 </body>
+
 </html>
