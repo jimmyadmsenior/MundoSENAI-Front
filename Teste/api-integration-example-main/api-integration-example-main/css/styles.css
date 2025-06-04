@@ -123,6 +123,10 @@ main {
     display: none;
 }
 
+.hidden-file-input {
+    display: none !important;
+}
+
 /* Dashboard */
 .dashboard-header {
     margin-bottom: 30px;

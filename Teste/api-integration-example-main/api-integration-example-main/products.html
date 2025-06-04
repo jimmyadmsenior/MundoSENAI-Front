@@ -777,6 +777,17 @@
                 opacity: 0.4;
             }
         }
+        input[type="file"].hidden-file-input {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
     </style>
 </head>
 <body>
@@ -853,10 +864,12 @@
                     <input type="text" id="product-category" placeholder="Categoria">
                 </div>
                 <div class="form-group">
-                    <label for="product-image">Imagem do Produto:</label>
-                    <div class="image-upload-container">
-                        <input type="file" id="product-image" accept="image/*" style="display:none;">
+                    <div style="display: flex; align-items: center; gap: 1rem;">
+                        <label for="product-image" style="margin-bottom: 0;">Imagem do Produto:</label>
                         <button type="button" id="custom-upload-btn" class="buttonDownload">Upload</button>
+                    </div>
+                    <div class="image-upload-container" style="margin-top: 0.5rem;">
+                        <input type="file" id="product-image" accept="image/*" class="hidden-file-input">
                         <div id="product-image-preview" class="image-preview"></div>
                     </div>
                     <small class="form-hint">Selecione uma imagem para o produto (opcional)</small>
@@ -939,187 +952,5 @@
     <script src="js/api.js"></script>
     <script src="js/auth-check.js"></script>
     <script src="js/products.js"></script>
-    
-    <script>
-        // Função para alternar entre visualização de tabela e cards com base no tamanho da tela
-        function toggleProductView() {
-            const tableContainer = document.querySelector('.table-container');
-            const cardsContainer = document.getElementById('products-cards');
-            
-            if (window.innerWidth <= 480) {
-                tableContainer.style.display = 'none';
-                cardsContainer.style.display = 'block';
-            } else {
-                tableContainer.style.display = 'block';
-                cardsContainer.style.display = 'none';
-            }
-        }
-        
-        // Função para criar cards de produtos
-        function createProductCards(products) {
-            const cardsContainer = document.getElementById('products-cards');
-            cardsContainer.innerHTML = '';
-            
-            if (!products || products.length === 0) {
-                cardsContainer.innerHTML = '<div class="loading-cell">Nenhum produto encontrado</div>';
-                return;
-            }
-            
-            products.forEach(product => {
-                const card = document.createElement('div');
-                card.className = 'product-card';
-                card.setAttribute('data-id', product.id || '');
-                
-                const imgSrc = product.image || 'https://via.placeholder.com/70';
-                
-                card.innerHTML = `
-                    <div class="product-card-header">
-                        <img src="${imgSrc}" alt="${product.name}" class="product-card-img">
-                        <h3 class="product-card-title">${product.name}</h3>
-                    </div>
-                    <div class="product-card-info">
-                        <span class="product-card-label">Categoria:</span>
-                        <span class="product-card-value">${product.category || 'N/A'}</span>
-                    </div>
-                    <div class="product-card-info">
-                        <span class="product-card-label">Preço:</span>
-                        <span class="product-card-value">R$ ${parseFloat(product.price).toFixed(2)}</span>
-                    </div>
-                    <div class="product-card-info">
-                        <span class="product-card-label">Estoque:</span>
-                        <span class="product-card-value">${product.stock}</span>
-                    </div>
-                    <div class="product-card-actions">
-                        <button class="btn btn-primary edit-product" data-id="${product.id}" style="padding: 0.3rem 0.5rem; font-size: 0.85rem;"><i class="fas fa-edit"></i></button>
-                        <button class="btn btn-secondary delete-product" data-id="${product.id}" style="padding: 0.3rem 0.5rem; font-size: 0.85rem;"><i class="fas fa-trash"></i></button>
-                    </div>
-                `;
-                
-                cardsContainer.appendChild(card);
-            });
-            
-            // Adicionar os event listeners para os botões de editar e excluir
-            document.querySelectorAll('.edit-product').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const productId = this.getAttribute('data-id');
-                    // Aqui você chamaria a mesma função que é chamada na visualização em tabela
-                    // Por exemplo: editProduct(productId);
-                });
-            });
-            
-            document.querySelectorAll('.delete-product').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const productId = this.getAttribute('data-id');
-                    // Aqui você chamaria a mesma função que é chamada na visualização em tabela
-                    // Por exemplo: deleteProduct(productId);
-                });
-            });
-        }
-        
-        // Verificar o modo de visualização quando a página carregar e quando redimensionar
-        document.addEventListener('DOMContentLoaded', function() {
-            toggleProductView();
-            
-            // Sobrescrever a função original de renderização de produtos, se existir
-            // Isso assume que existe uma função chamada renderProducts no arquivo products.js
-            const originalRenderProducts = window.renderProducts;
-            if (typeof originalRenderProducts === 'function') {
-                window.renderProducts = function(products) {
-                    // Chama a função original para renderizar a tabela
-                    originalRenderProducts(products);
-                    // Também renderiza os cards
-                    createProductCards(products);
-                };
-            }
-            
-            window.addEventListener('resize', toggleProductView);
-        });
-        
-        // Mobile menu functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('sidebar-overlay');
-            
-            if (!mobileMenuBtn || !sidebar || !overlay) {
-                console.error('Um ou mais elementos não foram encontrados.');
-                return;
-            }
-            
-            // Toggle menu when button is clicked
-            mobileMenuBtn.addEventListener('click', function() {
-                sidebar.classList.toggle('active');
-                overlay.classList.toggle('active');
-                
-                // Change icon based on menu state
-                const icon = this.querySelector('i');
-                if (sidebar.classList.contains('active')) {
-                    icon.classList.remove('fa-bars');
-                    icon.classList.add('fa-times');
-                } else {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
-            });
-            
-            // Close menu when overlay is clicked
-            overlay.addEventListener('click', function() {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('active');
-                const icon = mobileMenuBtn.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            });
-            
-            // Close menu when a link is clicked (mobile)
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 600) {
-                        // Evita que o overlay bloqueie a navegação
-                        if (e.target.tagName === 'A' || e.target.parentElement.tagName === 'A') {
-                            // Permite que o clique continue para a navegação
-                            setTimeout(() => {
-                                sidebar.classList.remove('active');
-                                overlay.classList.remove('active');
-                                const icon = mobileMenuBtn.querySelector('i');
-                                icon.classList.remove('fa-times');
-                                icon.classList.add('fa-bars');
-                            }, 10);
-                        }
-                    }
-                });
-            });
-            
-            // Garante que o menu seja visível em telas móveis quando aberto
-            window.addEventListener('resize', function() {
-                if (window.innerWidth <= 600) {
-                    if (!sidebar.classList.contains('active')) {
-                        sidebar.style.transform = 'translateX(-100%)';
-                    } else {
-                        sidebar.style.transform = 'translateX(0)';
-                    }
-                } else if (window.innerWidth <= 900) {
-                    sidebar.style.transform = 'translateX(0)';
-                    sidebar.style.width = '70px';
-                } else {
-                    sidebar.style.transform = 'translateX(0)';
-                    sidebar.style.width = '260px';
-                }
-            });
-        });
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Botão customizado de upload
-            const uploadBtn = document.getElementById('custom-upload-btn');
-            const fileInput = document.getElementById('product-image');
-            if (uploadBtn && fileInput) {
-                uploadBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    fileInput.click();
-                });
-            }
-        });
-    </script>
 </body>
 </html>

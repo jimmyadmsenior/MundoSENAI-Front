@@ -89,8 +89,18 @@ document.addEventListener('DOMContentLoaded', () => {
         newImageInput.type = 'file';
         newImageInput.id = 'product-image';
         newImageInput.accept = 'image/*';
+        newImageInput.classList.add('hidden-file-input');
         // Substitui o input antigo pelo novo
         imageInput.parentNode.replaceChild(newImageInput, imageInput);
+
+        // Garante que o botão customizado continue funcionando após recriar o input
+        const uploadBtn = document.getElementById('custom-upload-btn');
+        if (uploadBtn) {
+            uploadBtn.onclick = function(e) {
+                e.preventDefault();
+                newImageInput.click();
+            };
+        }
         
         // Limpa a pré-visualização
         document.getElementById('product-image-preview').innerHTML = '';
@@ -452,10 +462,20 @@ document.addEventListener('DOMContentLoaded', () => {
         newInput.type = 'file';
         newInput.id = 'product-image';
         newInput.accept = 'image/*';
+        newInput.classList.add('hidden-file-input');
         
         // Substitui o antigo pelo novo
         if (oldInput && imageInputContainer) {
             imageInputContainer.replaceChild(newInput, oldInput);
+        }
+
+        // Garante que o botão customizado continue funcionando após recriar o input
+        const uploadBtn = document.getElementById('custom-upload-btn');
+        if (uploadBtn) {
+            uploadBtn.onclick = function(e) {
+                e.preventDefault();
+                newInput.click();
+            };
         }
         
         // Adiciona o evento ao novo input
