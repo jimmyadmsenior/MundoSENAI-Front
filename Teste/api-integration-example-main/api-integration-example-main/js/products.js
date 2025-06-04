@@ -18,6 +18,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Armazena a categoria atual de busca
     let currentCategory = '';
     
+    // Função de inicialização - executada imediatamente
+    function initializeFormElements() {
+        console.log('Inicializando elementos do formulário de produtos...');
+        
+        // Garantir que o formulário esteja oculto inicialmente
+        if (productFormContainer) {
+            productFormContainer.classList.add('hidden');
+            productFormContainer.style.display = 'none';
+            console.log('Formulário de produtos ocultado na inicialização');
+        }
+    }
+    
+    // Executa a inicialização imediatamente
+    initializeFormElements();
+    
     // Função para formatar valores monetários
     function formatCurrency(value) {
         return new Intl.NumberFormat('pt-BR', {
@@ -30,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleProductForm(show = true, isEditing = false) {
         if (show) {
             productFormContainer.classList.remove('hidden');
+            productFormContainer.style.display = 'block';
             productFormContainer.style.transition = 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s';
             productFormContainer.style.transform = 'translateY(-30px) scale(1.03)';
             productFormContainer.style.boxShadow = '0 8px 32px 0 rgba(49,213,222,0.15)';
@@ -45,10 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Rola até o formulário
             productFormContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            console.log('Formulário de produto exibido - modo:', isEditing ? 'edição' : 'adição');
         } else {
             productFormContainer.classList.add('hidden');
+            productFormContainer.style.display = 'none';
             productFormContainer.style.transform = '';
             productFormContainer.style.boxShadow = '';
+            
+            console.log('Formulário de produto ocultado');
         }
     }
     
@@ -87,14 +108,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // Busca os produtos na API
             const products = await apiService.get('/product');
             
-            // Renderiza a tabela de produtos
+            // Verifica se existem produtos
             if (!products || products.length === 0) {
                 productsList.innerHTML = '<tr><td colspan="5" class="empty-cell">Nenhum produto encontrado</td></tr>';
+                
+                // Atualiza também o container de cards para dispositivos móveis
+                const cardsContainer = document.getElementById('products-cards');
+                if (cardsContainer) {
+                    cardsContainer.innerHTML = '<div class="empty-cell">Nenhum produto encontrado</div>';
+                }
                 return;
             }
             
             // Usa a função de renderização da tabela
             renderProductsTable(products);
+            
+            // Cria os cards para visualização em dispositivos móveis
+            createProductCards(products);
+            
+            // Verifica o tamanho da tela e ajusta a visualização
+            checkScreenSize();
             
         } catch (error) {
             console.error('Erro ao carregar produtos:', error);
@@ -105,6 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     </td>
                 </tr>
             `;
+            
+            // Atualiza também o container de cards para dispositivos móveis
+            const cardsContainer = document.getElementById('products-cards');
+            if (cardsContainer) {
+                cardsContainer.innerHTML = `<div class="error-cell">Erro ao carregar produtos: ${error.message}</div>`;
+            }
         }
     }
     
@@ -255,6 +294,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Mostra mensagem de carregamento
             productsList.innerHTML = '<tr><td colspan="5" class="loading-cell">Buscando produtos na categoria "' + category + '"...</td></tr>';
             
+            // Atualiza também o container de cards para dispositivos móveis
+            const cardsContainer = document.getElementById('products-cards');
+            if (cardsContainer) {
+                cardsContainer.innerHTML = `<div class="loading-cell">Buscando produtos na categoria "${category}"...</div>`;
+            }
+            
             // Busca os produtos na API pelo endpoint de categoria
             const products = await apiService.get(`/product/category/${encodeURIComponent(category)}`);
             
@@ -267,11 +312,22 @@ document.addEventListener('DOMContentLoaded', () => {
             // Renderiza os produtos encontrados
             if (!products || products.length === 0) {
                 productsList.innerHTML = '<tr><td colspan="5" class="empty-cell">Nenhum produto encontrado na categoria "' + category + '"</td></tr>';
+                
+                // Atualiza também o container de cards para dispositivos móveis
+                if (cardsContainer) {
+                    cardsContainer.innerHTML = `<div class="empty-cell">Nenhum produto encontrado na categoria "${category}"</div>`;
+                }
                 return;
             }
             
             // Renderiza a tabela com os produtos encontrados
             renderProductsTable(products);
+            
+            // Também renderiza os cards para visualização móvel
+            createProductCards(products);
+            
+            // Verifica o tamanho da tela e ajusta a visualização
+            checkScreenSize();
             
         } catch (error) {
             console.error('Erro ao buscar produtos por categoria:', error);
@@ -282,6 +338,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     </td>
                 </tr>
             `;
+            
+            // Atualiza também o container de cards para dispositivos móveis
+            const cardsContainer = document.getElementById('products-cards');
+            if (cardsContainer) {
+                cardsContainer.innerHTML = `<div class="error-cell">Erro ao buscar produtos: ${error.message}</div>`;
+            }
         }
     }
     
@@ -325,12 +387,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${formatCurrency(product.price)}</td>
                     <td class="${stockClass}">${product.stock}</td>
                     <td class="actions-cell">
-                        <button class="btn btn-sm edit-product" data-id="${product.id}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-product" data-id="${product.id}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="action-buttons">
+                            <button class="btn btn-sm btn-primary edit-product" data-id="${product.id}" style="white-space: nowrap; min-width: 90px;">
+                                <i class="fas fa-user-edit"></i> <span class="btn-text">Editar</span>
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-product" data-id="${product.id}" style="white-space: nowrap; min-width: 90px;">
+                                <i class="fas fa-trash"></i> <span class="btn-text">Deletar</span>
+                            </button>
+                        </div>
                     </td>
                 </tr>
             `;
@@ -463,6 +527,111 @@ document.addEventListener('DOMContentLoaded', () => {
             searchProductsByCategory();
         }
     });
+    
+    // Função para criar cards de produtos (visualização móvel)
+    function createProductCards(products) {
+        const cardsContainer = document.getElementById('products-cards');
+        if (!cardsContainer) {
+            console.error('Container de cards não encontrado');
+            return;
+        }
+        
+        cardsContainer.innerHTML = '';
+        
+        if (!products || products.length === 0) {
+            cardsContainer.innerHTML = '<div class="empty-cell">Nenhum produto encontrado</div>';
+            return;
+        }
+        
+        products.forEach(product => {
+            const stockClass = product.stock < 10 ? 'low-stock' : '';
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.setAttribute('data-id', product.id);
+            card.style.backgroundColor = '#1e2633';
+            card.style.borderRadius = '12px';
+            card.style.padding = '15px';
+            card.style.marginBottom = '15px';
+            card.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
+            card.style.transition = 'transform 0.2s, box-shadow 0.2s';
+            
+            card.innerHTML = `
+                <div class="product-card-header" style="display: flex; align-items: center; margin-bottom: 12px;">
+                    ${product.imageUrl ? `<img src="${product.imageUrl}" alt="${product.name}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 12px;">` : '<div style="width: 60px; height: 60px; background: #2a3649; border-radius: 8px; margin-right: 12px; display: flex; align-items: center; justify-content: center;"><i class="fas fa-image" style="font-size: 24px; color: #4a5568;"></i></div>'}
+                    <h3 style="margin: 0; font-size: 18px; font-weight: 600; color: #fff;">${product.name}</h3>
+                </div>
+                <div class="product-card-body" style="background-color: #2a3649; border-radius: 8px; padding: 12px; margin-bottom: 12px;">
+                    <div class="product-card-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span class="product-card-label" style="color: #a0aec0; font-size: 14px;">Descrição:</span>
+                        <span class="product-card-value" style="color: #e2e8f0; font-size: 14px; text-align: right; font-weight: 500;">${product.description || 'N/A'}</span>
+                    </div>
+                    <div class="product-card-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span class="product-card-label" style="color: #a0aec0; font-size: 14px;">Categoria:</span>
+                        <span class="product-card-value" style="color: #e2e8f0; font-size: 14px; text-align: right; font-weight: 500;">${product.category || 'N/A'}</span>
+                    </div>
+                    <div class="product-card-item" style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span class="product-card-label" style="color: #a0aec0; font-size: 14px;">Preço:</span>
+                        <span class="product-card-value" style="color: #e2e8f0; font-size: 14px; text-align: right; font-weight: 500;">${formatCurrency(product.price)}</span>
+                    </div>
+                    <div class="product-card-item" style="display: flex; justify-content: space-between;">
+                        <span class="product-card-label" style="color: #a0aec0; font-size: 14px;">Estoque:</span>
+                        <span class="product-card-value ${stockClass}" style="color: ${product.stock < 10 ? '#f56565' : '#e2e8f0'}; font-size: 14px; text-align: right; font-weight: 500;">${product.stock}</span>
+                    </div>
+                </div>
+                <div class="product-card-footer" style="display: flex; justify-content: space-between; padding-top: 10px;">
+                    <button class="btn btn-primary edit-product" data-id="${product.id}" style="flex: 1; margin-right: 8px; padding: 8px 0; border-radius: 6px; font-size: 14px; font-weight: 500; border: none; background: linear-gradient(135deg, #31d5de 0%, #1c31a5 100%); color: white; cursor: pointer;">
+                        <i class="fas fa-user-edit"></i> <span class="btn-text">Editar</span>
+                    </button>
+                    <button class="btn btn-danger delete-product" data-id="${product.id}" style="flex: 1; margin-left: 8px; padding: 8px 0; border-radius: 6px; font-size: 14px; font-weight: 500; border: none; background: linear-gradient(135deg, #ff6b6b 0%, #d63031 100%); color: white; cursor: pointer;">
+                        <i class="fas fa-trash"></i> <span class="btn-text">Deletar</span>
+                    </button>
+                </div>
+            `;
+            
+            cardsContainer.appendChild(card);
+        });
+        
+        // Adiciona eventos aos botões de ação nos cards
+        cardsContainer.querySelectorAll('.edit-product').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const productId = e.currentTarget.getAttribute('data-id');
+                editProduct(productId);
+            });
+        });
+        
+        cardsContainer.querySelectorAll('.delete-product').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const productId = e.currentTarget.getAttribute('data-id');
+                deleteProduct(productId);
+            });
+        });
+    }
+    
+    // Função para verificar o tamanho da tela e ajustar a visualização
+    function checkScreenSize() {
+        const tableContainer = document.querySelector('.table-container');
+        const cardsContainer = document.getElementById('products-cards');
+        
+        if (!tableContainer || !cardsContainer) {
+            console.error('Containers de tabela ou cards não encontrados');
+            return;
+        }
+        
+        if (window.innerWidth <= 480) {
+            // Em dispositivos pequenos (como o teste em 316x498), mostra cards
+            tableContainer.style.display = 'none';
+            cardsContainer.style.display = 'block';
+            console.log('Ativando visualização em cards para dispositivos móveis');
+        } else {
+            // Em dispositivos maiores, mostra tabela
+            tableContainer.style.display = 'block';
+            cardsContainer.style.display = 'none';
+            console.log('Ativando visualização em tabela para dispositivos maiores');
+        }
+    }
+    
+    // Adiciona evento de redimensionamento da janela para ajustar a visualização
+    window.addEventListener('resize', checkScreenSize);
     
     // Inicializa o preview de imagem
     handleProductImagePreview();

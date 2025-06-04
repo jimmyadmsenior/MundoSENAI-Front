@@ -1,0 +1,8 @@
+[build]
+  publish = "."
+
+# Redirects for SPA
+[[redirects]]
+  from = "/*"
+  to = "/login.html"
+  status = 200

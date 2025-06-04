@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileIdInput = document.getElementById('profile-id');
     const profileNameInput = document.getElementById('profile-name');
     const profileEmailInput = document.getElementById('profile-email');
-    const profileImageInput = document.getElementById('profile-image');
-    const profileImagePreview = document.getElementById('profile-image-preview');
     const currentPasswordInput = document.getElementById('current-password');
     const newPasswordInput = document.getElementById('new-password');
     const confirmPasswordInput = document.getElementById('confirm-password');
@@ -54,16 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     profileNameInput.value = user.name;
                     profileEmailInput.value = user.email;
                     
-                    // Se o usuário tiver uma imagem, mostra na pré-visualização
-                    if (user.image) {
-                        profileImagePreview.innerHTML = '';
-                        
-                        const img = document.createElement('img');
-                        img.src = user.image;
-                        img.classList.add('preview-img');
-                        profileImagePreview.appendChild(img);
-                    }
-                    
                     // Armazena o ID do usuário sendo editado
                     currentUserId = user.id;
                 } catch (error) {
@@ -107,16 +95,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     profileNameInput.value = user.name;
                     profileEmailInput.value = user.email;
                     
-                    // Se o usuário tiver uma imagem, mostra na pré-visualização
-                    if (user.image) {
-                        profileImagePreview.innerHTML = '';
-                        
-                        const img = document.createElement('img');
-                        img.src = user.image;
-                        img.classList.add('preview-img');
-                        profileImagePreview.appendChild(img);
-                    }
-                    
                     // Armazena o ID do usuário sendo editado
                     currentUserId = user.id;
                 } catch (error) {
@@ -128,64 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Erro ao carregar dados do perfil:', error);
             showMessage('Erro ao carregar dados do perfil. Tente novamente mais tarde.', 'error');
         }
-    }
-    
-    // Função para lidar com a pré-visualização da imagem
-    function setupImagePreview() {
-        // Limpa completamente a pré-visualização
-        profileImagePreview.innerHTML = '';
-        
-        // Recria o input de imagem para garantir que não há eventos residuais
-        const imageInputContainer = document.querySelector('.image-upload-container');
-        const oldInput = document.getElementById('profile-image');
-        
-        // Cria um novo input
-        const newInput = document.createElement('input');
-        newInput.type = 'file';
-        newInput.id = 'profile-image';
-        newInput.accept = 'image/*';
-        
-        // Substitui o antigo pelo novo
-        if (oldInput && imageInputContainer) {
-            imageInputContainer.replaceChild(newInput, oldInput);
-        }
-        
-        // Adiciona o evento ao novo input
-        newInput.addEventListener('change', function() {
-            // Limpa a pré-visualização anterior
-            profileImagePreview.innerHTML = '';
-            
-            if (this.files && this.files[0]) {
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    const img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.classList.add('preview-img');
-                    profileImagePreview.appendChild(img);
-                };
-                
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    }
-    
-    // Função para obter a imagem do arquivo
-    function getProfileImage() {
-        const imageInput = document.getElementById('profile-image');
-        
-        if (imageInput.files && imageInput.files[0]) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    resolve(e.target.result);
-                };
-                reader.readAsDataURL(imageInput.files[0]);
-            });
-        }
-        
-        // Se não houver imagem, retorna null
-        return Promise.resolve(null);
     }
     
     // Função para salvar as alterações do perfil
@@ -200,12 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 name: profileNameInput.value.trim(),
                 email: profileEmailInput.value.trim()
             };
-            
-            // Processa a imagem se existir
-            const imageBase64 = await getProfileImage();
-            if (imageBase64) {
-                userData.image = imageBase64;
-            }
             
             // Variável para controlar se a senha foi alterada
             let passwordChanged = false;
@@ -270,9 +184,6 @@ document.addEventListener('DOMContentLoaded', () => {
             showMessage(`Erro ao salvar perfil: ${error.message}`, 'error');
         }
     }
-    
-    // Inicializa a pré-visualização da imagem
-    setupImagePreview();
     
     // Adiciona o evento de submit ao formulário
     profileForm.addEventListener('submit', saveProfile);

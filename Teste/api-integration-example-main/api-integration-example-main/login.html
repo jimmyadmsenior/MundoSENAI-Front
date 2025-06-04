@@ -679,6 +679,15 @@
     <script src="js/api.js"></script>
     <script src="js/login.js"></script>
     <script>
+        // Verificar se o usuário já está logado ao carregar a página
+        document.addEventListener('DOMContentLoaded', () => {
+            // Se já existir um token, redireciona para o dashboard
+            const token = localStorage.getItem('token');
+            if (token) {
+                window.location.href = 'dashboard.html';
+            }
+        });
+
         // Alternância de abas Login/Cadastro
         const loginTab = document.getElementById('login-tab');
         const registerTab = document.getElementById('register-tab');
@@ -735,5 +744,4 @@
         }
     </script>
 </body>
-
 </html>

@@ -5,6 +5,7 @@ class ApiService {
     constructor() {
         // URL base da API - ajuste conforme necessário
         this.baseUrl = 'http://localhost:3000';
+        // this.baseUrl = 'https://mundo-senai-api.onrender.com';
         this.token = localStorage.getItem('token');
     }
 

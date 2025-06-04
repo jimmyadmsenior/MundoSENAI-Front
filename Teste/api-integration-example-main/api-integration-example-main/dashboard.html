@@ -153,7 +153,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
         }
         .category-filter {
             background: rgba(49, 213, 222, 0.1);
@@ -241,14 +242,50 @@
             margin-top: 16px;
             padding: 0 1rem 1.5rem 1rem;
         }
+        /* Mobile menu trigger */
+        .mobile-menu-trigger {
+            display: none;
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-blue));
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 40px;
+            height: 40px;
+            font-size: 1.5rem;
+            z-index: 2000;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Table responsiveness */
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+            border-radius: 10px;
+        }
+        
+        @media (max-width: 1100px) {
+            .dashboard-cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+        
         @media (max-width: 900px) {
             .sidebar {
                 width: 70px;
                 padding: 1rem 0;
+                transition: transform 0.3s ease, width 0.3s ease;
             }
             .main-content {
                 margin-left: 70px;
                 padding: 1rem;
+                transition: margin-left 0.3s ease;
             }
             .logo-img {
                 width: 40px;
@@ -260,20 +297,88 @@
                 justify-content: center;
                 padding: 1rem 0.5rem;
             }
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .category-filter {
+                margin-top: 0.5rem;
+                width: 100%;
+            }
+            .category-select {
+                width: 100%;
+            }
         }
+        
+        @media (max-width: 768px) {
+            .dashboard-cards {
+                grid-template-columns: 1fr;
+            }
+            .dashboard-header h2 {
+                font-size: 1.8rem;
+            }
+        }
+        
         @media (max-width: 600px) {
             .main-content {
                 margin-left: 0;
-                padding: 0.5rem;
+                padding: 0.8rem;
+                transition: margin-left 0.3s ease;
             }
             .sidebar {
+                transform: translateX(-100%);
+                width: 200px;
+                z-index: 1500;
+                display: block !important;
+            }
+            .mobile-menu-trigger {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .sidebar.active {
+                transform: translateX(0) !important;
+            }
+            .logo p, .nav-link span {
+                display: block;
+            }
+            .nav-link {
+                justify-content: flex-start;
+                padding: 1rem 1.5rem;
+            }
+            .overlay {
                 display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1200;
+            }
+            .overlay.active {
+                display: block;
+            }
+            /* Adjust table for mobile */
+            table {
+                font-size: 0.85rem;
+            }
+            th, td {
+                padding: 0.5rem 0.3rem;
             }
         }
     </style>
 </head>
 <body>
-    <nav class="sidebar">
+    <!-- Mobile menu trigger button -->
+    <button class="mobile-menu-trigger" id="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Overlay for mobile menu -->
+    <div class="overlay" id="sidebar-overlay"></div>
+    
+    <nav class="sidebar" id="sidebar">
         <div class="logo">
             <img src="../api-integration-example-main/Brooklyn_original.png" alt="Logo Brooklyn" class="logo-img">
             <p>Gestão Inteligente</p>
@@ -362,13 +467,79 @@
             </div>
         </section>
 
-        <footer>
-            <p>Exemplo didático de integração com API - Mundo SENAI</p>
-        </footer>
+       
     </main>
     <!-- Scripts -->
     <script src="js/api.js"></script>
     <script src="js/auth-check.js"></script>
     <script src="js/dashboard.js"></script>
+    <script>
+       
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            if (!mobileMenuBtn || !sidebar || !overlay) {
+                console.error('Um ou mais elementos não foram encontrados.');
+                return;
+            }
+      
+            mobileMenuBtn.addEventListener('click', function() {
+                sidebar.classList.toggle('active');
+                overlay.classList.toggle('active');
+                
+               
+                const icon = this.querySelector('i');
+                if (sidebar.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                }
+            });
+            
+        
+            overlay.addEventListener('click', function() {
+                sidebar.classList.remove('active');
+                overlay.classList.remove('active');
+                const icon = mobileMenuBtn.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            });
+            
+        
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 600) {
+                        sidebar.classList.remove('active');
+                        overlay.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
+                });
+            });
+            
+            
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 600) {
+                    if (!sidebar.classList.contains('active')) {
+                        sidebar.style.transform = 'translateX(-100%)';
+                    } else {
+                        sidebar.style.transform = 'translateX(0)';
+                    }
+                } else if (window.innerWidth <= 900) {
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebar.style.width = '70px';
+                } else {
+                    sidebar.style.transform = 'translateX(0)';
+                    sidebar.style.width = '260px';
+                }
+            });
+        });
+    </script>
 </body>
 </html>
