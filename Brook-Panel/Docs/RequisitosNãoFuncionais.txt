@@ -1,7 +1,0 @@
-RFN1: A autenticação deve ser obrigatória para acessar as páginas de cadastro, edição ou exclusão de produtos.
-
-RFN2: O tempo de resposta para cadastrar um produto não deve exceder 2 segundos.
-
-RNF3: O carregamento de qualquer página deve ocorrer em até 3 segundos em uma conexão de 10 Mbps.
-
-RNF4: A interface deve ser intuitiva e responsiva, adaptando-se a dispositivos móveis e desktops.
