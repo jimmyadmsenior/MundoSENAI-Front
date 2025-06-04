@@ -90,7 +90,7 @@
             flex: unset;
         }
         .nav-item {
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
         }
         .nav-link {
             display: flex;
@@ -118,10 +118,17 @@
             transform: scaleY(1);
         }
         .nav-link i {
-            margin-right: 1.5rem;
+            margin-right: 1rem;
             font-size: 1.2rem;
-            width: 40px;
-            text-align: center;
+            width: 20px;
+        }
+        .nav-link.active {
+            color: var(--text-secondary);
+            background: none;
+        }
+        .nav-link:hover {
+            color: var(--text-secondary);
+            background: none;
         }
         .logout-link-custom {
             color: #fff !important;
@@ -210,8 +217,8 @@
             box-shadow: 0 8px 25px rgba(49, 213, 222, 0.3);
         }
         .btn-secondary {
-            background: rgba(176, 176, 176, 0.2);
-            color: var(--text-secondary);
+            background: var(--text-primary);
+            color: var(--bg-dark);
         }
         .btn-secondary:hover {
             background: rgba(176, 176, 176, 0.3);
@@ -354,7 +361,6 @@
             .sidebar {
                 width: 70px;
                 padding: 1rem 0;
-                transition: transform 0.3s ease, width 0.3s ease;
             }
             .main-content {
                 margin-left: 70px;
@@ -363,14 +369,12 @@
             .logo-img {
                 width: 40px;
             }
-            .logo p,
-            .nav-link span {
+            .logo p, .nav-link span {
                 display: none;
             }
             .nav-link {
                 justify-content: center;
-                padding: 1rem;
-                margin-bottom: 0.5rem;
+                padding: 1rem 0.5rem;
             }
             .nav-link i {
                 margin-right: 0;
@@ -403,31 +407,6 @@
             .nav-link {
                 justify-content: flex-start;
                 padding: 1rem 1.5rem;
-                margin-bottom: 0.8rem;
-            }
-            /* Adjust table for mobile */
-            table {
-                font-size: 0.85rem;
-            }
-            th, td {
-                padding: 0.5rem 0.3rem;
-            }
-            /* Ajusta a responsividade do formulário em telas pequenas */
-            .form-actions {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            .form-actions button {
-                width: 100%;
-            }
-            .page-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 1rem;
-            }
-            .actions {
-                width: 100%;
-                justify-content: center;
             }
         }
     </style>
