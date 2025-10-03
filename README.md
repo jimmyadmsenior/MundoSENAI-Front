@@ -1,3 +1,4 @@
+# ![Capa do Projeto](Brooklyn/Capa_Readme/MundoSenai.jpg)
 # Mundo SENAI-FrontEnd
 
 Este projeto foi desenvolvido como parte das atividades do curso de Desenvolvimento de Sistemas do SENAI. Trata-se de uma plataforma de e-commerce voltada para a venda de periféricos de computador, como teclados, mouses, headsets, monitores e acessórios gamer.
